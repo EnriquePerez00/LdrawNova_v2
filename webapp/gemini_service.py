@@ -1,7 +1,7 @@
 """Gemini & Lego vision service for LdrawNova.
 
 Handles:
-1. Gemini Argon / Imagen image generation and multimodal vision reasoning.
+1. Gemini 2.5 Flash / Imagen image generation and multimodal vision reasoning.
 2. In-depth extraction of LDraw-compatible color palettes and official .dat parts.
 3. Offline high-fidelity Lego-mosaic/stud stylization when API key is unset or as fallback.
 4. Synthesis of specialized LDraw-Nova Internal Prompts.
@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import math
 import os
 import re
@@ -19,6 +20,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from PIL import Image, ImageDraw, ImageFilter, ImageOps
+
+logger = logging.getLogger("ldraw_gemini_service")
 
 # ---------------------------------------------------------------------------
 # LLM provider resolution (Google AI Studio vs. local LiteLLM proxy)
@@ -225,27 +228,86 @@ def extract_dominant_ldraw_colors(image_path: Path, max_colors: int = 6) -> List
     return result
 
 
-def create_lego_filter_preview(input_path: Path, output_path: Path, grid_size: int = 48) -> Path:
+def _remove_background(image: "Image.Image") -> "Image.Image":
+    """Removes the background of an RGB image using rembg (u2net).
+
+    Returns an RGBA image with alpha=0 on the background. If rembg is not
+    installed or fails for any reason, returns the original image unchanged
+    and logs a warning. Caller is expected to crop by the alpha bounding box.
+    """
+    try:
+        from rembg import remove  # type: ignore
+    except Exception as e:  # pragma: no cover - optional dep
+        logger.warning(f"rembg no está disponible ({e}); se omite el recorte de fondo.")
+        return image
+    try:
+        buf = BytesIO()
+        image.convert("RGB").save(buf, format="PNG")
+        data = buf.getvalue()
+        out = remove(data)
+        return Image.open(BytesIO(out)).convert("RGBA")
+    except Exception as e:  # pragma: no cover - runtime failure
+        logger.warning(f"rembg falló al procesar la imagen: {e}; se omite el recorte.")
+        return image
+
+
+def create_lego_filter_preview(
+    input_path: Path,
+    output_path: Path,
+    grid_size: int = 48,
+    cell_px: int = 16,
+    rembg_enabled: bool = False,
+) -> Path:
     """Procedurally transforms an image into an authentic LEGO brick/stud diorama preview.
 
     Draws quantified color bricks with raised 3D cylindrical studs with top highlights and edge shadows.
+
+    Parameters
+    ----------
+    grid_size: int
+        Number of studs per side (controls mosaic resolution).
+    cell_px: int
+        Pixels per stud (controls output sharpness per brick).
+    rembg_enabled: bool
+        When True, remove the background with rembg before gridding and crop
+        to the subject's bounding box.
     """
+    # Clamp to sane bounds in case callers pass garbage.
+    grid_size = max(8, min(int(grid_size), 512))
+    cell_px = max(2, min(int(cell_px), 64))
+
     with Image.open(input_path) as src_img:
         src = src_img.convert("RGB")
-        # Aspect-ratio preserving square or landscape crop
-        w, h = src.size
-        side = min(w, h)
-        left = (w - side) // 2
-        top = (h - side) // 2
-        src = src.crop((left, top, left + side, top + side))
+
+    if rembg_enabled:
+        rgba = _remove_background(src)
+        if rgba.mode == "RGBA":
+            bbox = rgba.split()[-1].getbbox()
+            if bbox:
+                rgba = rgba.crop(bbox)
+            # Composite over a neutral baseplate-matching background so the
+            # downstream mosaic has sensible colors.
+            bg = Image.new("RGB", rgba.size, (30, 30, 35))
+            bg.paste(rgba, mask=rgba.split()[-1])
+            src = bg
+        else:
+            # rembg not available – fall back to the unmodified image.
+            pass
+
+    # Aspect-ratio preserving square crop from the center of whatever we have
+    # (either the bbox from rembg or the original image).
+    w, h = src.size
+    side = min(w, h)
+    left = (w - side) // 2
+    top = (h - side) // 2
+    src = src.crop((left, top, left + side, top + side))
 
     # Downsample to stud grid
     pixelated = src.resize((grid_size, grid_size), Image.Resampling.BILINEAR)
     pixel_data = list(pixelated.getdata())
 
     # Create target high-res image
-    cell_px = 16
-    stud_r = 5
+    stud_r = max(2, cell_px // 3)
     out_size = grid_size * cell_px
     out_img = Image.new("RGB", (out_size, out_size), (30, 30, 35))
     draw = ImageDraw.Draw(out_img)
@@ -281,7 +343,8 @@ def create_lego_filter_preview(input_path: Path, output_path: Path, grid_size: i
             # Stud main body
             draw.ellipse([cx - stud_r, cy - stud_r, cx + stud_r, cy + stud_r], fill=stud_base_rgb)
             # Stud top specular highlight
-            draw.ellipse([cx - stud_r + 2, cy - stud_r + 1, cx + stud_r - 2, cy - 1], fill=stud_hi_rgb)
+            inner = max(1, stud_r - 2)
+            draw.ellipse([cx - inner, cy - stud_r + 1, cx + inner, cy - 1], fill=stud_hi_rgb)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     out_img.save(output_path, "PNG", quality=95)
@@ -293,9 +356,21 @@ async def generate_legolized_with_gemini(
     prompt: str,
     output_legolized_path: Path,
     api_key: Optional[str] = None,
-    llm_config: Optional[Dict[str, Any]] = None
+    llm_config: Optional[Dict[str, Any]] = None,
+    grid_size: int = 48,
+    cell_px: int = 16,
+    rembg_enabled: bool = False,
 ) -> Tuple[bool, str]:
-    """Generates a legolized reference image via Gemini / Imagen API, falling back to local procedural Lego filter."""
+    """Generates a legolized reference image via Gemini / Imagen API, falling back to local procedural Lego filter.
+
+    Extra parameters:
+      - ``grid_size``, ``cell_px``: propagated to the procedural fallback and
+        hinted to Gemini so the generated image reflects the chosen mosaic
+        resolution.
+      - ``rembg_enabled``: when True, remove the background with rembg before
+        either the procedural path or the Gemini upload so only the subject
+        gets legolized.
+    """
     cfg = resolve_llm_config(llm_config)
     provider = cfg["provider"]
 
@@ -303,10 +378,20 @@ async def generate_legolized_with_gemini(
     # cannot synthesize images, so we go straight to the high-fidelity
     # procedural LEGO filter for the "act" (output) image phase.
     if provider == "llmproxy":
-        create_lego_filter_preview(image_path, output_legolized_path, grid_size=48)
+        create_lego_filter_preview(
+            image_path,
+            output_legolized_path,
+            grid_size=grid_size,
+            cell_px=cell_px,
+            rembg_enabled=rembg_enabled,
+        )
+        extras = []
+        if rembg_enabled:
+            extras.append("fondo recortado con rembg")
+        extras.append(f"mosaico {grid_size}x{grid_size} studs, {cell_px}px/stud")
         return True, (
             "LLMproxy local (LiteLLM) no genera imágenes: se usó el motor procedural "
-            "de alta fidelidad (mosaico de studs LDraw) para la vista legolizada."
+            f"de alta fidelidad ({', '.join(extras)}). Comentarios de estilo se aplicarán en la Fase 3."
         )
 
     resolved_key = api_key or cfg.get("api_key")
@@ -317,15 +402,43 @@ async def generate_legolized_with_gemini(
             from google.genai import types
 
             client = genai.Client(api_key=resolved_key)
-            lego_prompt = (
-                f"Official LEGO Creator Expert diorama scale model of: {prompt}. "
-                "Crafted entirely from physical LEGO bricks, tiles, and standard LDraw parts. "
-                "Realistic LEGO stud textures, shiny ABS plastic material, studio photography, "
-                "sitting on a baseplate display with clean background lighting, 8k resolution."
-            )
+            lego_prompt_parts = [
+                f"Official LEGO Creator Expert diorama scale model of: {prompt}.",
+                "Crafted entirely from physical LEGO bricks, tiles, and standard LDraw parts.",
+                "Realistic LEGO stud textures, shiny ABS plastic material, studio photography,",
+                "sitting on a baseplate display with clean background lighting, 8k resolution.",
+                f"Rendered as a {grid_size}x{grid_size} stud mosaic with {cell_px}px per stud fine detail.",
+            ]
+            if rembg_enabled:
+                lego_prompt_parts.append(
+                    "Isolated subject on a neutral baseplate background, do not include scenery or background objects."
+                )
+            lego_prompt = " ".join(lego_prompt_parts)
 
-            with open(image_path, "rb") as f:
-                img_bytes = f.read()
+            # Preprocess the input image if the user asked for a background cut.
+            if rembg_enabled:
+                try:
+                    with Image.open(image_path) as _src:
+                        rgba = _remove_background(_src.convert("RGB"))
+                    if rgba.mode == "RGBA":
+                        bbox = rgba.split()[-1].getbbox()
+                        if bbox:
+                            rgba = rgba.crop(bbox)
+                        bg = Image.new("RGB", rgba.size, (255, 255, 255))
+                        bg.paste(rgba, mask=rgba.split()[-1])
+                        buf = BytesIO()
+                        bg.save(buf, format="JPEG", quality=92)
+                        img_bytes = buf.getvalue()
+                    else:
+                        with open(image_path, "rb") as f:
+                            img_bytes = f.read()
+                except Exception as e:
+                    logger.warning(f"rembg preprocess en Gemini falló: {e}; usando imagen original.")
+                    with open(image_path, "rb") as f:
+                        img_bytes = f.read()
+            else:
+                with open(image_path, "rb") as f:
+                    img_bytes = f.read()
 
             # Target Google AI Studio's most powerful image generation models first:
             # 1. gemini-3-pro-image (Nano Banana Pro) - 131k context with thinking reasoning & high-res image synthesis
@@ -383,8 +496,19 @@ async def generate_legolized_with_gemini(
             logger.warning(f"Error invoking Google AI Studio image generation: {e}")
 
     # High-fidelity procedural Lego filter
-    create_lego_filter_preview(image_path, output_legolized_path, grid_size=48)
-    return True, "Generada vista previa legolizada de alta fidelidad (mosaico de studs LDraw)."
+    create_lego_filter_preview(
+        image_path,
+        output_legolized_path,
+        grid_size=grid_size,
+        cell_px=cell_px,
+        rembg_enabled=rembg_enabled,
+    )
+    return True, (
+        f"Generada vista previa legolizada de alta fidelidad "
+        f"(mosaico {grid_size}x{grid_size} studs, {cell_px}px/stud"
+        + (", fondo recortado con rembg" if rembg_enabled else "")
+        + ")."
+    )
 
 
 async def analyze_and_synthesize_brief(
@@ -621,8 +745,8 @@ async def analyze_and_synthesize_brief(
                 with open(image_path, "rb") as f:
                     img_data = f.read()
 
-                # Try requested Gemini 3.8 Flash (medium tier), falling back to Argon or 2.5
-                models_to_try = ["gemini-3.8-flash", "gemini-4-argon", "gemini-2.5-flash", "gemini-flash-latest"]
+                # Try Gemini 2.5 Flash (primary), fall back to latest variant
+                models_to_try = ["gemini-2.5-flash", "gemini-flash-latest"]
                 for mod in models_to_try:
                     try:
                         response = client.models.generate_content(
@@ -722,7 +846,7 @@ def synthesize_internal_prompt(
 
     notes_section = ""
     if ai_notes:
-        notes_section = f"\n### Observaciones Gemini Argon / Vision\n{ai_notes}\n"
+        notes_section = f"\n### Observaciones Gemini 2.5 Flash / Vision\n{ai_notes}\n"
 
     return f"""# LDraw Nova Design Brief: {title}
 

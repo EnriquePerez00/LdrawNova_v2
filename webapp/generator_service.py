@@ -37,6 +37,16 @@ LDRAW_DIR = Path(os.environ.get("LDRAW_DIR", str(Path.home() / "LDraw")))
 ACTIVE_JOBS: Dict[str, Dict[str, Any]] = {}
 
 
+class JobCancelledException(Exception):
+    """Raised when the user requests a pipeline cancellation.
+
+    Propagated out of the validation wait (and future check points) so the
+    outer executor can emit a graceful 'cancelled' event and skip the
+    generic failure branch.
+    """
+    pass
+
+
 def generate_slug_from_prompt(prompt: str) -> str:
     """Creates a clean, filesystem-safe slug from a user prompt."""
     import re
@@ -65,7 +75,19 @@ class JobManager:
             "id": job_id,
             "slug": slug,
             "prompt": prompt,
+            # Backwards-compat: last textual feedback still available.
             "feedback_prompt": None,
+            # New categorized feedback state (lists accumulate across iterations).
+            "general_feedbacks": [],   # enrich the master prompt (Fase 2 + Fase 3)
+            "visual_feedbacks": [],    # style-only hints for the image regeneration
+            # Visual controls for the procedural / Gemini image generator.
+            "grid_size": 48,
+            "cell_px": 16,
+            "rembg_enabled": False,
+            # When the user only adds a general comment we skip regeneration to
+            # avoid wasting a Gemini call; the pipeline just re-emits the same
+            # image and the updated prompt suffixes.
+            "regenerate_image": True,
             "status": "pending",
             "phase": "initialized",
             "progress": 0,
@@ -148,24 +170,72 @@ async def execute_generation_pipeline(
         # FASE 2: Generación Legolizada & Validación de Usuario
         # ---------------------------------------------------------
         legolized_img_path = job_dir / "reference_legolized.png"
-        current_prompt = user_prompt
+
+        def compose_master_prompt() -> str:
+            """Builds the master prompt from the original prompt + any
+            accumulated 'general' feedbacks. Used both to regenerate the
+            legolized image and later as the ``user_prompt`` for Fase 3.
+            """
+            gen_fbs = job.get("general_feedbacks", []) if job else []
+            if not gen_fbs:
+                return user_prompt
+            bullet = "\n".join(f"- {f}" for f in gen_fbs)
+            return (
+                f"{user_prompt}\n\n"
+                f"--- Instrucciones generales adicionales (acumuladas de la validación) ---\n"
+                f"{bullet}"
+            )
+
+        def compose_visual_prompt() -> str:
+            """Master prompt plus visual-only hints (not persisted to Fase 3)."""
+            master = compose_master_prompt()
+            vis_fbs = job.get("visual_feedbacks", []) if job else []
+            if not vis_fbs:
+                return master
+            bullet = "\n".join(f"- {f}" for f in vis_fbs)
+            return (
+                f"{master}\n\n"
+                f"--- Ajustes visuales acumulados para la imagen legolizada ---\n"
+                f"{bullet}"
+            )
+
+        # First iteration always regenerates. Subsequent iterations may skip
+        # the image call when the user only added a general comment.
+        regenerate_this_iter = True
 
         while True:
-            await JobManager.emit_event(
-                job_id,
-                phase="Fase 2: Generación Legolizada (Gemini 3 Pro Image)",
-                progress=25,
-                message=f"Sintetizando imagen legolizada con el modelo más potente de Google AI Studio (Gemini 3 Pro Image / Nano Banana Pro)...",
-                level="info"
-            )
-            ok, gen_msg = await generate_legolized_with_gemini(
-                image_path=input_img_path,
-                prompt=current_prompt,
-                output_legolized_path=legolized_img_path,
-                api_key=api_key,
-                llm_config=llm_config
-            )
-            
+            grid_size = int(job.get("grid_size", 48)) if job else 48
+            cell_px = int(job.get("cell_px", 16)) if job else 16
+            rembg_enabled = bool(job.get("rembg_enabled", False)) if job else False
+
+            if regenerate_this_iter:
+                await JobManager.emit_event(
+                    job_id,
+                    phase="Fase 2: Generación Legolizada (Gemini 3 Pro Image)",
+                    progress=25,
+                    message=(
+                        f"Sintetizando imagen legolizada "
+                        f"(mosaico {grid_size}x{grid_size}, {cell_px}px/stud"
+                        + (", fondo recortado" if rembg_enabled else "")
+                        + ")..."
+                    ),
+                    level="info"
+                )
+                ok, gen_msg = await generate_legolized_with_gemini(
+                    image_path=input_img_path,
+                    prompt=compose_visual_prompt(),
+                    output_legolized_path=legolized_img_path,
+                    api_key=api_key,
+                    llm_config=llm_config,
+                    grid_size=grid_size,
+                    cell_px=cell_px,
+                    rembg_enabled=rembg_enabled,
+                )
+            else:
+                ok, gen_msg = True, (
+                    "Comentario general añadido al prompt maestro. La imagen se mantiene."
+                )
+
             job = ACTIVE_JOBS.get(job_id)
             if job:
                 job["status"] = "waiting_validation"
@@ -182,12 +252,24 @@ async def execute_generation_pipeline(
                     "waiting_validation": True,
                     "input_image": f"/output/{slug}/reference_input.jpg",
                     "legolized_image": f"/output/{slug}/reference_legolized.png",
-                    "current_prompt": current_prompt
+                    "current_prompt": compose_master_prompt(),
+                    "general_feedbacks": list(job.get("general_feedbacks", [])) if job else [],
+                    "visual_feedbacks": list(job.get("visual_feedbacks", [])) if job else [],
+                    "grid_size": grid_size,
+                    "cell_px": cell_px,
+                    "rembg_enabled": rembg_enabled,
                 }
             )
 
             # Esperar acción del usuario (aprobar o regenerar con nuevo feedback)
             await job["validation_event"].wait()
+
+            # Cancelación remota (POST /api/cancel/{job_id}): el endpoint
+            # marca status="cancelled" y hace set() del evento. Comprobamos
+            # aquí antes de mirar 'approved' para detener el pipeline de forma
+            # limpia en lugar de continuar como si se hubiera regenerado.
+            if job.get("status") == "cancelled":
+                raise JobCancelledException("Pipeline cancelado por el usuario durante la validación.")
 
             if job.get("approved"):
                 await JobManager.emit_event(
@@ -198,17 +280,31 @@ async def execute_generation_pipeline(
                     level="success"
                 )
                 break
-            else:
-                feedback = job.get("feedback_prompt", "").strip()
-                await JobManager.emit_event(
-                    job_id,
-                    phase="Fase 2: Modificación Solicitada",
-                    progress=20,
-                    message=f"Comentarios recibidos para nueva versión: '{feedback}'. Regenerando...",
-                    level="warning"
-                )
-                if feedback:
-                    current_prompt = f"{user_prompt}. Modificaciones adicionales: {feedback}"
+
+            # Modification path: decide whether to actually regenerate.
+            regenerate_this_iter = bool(job.get("regenerate_image", True))
+            latest_feedback = (job.get("feedback_prompt") or "").strip()
+            phase_label = (
+                "Fase 2: Modificación Visual Solicitada"
+                if regenerate_this_iter
+                else "Fase 2: Prompt Maestro Enriquecido"
+            )
+            msg = (
+                f"Comentarios visuales recibidos: '{latest_feedback}'. Regenerando imagen..."
+                if regenerate_this_iter
+                else f"Comentario general añadido al prompt maestro: '{latest_feedback}'. Prompt actualizado sin regenerar imagen."
+            )
+            await JobManager.emit_event(
+                job_id,
+                phase=phase_label,
+                progress=20 if regenerate_this_iter else 28,
+                message=msg,
+                level="warning" if regenerate_this_iter else "info"
+            )
+
+        # The master prompt that carries the user's accumulated general
+        # feedback forward to Fase 3 and beyond.
+        current_prompt = compose_master_prompt()
 
         # ---------------------------------------------------------
         # FASE 3: Inferencia de Metadatos y Paleta LDraw
@@ -413,6 +509,19 @@ async def execute_generation_pipeline(
             data=ACTIVE_JOBS[job_id]["artifacts"]
         )
 
+    except JobCancelledException as cexc:
+        logger.info("Pipeline cancelled by user: %s", cexc)
+        if job_id in ACTIVE_JOBS:
+            ACTIVE_JOBS[job_id]["status"] = "cancelled"
+            ACTIVE_JOBS[job_id]["error"] = None
+        await JobManager.emit_event(
+            job_id,
+            phase="Pipeline Cancelado",
+            progress=ACTIVE_JOBS[job_id]["progress"] if job_id in ACTIVE_JOBS else 0,
+            message=str(cexc),
+            level="warning"
+        )
+
     except Exception as exc:
         logger.exception("Error executing generation loop")
         ACTIVE_JOBS[job_id]["status"] = "failed"
@@ -601,7 +710,7 @@ Diorama 3D en formato **LDraw MPD** generado con el pipeline agéntico de **ldra
 | `design-brief.md` | Prompt interno adaptado al lenguaje de ldraw-nova |
 | `metadata.json` | Parámetros, submodelos y paleta de colores inferida |
 | `reference_input.jpg` | Imagen original suministrada |
-| `reference_legolized.png` | Imagen legolizada generada por Gemini Argon |
+| `reference_legolized.png` | Imagen legolizada generada por Gemini 2.5 Flash |
 | `renders/home.png` | Vista isométrica 3D LeoCAD |
 | `renders/front.png` | Vista frontal |
 | `renders/top.png` | Vista superior (planta) |
@@ -618,7 +727,7 @@ def create_project_comparison(job_dir: Path, slug: str, prompt: str):
     comp_content = f"""# Comparación Visual: {slug}
 
 > **Referencia original:** `reference_input.jpg`  
-> **Objetivo legolizado (Gemini Argon):** `reference_legolized.png`  
+> **Objetivo legolizado (Gemini 2.5 Flash):** `reference_legolized.png`  
 > **Renderizado final CAD (LeoCAD):** `renders/home.png`
 
 ## Resultados de la Iteración

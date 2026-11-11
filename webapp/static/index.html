@@ -409,6 +409,75 @@
       width: 0%;
       transition: width 0.3s ease;
     }
+
+    /* Sticky validation panel — keeps #validation-panel pinned near the top
+       of the right-column .card so it stays visible while the user scrolls
+       through logs or tabs. Depends on no ancestor clipping overflow. */
+    .sticky-validation {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 50;
+    }
+
+    /* Floating fallback banner (bottom-right) shown while the backend is
+       paused in waiting_validation. Clicking it scrolls the full panel into
+       view. Z-index above the sticky header. */
+    #validation-toast {
+      display: none;
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 150;
+      background: #1a222d;
+      border: 2px solid var(--lego-yellow);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55),
+                  0 0 0 4px rgba(249, 215, 28, 0.08);
+      max-width: 320px;
+      font-size: 0.85rem;
+      animation: val-toast-pulse 2.2s ease-in-out infinite;
+    }
+    #validation-toast strong {
+      color: var(--lego-yellow);
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+    #validation-toast p {
+      color: #c9d1d9;
+      margin-bottom: 0.6rem;
+      line-height: 1.35;
+    }
+    #validation-toast button {
+      background: var(--lego-yellow);
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    #validation-toast button:hover {
+      background: #ffe342;
+    }
+    @keyframes val-toast-pulse {
+      0%, 100% { box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55),
+                             0 0 0 4px rgba(249, 215, 28, 0.08); }
+      50%      { box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55),
+                             0 0 0 8px rgba(249, 215, 28, 0.18); }
+    }
+
+    #btn-cancel-pipeline:hover:not(:disabled) {
+      background: var(--danger);
+      color: #fff;
+    }
+    #btn-cancel-pipeline:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -421,7 +490,7 @@
       <span>LdrawNova Studio</span>
     </div>
     <div style="font-size: 0.85rem; color: var(--text-muted);">
-      Inferencia Multimodal &bull; Gemini Argon &bull; LeoCAD CAD Pipeline
+      Inferencia Multimodal &bull; Gemini 2.5 Flash &bull; LeoCAD CAD Pipeline
     </div>
   </header>
 
@@ -464,39 +533,19 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Proveedor de LLM</label>
-          <select id="provider-select" name="provider" style="width:100%; padding:0.6rem; background:#0d1117; color:var(--text); border:1px solid var(--card-border); border-radius:6px;">
-            <option value="gemini">Google AI Studio (API Gemini)</option>
-            <option value="llmproxy">LLMproxy local (LiteLLM de esta máquina)</option>
-          </select>
-          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
-            Selecciona el motor de inferencia: la API de Google AI Studio o tu proxy local LiteLLM (modelos Plan/Act).
-          </small>
-        </div>
-
-        <!-- Campos para Google AI Studio -->
-        <div class="form-group provider-fields" id="fields-gemini">
-          <label>Google AI Studio API Key (Gemini 3.8 Flash Tier)</label>
-          <input type="password" id="api-key-input" name="api_key" placeholder="AQ.Ab8... (Google AI Studio Key)">
-          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
-            Si los créditos del proyecto se agotan, conmuta automáticamente al motor LDraw local.
-          </small>
-        </div>
-
-        <!-- Campos para LLMproxy local (LiteLLM) -->
-        <div class="form-group provider-fields" id="fields-llmproxy" style="display:none;">
-          <label>Base URL del LLMproxy (LiteLLM)</label>
-          <input type="text" id="llm-base-url-input" name="llm_base_url" placeholder="http://127.0.0.1:4000">
-          <label style="margin-top:0.6rem;">Secret / Master Key (opcional)</label>
-          <input type="password" id="llm-secret-input" name="llm_secret" placeholder="sk-... (LiteLLM master key)">
-          <label style="margin-top:0.6rem;">Modelo PLAN (razonamiento / brief)</label>
-          <input type="text" id="plan-model-input" name="plan_model" placeholder="qwen3-coder:30b">
-          <label style="margin-top:0.6rem;">Modelo ACT (generación de salida)</label>
-          <input type="text" id="act-model-input" name="act_model" placeholder="qwen2.5-coder:7b">
-          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
-            Las llamadas van a <code>{Base URL}/v1/chat/completions</code> (compatible OpenAI). La fase de imagen usa el filtro procedural local porque LiteLLM no genera imágenes.
-          </small>
+        <!-- Motor de Inferencia: Solo Visual (no seleccionable) -->
+        <div class="form-group" style="background: linear-gradient(135deg, #1a3a52, #0d2238); padding: 1rem; border-radius: 6px; border-left: 4px solid var(--primary);">
+          <label style="font-weight: 600; color: var(--primary);">🧠 Motor de Inferencia</label>
+          <div style="margin-top: 0.5rem; font-size: 0.95rem;">
+            <p style="margin: 0.5rem 0; color: var(--text);"><strong>Fase 1-2 (Legolización):</strong> Google Gemini 2.5 Flash (VLM + reconocimiento visual)</p>
+            <p style="margin: 0.5rem 0; color: var(--text);"><strong>Fase 3-8 (Mejora):</strong> LiteLLM Proxy (localhost:6655)</p>
+            <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; color: var(--text-muted); font-size: 0.85rem;">
+              <li style="margin: 0.3rem 0;"><strong>A1:</strong> Gemini 2.5 Flash (descripción GT)</li>
+              <li style="margin: 0.3rem 0;"><strong>A3:</strong> Gemini 2.5 Flash (descripción render)</li>
+              <li style="margin: 0.3rem 0;"><strong>A4:</strong> Gemini 2.5 Flash → Pro (juez/diferenciador)</li>
+              <li style="margin: 0.3rem 0;"><strong>Fallback:</strong> Ollama llama3.2-vision:11b (local)</li>
+            </ul>
+          </div>
         </div>
 
         <button type="submit" id="submit-btn" class="btn">
@@ -507,11 +556,19 @@
 
     <!-- PANEL DERECHO: Visualización, Progreso e Iteraciones -->
     <div class="card" style="display: flex; flex-direction: column;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2>2. Ciclo de Inferencia & Renderizado CAD</h2>
-        <span id="status-badge" style="font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 12px; background: #21262d; color: var(--text-muted);">
-          ESPERANDO ENTRADA
-        </span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 0.75rem; flex-wrap: wrap;">
+        <h2 style="margin: 0;">2. Ciclo de Inferencia & Renderizado CAD</h2>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button type="button" id="btn-cancel-pipeline"
+            disabled
+            title="Cancela el pipeline, aborta la generación y reinicia el panel. Mantiene los datos de entrada (imagen, slug, prompt)."
+            style="display: none; background: #21262d; color: var(--danger); border: 1px solid var(--danger); border-radius: 6px; padding: 0.3rem 0.65rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.15s;">
+            ⛔ Cancelar Pipeline
+          </button>
+          <span id="status-badge" style="font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 12px; background: #21262d; color: var(--text-muted);">
+            ESPERANDO ENTRADA
+          </span>
+        </div>
       </div>
 
       <div class="progress-bar-wrap">
@@ -521,7 +578,7 @@
       <!-- Stepper Phases -->
       <div class="stepper" id="stepper">
         <div class="step-item" id="step-1"><span class="step-dot"></span><span>Fase 1: Recepción & Carga de Imagen y Prompt</span></div>
-        <div class="step-item" id="step-2"><span class="step-dot"></span><span>Fase 2: Generación Legolizada (Gemini Argon / Imagen)</span></div>
+        <div class="step-item" id="step-2"><span class="step-dot"></span><span>Fase 2: Generación Legolizada (Gemini 2.5 Flash / Imagen)</span></div>
         <div class="step-item" id="step-3"><span class="step-dot"></span><span>Fase 3: Inferencia de Paleta de Colores y Piezas LDraw (.dat)</span></div>
         <div class="step-item" id="step-4"><span class="step-dot"></span><span>Fase 4: Creación de Carpeta en /output y Prompt Interno</span></div>
         <div class="step-item" id="step-5"><span class="step-dot"></span><span>Fase 5: Generación del Código Procedural (generate.py -> plan.json)</span></div>
@@ -532,15 +589,17 @@
 
       <!-- Tabs Navigation -->
       <div class="tabs-nav">
-        <button class="tab-btn active" onclick="switchTab('tab-compare')">🖼️ Comparación Visual</button>
-        <button class="tab-btn" onclick="switchTab('tab-parts')">🧩 Zonas & Piezas LDraw (.dat)</button>
-        <button class="tab-btn" onclick="switchTab('tab-prompt')">📝 Prompt Interno</button>
-        <button class="tab-btn" onclick="switchTab('tab-logs')">💻 Registro de Iteración</button>
-        <button class="tab-btn" onclick="switchTab('tab-downloads')">📦 Ficheros Entregados</button>
+        <button class="tab-btn active" onclick="switchTab('tab-compare', event)">🖼️ Comparación Visual</button>
+        <button class="tab-btn" onclick="switchTab('tab-loops', event)">🔁 Iteraciones del Loop</button>
+        <button class="tab-btn" onclick="switchTab('tab-parts', event)">🧩 Zonas & Piezas LDraw (.dat)</button>
+        <button class="tab-btn" onclick="switchTab('tab-prompt', event)">📝 Prompt Interno</button>
+        <button class="tab-btn" onclick="switchTab('tab-logs', event)">💻 Registro de Iteración</button>
+        <button class="tab-btn" onclick="switchTab('tab-downloads', event)">📦 Ficheros Entregados</button>
+        <button class="tab-btn" onclick="switchTab('tab-kpis', event)">📊 KPIs de Ejecución</button>
       </div>
 
       <!-- Panel de Validación y Modificación de Imagen Legolizada -->
-      <div id="validation-panel" style="display: none; background: #1a222d; border: 2px solid var(--lego-yellow); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem; box-shadow: 0 4px 20px rgba(249, 215, 28, 0.15);">
+      <div id="validation-panel" class="sticky-validation" style="display: none; position: relative; background: #1a222d; border: 2px solid var(--lego-yellow); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem; box-shadow: 0 4px 20px rgba(249, 215, 28, 0.15);">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
           <h3 style="font-size: 1rem; color: var(--lego-yellow); font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
             <span>⚠️ Validación Requerida: Imagen Legolizada</span>
@@ -548,12 +607,66 @@
           <span style="font-size: 0.75rem; background: rgba(249, 215, 28, 0.2); color: var(--lego-yellow); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">Paso previo al prompt interno</span>
         </div>
         <p style="font-size: 0.85rem; color: #c9d1d9; margin-bottom: 0.85rem; line-height: 1.4;">
-          Revisa la imagen original y la imagen legolizada en la pestaña de comparación. Si estás conforme con el aspecto y proporciones, haz clic en <strong>Validar y Continuar</strong>. Si deseas ajustes en colores, piezas o detalles, añade tus comentarios abajo y pulsa <strong>Modificar y Regenerar</strong>.
+          Revisa la imagen original y la imagen legolizada en la pestaña de comparación. Si estás conforme, pulsa <strong>Validar y Continuar</strong>. Si deseas cambios, marca la categoría del comentario, ajusta la resolución o el recorte de fondo si procede y pulsa <strong>Modificar y Crear Nueva Imagen</strong>.
         </p>
-        <div style="margin-bottom: 0.85rem;">
-          <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Prompt de modificación / comentarios para la nueva imagen legolizada:</label>
-          <input type="text" id="val-feedback-input" placeholder="Ej.: Más barba canosa en los laterales, jersey de color rojo, añadir gafas de sol..." style="width: 100%; background: #0d1117; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.6rem 0.85rem; color: #fff; font-size: 0.88rem;">
+
+        <!-- Categorización del comentario -->
+        <div style="margin-bottom: 0.85rem; background: #0d1117; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.7rem 0.85rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.45rem; font-weight: 600;">Tipo de comentario (marca al menos uno):</div>
+          <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: #c9d1d9; cursor: pointer;">
+              <input type="checkbox" id="chk-feedback-visual" checked> Ajuste visual (regenera imagen)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: #c9d1d9; cursor: pointer;">
+              <input type="checkbox" id="chk-feedback-general"> Instrucción general (acumula en prompt maestro)
+            </label>
+          </div>
         </div>
+
+        <!-- Textarea del comentario -->
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Comentario / modificación:</label>
+          <input type="text" id="val-feedback-input" placeholder="Ej.: legolizar solo el sujeto, no el fondo blanco | los ojos deben ser rojo brillante | ..." style="width: 100%; background: #0d1117; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.6rem 0.85rem; color: #fff; font-size: 0.88rem;">
+        </div>
+
+        <!-- Sliders de resolución -->
+        <div style="margin-bottom: 0.85rem; background: #0d1117; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.7rem 0.85rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start;">
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">
+                Resolución del mosaico: <strong id="grid-size-label" style="color:var(--lego-yellow);">48</strong> studs/lado
+              </label>
+              <input type="range" id="slider-grid-size" min="0" max="5" step="1" value="2" style="width: 100%;">
+              <div style="font-size: 0.68rem; color: #6e7681; margin-top: 0.2rem;">16 · 32 · 48 · 96 · 192 · 240</div>
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">
+                Detalle por stud: <strong id="cell-px-label" style="color:var(--lego-yellow);">16</strong> px
+              </label>
+              <input type="range" id="slider-cell-px" min="0" max="3" step="1" value="2" style="width: 100%;">
+              <div style="font-size: 0.68rem; color: #6e7681; margin-top: 0.2rem;">4 · 8 · 16 · 32</div>
+            </div>
+          </div>
+          <div style="margin-top: 0.55rem; font-size: 0.75rem; color: #8b949e;">
+            Output estimado: <strong id="output-size-label" style="color:#c9d1d9;">768×768</strong> px
+            <span id="output-size-warning" style="display: none; margin-left: 0.5rem; color: #f85149; font-weight: 700;">⚠ resolución muy alta</span>
+          </div>
+        </div>
+
+        <!-- Toggle recortar fondo -->
+        <div style="margin-bottom: 0.85rem;">
+          <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: #c9d1d9; cursor: pointer;">
+            <input type="checkbox" id="chk-rembg"> Recortar fondo automáticamente (rembg)
+            <span style="font-size: 0.7rem; color: #6e7681;">— aisla el sujeto antes de legolizar</span>
+          </label>
+        </div>
+
+        <!-- Historial de comentarios generales acumulados -->
+        <div id="general-feedback-history-wrap" style="display: none; margin-bottom: 0.85rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 600;">Instrucciones generales acumuladas (se enviarán al agente inicial):</div>
+          <div id="general-feedback-history" style="display: flex; flex-wrap: wrap; gap: 0.4rem;"></div>
+        </div>
+
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
           <button type="button" id="btn-modify-legolized" class="btn" style="width: auto; background: #21262d; color: var(--text); border: 1px solid var(--card-border); padding: 0.6rem 1.2rem; font-size: 0.9rem;">
             🔄 Modificar y Crear Nueva Imagen Legolizada
@@ -562,6 +675,17 @@
             ✅ Validar y Lanzar Proceso Completo
           </button>
         </div>
+
+        <!-- Overlay de regeneración en curso -->
+        <div id="regenerating-overlay" style="display: none; position: absolute; inset: 0; background: rgba(13, 17, 23, 0.85); border-radius: 8px; z-index: 5; align-items: center; justify-content: center; flex-direction: column; gap: 0.8rem;">
+          <div style="width: 48px; height: 48px; border: 4px solid rgba(249,215,28,0.25); border-top-color: var(--lego-yellow); border-radius: 50%; animation: lego-spin 0.9s linear infinite;"></div>
+          <div id="regenerating-overlay-text" style="color: var(--lego-yellow); font-weight: 700; font-size: 0.95rem;">Regenerando imagen legolizada…</div>
+          <div style="color: #8b949e; font-size: 0.78rem;">Esto puede tardar hasta 30s según la resolución elegida.</div>
+        </div>
+        <style>
+          @keyframes lego-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          .feedback-chip { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(88,166,255,0.12); color: #58a6ff; border: 1px solid rgba(88,166,255,0.35); border-radius: 999px; padding: 0.2rem 0.65rem; font-size: 0.75rem; }
+        </style>
       </div>
 
       <!-- Tab 1: Comparación Visual -->
@@ -575,7 +699,7 @@
             </div>
           </div>
           <div class="compare-box">
-            <h4><span>LEGOLIZADA (GEMINI ARGON)</span></h4>
+            <h4><span>LEGOLIZADA (GEMINI 2.5 FLASH)</span></h4>
             <div class="compare-img-wrap">
               <img id="view-legolized" src="" alt="Legolizada" style="display:none;">
               <span id="lego-placeholder" class="compare-placeholder">En espera...</span>
@@ -588,6 +712,103 @@
               <span id="render-placeholder" class="compare-placeholder">En espera de compilación...</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Tab: Iteraciones del Loop -->
+      <div id="tab-loops" class="tab-pane">
+        <div style="background: #0d1117; border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; max-height: 800px; overflow-y: auto;">
+          <h4 style="color: var(--lego-yellow); margin-bottom: 1rem; font-size: 0.95rem;">Comparación Loop a Loop: GT vs Renders vs Feedback del Juez</h4>
+          
+          <div id="loops-container" style="display: grid; gap: 1.5rem;">
+            <!-- Placeholder mientras carga -->
+            <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              <p style="font-size: 0.9rem;">⏳ Cargando iteraciones...</p>
+              <p style="font-size: 0.8rem; color: #6e7681; margin-top: 0.5rem;">El loop VLM se está ejecutando en background.</p>
+            </div>
+          </div>
+
+          <style>
+            .iteration-card {
+              background: #1c2128;
+              border: 1px solid #30363d;
+              border-radius: 8px;
+              padding: 1rem;
+              margin-bottom: 1rem;
+            }
+            .iteration-card h5 {
+              color: var(--lego-yellow);
+              margin: 0 0 0.75rem 0;
+              font-size: 0.9rem;
+            }
+            .iteration-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+              gap: 0.75rem;
+              margin-bottom: 1rem;
+            }
+            .iteration-view {
+              background: #0d1117;
+              border: 1px solid #30363d;
+              border-radius: 6px;
+              overflow: hidden;
+              text-align: center;
+            }
+            .iteration-view img {
+              width: 100%;
+              height: auto;
+              display: block;
+            }
+            .iteration-view label {
+              display: block;
+              padding: 0.5rem;
+              font-size: 0.75rem;
+              color: var(--text-muted);
+              background: #161b22;
+              border-top: 1px solid #30363d;
+            }
+            .judge-score {
+              background: #0d1117;
+              border: 1px solid #30363d;
+              border-radius: 6px;
+              padding: 0.75rem;
+              margin-bottom: 0.75rem;
+              font-size: 0.85rem;
+            }
+            .judge-score .score-value {
+              color: var(--lego-yellow);
+              font-weight: bold;
+              font-size: 1.1rem;
+            }
+            .diff-list {
+              background: #0d1117;
+              border: 1px solid #30363d;
+              border-radius: 6px;
+              padding: 0.75rem;
+              font-size: 0.8rem;
+              max-height: 200px;
+              overflow-y: auto;
+            }
+            .diff-item {
+              margin-bottom: 0.5rem;
+              padding-bottom: 0.5rem;
+              border-bottom: 1px solid #30363d;
+            }
+            .diff-item:last-child {
+              border-bottom: none;
+            }
+            .diff-severity-high {
+              color: #f85149;
+              font-weight: bold;
+            }
+            .diff-severity-medium {
+              color: #d29922;
+              font-weight: 600;
+            }
+            .diff-severity-low {
+              color: #3fb950;
+            }
+          </style>
         </div>
       </div>
 
@@ -667,23 +888,52 @@
         </div>
       </div>
 
-      <!-- Tab 4: Ficheros Entregados -->
+      <!-- Tab 6: Ficheros Entregados -->
       <div id="tab-downloads" class="tab-pane">
         <div class="download-grid" id="download-container">
           <p style="color: var(--text-muted); font-size: 0.85rem;">Los enlaces de descarga aparecerán al completarse el modelo.</p>
         </div>
       </div>
 
+      <!-- Tab 7: KPIs de Ejecución -->
+      <div id="tab-kpis" class="tab-pane">
+        <div style="background: #0d1117; border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; max-height: 1200px; overflow-y: auto;">
+          <div id="kpis-container">
+            <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              <p style="font-size: 0.9rem;">⏳ Cargando KPIs...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+
+  <!-- Floating fallback banner for Fase 2 validation pause. Visible only
+       while #validation-panel is displayed; clicking the button scrolls the
+       full panel into view. Lives outside .container so it stays fixed. -->
+  <div id="validation-toast" role="alert" aria-live="polite">
+    <strong>⚠️ Validación requerida</strong>
+    <p>La imagen legolizada está lista. Revisa y aprueba o pide modificaciones para continuar con el pipeline.</p>
+    <button type="button" id="btn-toast-goto-panel">Ir a la validación</button>
   </div>
 
   <script>
     // Tab switching
-    function switchTab(tabId) {
+    function switchTab(tabId, ev) {
+      if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+      // Mark the clicked button as active. When invoked programmatically
+      // (no event), fall back to the button whose onclick targets this tab.
+      let btn = ev && ev.currentTarget ? ev.currentTarget : null;
+      if (!btn) {
+        btn = document.querySelector(`.tab-btn[onclick*="'${tabId}'"]`);
+      }
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      // Show the corresponding panel
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+      const panel = document.getElementById(tabId);
+      if (panel) panel.classList.add('active');
     }
 
     // Image preview
@@ -708,43 +958,8 @@
       }
     });
 
-    // --- LLM provider selection & persisted settings ---
-    const providerSelect = document.getElementById('provider-select');
-    const apiKeyInput = document.getElementById('api-key-input');
-    const llmBaseUrlInput = document.getElementById('llm-base-url-input');
-    const llmSecretInput = document.getElementById('llm-secret-input');
-    const planModelInput = document.getElementById('plan-model-input');
-    const actModelInput = document.getElementById('act-model-input');
-
-    // Defaults mirror the models configured in Cline on this machine.
-    const LLM_DEFAULTS = {
-      base_url: 'http://127.0.0.1:4000',
-      plan_model: 'qwen3-coder:30b',
-      act_model: 'qwen2.5-coder:7b'
-    };
-
-    // Restore persisted values (no secrets are hardcoded in the page)
-    providerSelect.value = localStorage.getItem('llm_provider') || 'gemini';
-    apiKeyInput.value = localStorage.getItem('gemini_api_key') || '';
-    llmBaseUrlInput.value = localStorage.getItem('llm_base_url') || LLM_DEFAULTS.base_url;
-    llmSecretInput.value = localStorage.getItem('llm_secret') || '';
-    planModelInput.value = localStorage.getItem('llm_plan_model') || LLM_DEFAULTS.plan_model;
-    actModelInput.value = localStorage.getItem('llm_act_model') || LLM_DEFAULTS.act_model;
-
-    function updateProviderVisibility() {
-      const isProxy = providerSelect.value === 'llmproxy';
-      document.getElementById('fields-gemini').style.display = isProxy ? 'none' : 'block';
-      document.getElementById('fields-llmproxy').style.display = isProxy ? 'block' : 'none';
-      localStorage.setItem('llm_provider', providerSelect.value);
-    }
-    providerSelect.addEventListener('change', updateProviderVisibility);
-    updateProviderVisibility();
-
-    apiKeyInput.addEventListener('change', () => localStorage.setItem('gemini_api_key', apiKeyInput.value.trim()));
-    llmBaseUrlInput.addEventListener('change', () => localStorage.setItem('llm_base_url', llmBaseUrlInput.value.trim()));
-    llmSecretInput.addEventListener('change', () => localStorage.setItem('llm_secret', llmSecretInput.value.trim()));
-    planModelInput.addEventListener('change', () => localStorage.setItem('llm_plan_model', planModelInput.value.trim()));
-    actModelInput.addEventListener('change', () => localStorage.setItem('llm_act_model', actModelInput.value.trim()));
+    // --- LLM Configuration: Fixed to Gemini + LiteLLM (no user input) ---
+    // API Key is now managed server-side from .env
 
     // Form submission & SSE Streaming
     const form = document.getElementById('gen-form');
@@ -757,8 +972,281 @@
     const valFeedbackInput = document.getElementById('val-feedback-input');
     const btnApproveLegolized = document.getElementById('btn-approve-legolized');
     const btnModifyLegolized = document.getElementById('btn-modify-legolized');
+    const validationToast = document.getElementById('validation-toast');
+    const btnToastGotoPanel = document.getElementById('btn-toast-goto-panel');
+    const btnCancelPipeline = document.getElementById('btn-cancel-pipeline');
+
+    // New: categorized feedback + resolution controls + rembg toggle
+    const chkFeedbackVisual = document.getElementById('chk-feedback-visual');
+    const chkFeedbackGeneral = document.getElementById('chk-feedback-general');
+    const chkRembg = document.getElementById('chk-rembg');
+    const sliderGridSize = document.getElementById('slider-grid-size');
+    const sliderCellPx = document.getElementById('slider-cell-px');
+    const gridSizeLabel = document.getElementById('grid-size-label');
+    const cellPxLabel = document.getElementById('cell-px-label');
+    const outputSizeLabel = document.getElementById('output-size-label');
+    const outputSizeWarning = document.getElementById('output-size-warning');
+    const generalFeedbackHistoryWrap = document.getElementById('general-feedback-history-wrap');
+    const generalFeedbackHistory = document.getElementById('general-feedback-history');
+    const regeneratingOverlay = document.getElementById('regenerating-overlay');
+    const regeneratingOverlayText = document.getElementById('regenerating-overlay-text');
+
+    const GRID_SIZE_STEPS = [16, 32, 48, 96, 192, 240];
+    const CELL_PX_STEPS = [4, 8, 16, 32];
+
+    function getGridSize() { return GRID_SIZE_STEPS[parseInt(sliderGridSize.value, 10)] || 48; }
+    function getCellPx() { return CELL_PX_STEPS[parseInt(sliderCellPx.value, 10)] || 16; }
+
+    function refreshResolutionLabels() {
+      const g = getGridSize();
+      const c = getCellPx();
+      gridSizeLabel.textContent = g;
+      cellPxLabel.textContent = c;
+      const total = g * c;
+      outputSizeLabel.textContent = `${total}×${total}`;
+      outputSizeWarning.style.display = total > 4096 ? 'inline' : 'none';
+    }
+    sliderGridSize.addEventListener('input', refreshResolutionLabels);
+    sliderCellPx.addEventListener('input', refreshResolutionLabels);
+    refreshResolutionLabels();
+
+    function renderGeneralFeedbackChips(list) {
+      generalFeedbackHistory.innerHTML = '';
+      if (!list || list.length === 0) {
+        generalFeedbackHistoryWrap.style.display = 'none';
+        return;
+      }
+      generalFeedbackHistoryWrap.style.display = 'block';
+      list.forEach((txt, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'feedback-chip';
+        chip.textContent = `#${i + 1}  ${txt}`;
+        generalFeedbackHistory.appendChild(chip);
+      });
+    }
+
+    function setValidationPanelBusy(busy, message) {
+      if (busy) {
+        regeneratingOverlayText.textContent = message || 'Regenerando imagen legolizada…';
+        regeneratingOverlay.style.display = 'flex';
+        btnApproveLegolized.disabled = true;
+        btnModifyLegolized.disabled = true;
+        valFeedbackInput.disabled = true;
+        chkFeedbackVisual.disabled = true;
+        chkFeedbackGeneral.disabled = true;
+        chkRembg.disabled = true;
+        sliderGridSize.disabled = true;
+        sliderCellPx.disabled = true;
+      } else {
+        regeneratingOverlay.style.display = 'none';
+        btnApproveLegolized.disabled = false;
+        btnModifyLegolized.disabled = false;
+        valFeedbackInput.disabled = false;
+        chkFeedbackVisual.disabled = false;
+        chkFeedbackGeneral.disabled = false;
+        chkRembg.disabled = false;
+        sliderGridSize.disabled = false;
+        sliderCellPx.disabled = false;
+      }
+    }
 
     let currentJobId = null;
+    // Tracks whether the backend is currently paused waiting for user input.
+    // Prevents the progress>=50 hide branch in the SSE handler from closing
+    // the panel while the job is still blocked in waiting_validation.
+    let awaitingValidation = false;
+    // Module-scope stream handles so the cancel button can tear them down
+    // without having to reach into attachJobStream's closure.
+    let activeEvtSource = null;
+    let activePollInterval = null;
+
+    function setCancelAvailable(available) {
+      if (available) {
+        btnCancelPipeline.style.display = 'inline-flex';
+        btnCancelPipeline.disabled = false;
+      } else {
+        btnCancelPipeline.disabled = true;
+        btnCancelPipeline.style.display = 'none';
+      }
+    }
+
+    // Resets the right-column pipeline UI to its initial state WITHOUT
+    // touching the left-column input form (image preview, prompt, slug,
+    // strategy select are preserved). Idempotent; safe to call multiple
+    // times. Does not hit the backend — caller is responsible for POSTing
+    // /api/cancel/{job_id} first when a job is active.
+    function resetRightPanelUI() {
+      // 1. Tear down live streams
+      if (activeEvtSource) {
+        try { activeEvtSource.close(); } catch (_) { /* noop */ }
+        activeEvtSource = null;
+      }
+      if (activePollInterval) {
+        clearInterval(activePollInterval);
+        activePollInterval = null;
+      }
+      currentJobId = null;
+      awaitingValidation = false;
+      clearActiveJob();
+
+      // 2. Status badge back to initial state
+      statusBadge.textContent = "ESPERANDO ENTRADA";
+      statusBadge.style.background = "#21262d";
+      statusBadge.style.color = "var(--text-muted)";
+
+      // 3. Progress bar + stepper
+      progressFill.style.width = '0%';
+      for (let i = 1; i <= 8; i++) {
+        const item = document.getElementById(`step-${i}`);
+        if (item) item.className = 'step-item';
+      }
+
+      // 4. Validation UI
+      validationPanel.style.display = 'none';
+      validationToast.style.display = 'none';
+      valFeedbackInput.value = '';
+      if (regeneratingOverlay) regeneratingOverlay.style.display = 'none';
+      // Reset categorized-feedback controls to defaults.
+      if (chkFeedbackVisual) chkFeedbackVisual.checked = true;
+      if (chkFeedbackGeneral) chkFeedbackGeneral.checked = false;
+      if (chkRembg) chkRembg.checked = false;
+      if (sliderGridSize) sliderGridSize.value = String(GRID_SIZE_STEPS.indexOf(48));
+      if (sliderCellPx) sliderCellPx.value = String(CELL_PX_STEPS.indexOf(16));
+      refreshResolutionLabels();
+      renderGeneralFeedbackChips([]);
+
+      // 5. Comparison tab: keep original (user's input preview) but reset the
+      //    legolized + render images, which are job-specific artifacts.
+      const legView = document.getElementById('view-legolized');
+      const legPh = document.getElementById('lego-placeholder');
+      if (legView) { legView.src = ''; legView.style.display = 'none'; }
+      if (legPh) legPh.style.display = 'block';
+      const renView = document.getElementById('view-render');
+      const renPh = document.getElementById('render-placeholder');
+      if (renView) { renView.src = ''; renView.style.display = 'none'; }
+      if (renPh) renPh.style.display = 'block';
+
+      // 6. Zones / parts / colors tables
+      const zonesGrid = document.getElementById('zones-grid');
+      if (zonesGrid) zonesGrid.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Esperando arranque del pipeline para inferir zonas...</p>';
+      const partsBody = document.getElementById('parts-table-body');
+      if (partsBody) partsBody.innerHTML = '<tr><td colspan="4" style="padding: 1rem; color: var(--text-muted); text-align: center;">Sin piezas delimitadas aún</td></tr>';
+      const colorsBody = document.getElementById('colors-table-body');
+      if (colorsBody) colorsBody.innerHTML = '<tr><td colspan="4" style="padding: 1rem; color: var(--text-muted); text-align: center;">Sin colores inferidos aún</td></tr>';
+
+      // 7. Prompt interno + palette
+      const palBox = document.getElementById('palette-container');
+      if (palBox) palBox.innerHTML = '<span style="color: var(--text-muted); font-size: 0.8rem;">Sin paleta inferida aún.</span>';
+      const brief = document.getElementById('brief-view');
+      if (brief) brief.textContent = 'Esperando arranque del loop...';
+
+      // 8. Log console: back to a single greeting line
+      if (consoleLogs) {
+        consoleLogs.innerHTML = '<div class="console-line"><span class="log-time">[00:00:00]</span> <span class="log-msg">Sistema LdrawNova iniciado. Esperando envío de solicitud...</span></div>';
+      }
+
+      // 9. Loop iterations + KPIs + downloads
+      const loops = document.getElementById('loops-container');
+      if (loops) loops.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><p style="font-size: 0.9rem;">⏳ Cargando iteraciones...</p><p style="font-size: 0.8rem; color: #6e7681; margin-top: 0.5rem;">El loop VLM se está ejecutando en background.</p></div>';
+      const kpis = document.getElementById('kpis-container');
+      if (kpis) kpis.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><p style="font-size: 0.9rem;">⏳ Cargando KPIs...</p></div>';
+      const dl = document.getElementById('download-container');
+      if (dl) dl.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Los enlaces de descarga aparecerán al completarse el modelo.</p>';
+
+      // 10. Default tab = Comparación Visual (left input still visible)
+      const defaultTab = document.getElementById('tab-compare');
+      if (defaultTab) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        defaultTab.classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        const firstBtn = document.querySelector('.tab-btn[onclick*="tab-compare"]');
+        if (firstBtn) firstBtn.classList.add('active');
+      }
+
+      // 11. Re-enable the submit button, hide cancel
+      submitBtn.disabled = false;
+      setCancelAvailable(false);
+    }
+
+    btnCancelPipeline.addEventListener('click', async () => {
+      if (!currentJobId) {
+        resetRightPanelUI();
+        return;
+      }
+      if (!confirm('¿Cancelar el pipeline en curso? Se mantendrán tus datos de entrada (imagen, slug, prompt) pero se abortará la generación.')) {
+        return;
+      }
+      btnCancelPipeline.disabled = true;
+      const jobId = currentJobId;
+      try {
+        const res = await fetch(`/api/cancel/${jobId}`, { method: 'POST' });
+        // Even a 404 (server lost the job) is fine: just reset locally.
+        if (!res.ok && res.status !== 404) {
+          console.warn('Cancel endpoint returned', res.status);
+        }
+      } catch (err) {
+        console.warn('Cancel request failed, resetting UI locally anyway:', err);
+      } finally {
+        resetRightPanelUI();
+      }
+    });
+
+    const JOB_STORAGE_KEY = 'ldraw_active_job';
+
+    function persistActiveJob(jobId, slug) {
+      try {
+        localStorage.setItem(JOB_STORAGE_KEY, JSON.stringify({ jobId, slug }));
+      } catch (_) { /* storage disabled */ }
+    }
+    function clearActiveJob() {
+      try { localStorage.removeItem(JOB_STORAGE_KEY); } catch (_) { /* noop */ }
+    }
+    function readActiveJob() {
+      try {
+        const raw = localStorage.getItem(JOB_STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) { return null; }
+    }
+
+    // Shows the validation UI (sticky panel + floating toast). Guards against
+    // re-emitting events: only scrolls and focuses on the initial transition
+    // from hidden -> visible.
+    function showValidationUI() {
+      awaitingValidation = true;
+      const wasHidden = validationPanel.style.display !== 'block';
+      validationPanel.style.display = 'block';
+      validationToast.style.display = 'block';
+      statusBadge.textContent = "VALIDACIÓN REQUERIDA";
+      statusBadge.style.background = "#d29922";
+      statusBadge.style.color = "#000";
+      if (wasHidden) {
+        // Defer scroll+focus so the browser paints the newly shown panel
+        // before measuring its position. Order: paint -> scrollIntoView ->
+        // focus (focus last so it does not fight scrollIntoView).
+        requestAnimationFrame(() => {
+          validationPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => {
+            try { valFeedbackInput.focus({ preventScroll: true }); }
+            catch (_) { valFeedbackInput.focus(); }
+          }, 350);
+        });
+      }
+    }
+    function hideValidationUI() {
+      awaitingValidation = false;
+      validationPanel.style.display = 'none';
+      validationToast.style.display = 'none';
+      if (regeneratingOverlay) regeneratingOverlay.style.display = 'none';
+    }
+
+    btnToastGotoPanel.addEventListener('click', () => {
+      validationPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        try { valFeedbackInput.focus({ preventScroll: true }); }
+        catch (_) { valFeedbackInput.focus(); }
+      }, 350);
+    });
 
     btnApproveLegolized.addEventListener('click', async () => {
       if (!currentJobId) return;
@@ -772,7 +1260,7 @@
           body: formData
         });
         if (!res.ok) throw new Error('Error al validar imagen');
-        validationPanel.style.display = 'none';
+        hideValidationUI();
         statusBadge.textContent = "VALIDADO - CONTINUANDO...";
         statusBadge.style.background = "#2ea043";
         statusBadge.style.color = "#fff";
@@ -790,33 +1278,69 @@
         btnModifyLegolized.click();
       }
     });
+
+    btnModifyLegolized.addEventListener('click', async () => {
       if (!currentJobId) return;
       const feedback = valFeedbackInput.value.trim();
+      const wantVisual = chkFeedbackVisual.checked;
+      const wantGeneral = chkFeedbackGeneral.checked;
+
+      if (!wantVisual && !wantGeneral) {
+        alert('Marca al menos una categoría de comentario (Visual o General) antes de modificar.');
+        return;
+      }
       if (!feedback) {
         alert('Por favor introduce algún comentario o modificación antes de regenerar.');
         return;
       }
-      btnApproveLegolized.disabled = true;
-      btnModifyLegolized.disabled = true;
+
+      let feedbackType = 'visual';
+      if (wantVisual && wantGeneral) feedbackType = 'both';
+      else if (wantGeneral) feedbackType = 'general';
+
+      const gridSize = getGridSize();
+      const cellPx = getCellPx();
+      if (gridSize * cellPx > 4096) {
+        if (!confirm(`Resolución total ${gridSize * cellPx}×${gridSize * cellPx} muy alta: puede tardar y usar mucha memoria. ¿Continuar?`)) {
+          return;
+        }
+      }
+
+      const willRegenerate = feedbackType !== 'general';
+      setValidationPanelBusy(true, willRegenerate
+        ? 'Regenerando imagen legolizada…'
+        : 'Añadiendo comentario al prompt maestro…');
+
       try {
         const formData = new FormData();
         formData.append('action', 'modify');
         formData.append('feedback', feedback);
+        formData.append('feedback_type', feedbackType);
+        formData.append('grid_size', String(gridSize));
+        formData.append('cell_px', String(cellPx));
+        formData.append('rembg_enabled', chkRembg.checked ? 'true' : 'false');
         const res = await fetch(`/api/validate/${currentJobId}`, {
           method: 'POST',
           body: formData
         });
-        if (!res.ok) throw new Error('Error al enviar modificaciones');
+        if (!res.ok) {
+          const errText = await res.text().catch(() => '');
+          throw new Error(`Error al enviar modificaciones: ${res.status} ${errText}`);
+        }
+        const payload = await res.json().catch(() => ({}));
+        if (payload && payload.general_feedbacks) {
+          renderGeneralFeedbackChips(payload.general_feedbacks);
+        }
         valFeedbackInput.value = '';
-        validationPanel.style.display = 'none';
-        statusBadge.textContent = "REGENERANDO LEGOLIZADA...";
+        statusBadge.textContent = willRegenerate ? "REGENERANDO LEGOLIZADA..." : "PROMPT ENRIQUECIDO...";
         statusBadge.style.background = "#d29922";
         statusBadge.style.color = "#000";
+        // Panel stays visible; overlay stays up until the backend emits the
+        // next waiting_validation event (new image or re-emission). It will
+        // be cleared by handleSsePayload via setValidationPanelBusy(false).
       } catch (err) {
         alert('Error: ' + err.message);
-      } finally {
-        btnApproveLegolized.disabled = false;
-        btnModifyLegolized.disabled = false;
+        setValidationPanelBusy(false);
       }
     });
 
@@ -838,6 +1362,239 @@
           item.className = 'step-item active';
         } else {
           item.className = 'step-item';
+        }
+      }
+    }
+
+    // Attaches the SSE stream and the 5s iterations poller for a given job.
+    // Reused by the fresh form submission path and the DOMContentLoaded
+    // rehydration path. Returns the EventSource so callers can close it.
+    function attachJobStream(jobId, slug) {
+      currentJobId = jobId;
+      persistActiveJob(jobId, slug);
+      setCancelAvailable(true);
+
+      const evtSource = new EventSource(`/api/stream/${jobId}`);
+      activeEvtSource = evtSource;
+
+      const pollInterval = setInterval(() => {
+        loadIterationsLoop(slug);
+        renderKpis(slug);
+      }, 5000);
+      activePollInterval = pollInterval;
+
+      evtSource.onmessage = (event) => {
+        if (!event.data || event.data.startsWith(':')) return;
+        try {
+          const payload = JSON.parse(event.data);
+          handleSsePayload(payload, evtSource, pollInterval);
+        } catch (err) {
+          // One malformed event must not kill the stream for the rest of
+          // the job. Log and keep going.
+          console.error('SSE handler failed:', err, event.data);
+        }
+      };
+
+      evtSource.onerror = () => {
+        evtSource.close();
+        clearInterval(pollInterval);
+        if (activeEvtSource === evtSource) activeEvtSource = null;
+        if (activePollInterval === pollInterval) activePollInterval = null;
+        submitBtn.disabled = false;
+        setCancelAvailable(false);
+      };
+
+      return evtSource;
+    }
+
+    function handleSsePayload(payload, evtSource, pollInterval) {
+      logToConsole(payload.timestamp, payload.phase, payload.message, payload.level);
+      progressFill.style.width = `${payload.progress}%`;
+
+      // Terminal cancellation event from the server. Emitted when the user
+      // calls POST /api/cancel/{id} while the pipeline is in Fase 2 wait.
+      // The SSE stream closes right after; we tear down client state too.
+      if (payload.phase && payload.phase.includes('Pipeline Cancelado')) {
+        statusBadge.textContent = "CANCELADO";
+        statusBadge.style.background = "#6e7681";
+        statusBadge.style.color = "#fff";
+        hideValidationUI();
+        try { evtSource.close(); } catch (_) { /* noop */ }
+        clearInterval(pollInterval);
+        if (activeEvtSource === evtSource) activeEvtSource = null;
+        if (activePollInterval === pollInterval) activePollInterval = null;
+        submitBtn.disabled = false;
+        setCancelAvailable(false);
+        clearActiveJob();
+        return;
+      }
+
+      // Match phase to stepper
+      if (payload.phase.includes('Fase 1')) {
+        setPhaseActive(1);
+        hideValidationUI();
+      }
+      if (payload.phase.includes('Fase 2')) {
+        setPhaseActive(2);
+        if (payload.data && payload.data.legolized_image) {
+          const legView = document.getElementById('view-legolized');
+          legView.src = payload.data.legolized_image + '?t=' + Date.now();
+          legView.style.display = 'block';
+          document.getElementById('lego-placeholder').style.display = 'none';
+          // Activar automáticamente la pestaña de comparación visual
+          switchTab('tab-compare');
+        }
+        if (payload.data && payload.data.waiting_validation) {
+          // Backend produced a new image (or re-emitted the same one after
+          // only a general-feedback comment). Sync the panel controls with
+          // the server-side state and clear the busy overlay.
+          if (Array.isArray(payload.data.general_feedbacks)) {
+            renderGeneralFeedbackChips(payload.data.general_feedbacks);
+          }
+          if (typeof payload.data.grid_size === 'number') {
+            const idx = GRID_SIZE_STEPS.indexOf(payload.data.grid_size);
+            if (idx >= 0) sliderGridSize.value = String(idx);
+          }
+          if (typeof payload.data.cell_px === 'number') {
+            const idx = CELL_PX_STEPS.indexOf(payload.data.cell_px);
+            if (idx >= 0) sliderCellPx.value = String(idx);
+          }
+          if (typeof payload.data.rembg_enabled === 'boolean') {
+            chkRembg.checked = payload.data.rembg_enabled;
+          }
+          refreshResolutionLabels();
+          setValidationPanelBusy(false);
+          showValidationUI();
+        } else if (payload.phase.includes('Validación Aceptada')) {
+          setValidationPanelBusy(false);
+          hideValidationUI();
+        }
+      }
+      if (payload.phase.includes('Fase 3') || payload.phase.includes('Fase 4') || payload.progress >= 50) {
+        // Only hide the validation panel if the job is no longer waiting
+        // on the user. The backend currently emits waiting_validation with
+        // progress=30, but this guard protects against future reordering.
+        if (!awaitingValidation) {
+          hideValidationUI();
+        }
+        if (payload.phase.includes('Fase 3')) setPhaseActive(3);
+
+        if (payload.data && payload.data.colors) {
+          const palBox = document.getElementById('palette-container');
+          palBox.innerHTML = '';
+          payload.data.colors.forEach(c => {
+            const span = document.createElement('span');
+            span.className = 'color-chip';
+            span.innerHTML = `<span class="chip-swatch" style="background:${c.hex}"></span>${c.name} (${c.code})`;
+            palBox.appendChild(span);
+          });
+        }
+
+        // Populate Submodel Zones Grid
+        if (payload.data && payload.data.submodels && payload.data.submodels.length > 0) {
+          const grid = document.getElementById('zones-grid');
+          grid.innerHTML = '';
+          payload.data.submodels.forEach((sm, i) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background:#161b22; border:1px solid var(--card-border); border-radius:6px; padding:0.75rem;';
+            card.innerHTML = `
+              <div style="font-weight:700; color:var(--lego-yellow); font-size:0.85rem; margin-bottom:0.25rem;">Zona ${i+1}: <code>${sm.filename}</code></div>
+              <p style="font-size:0.78rem; color:#8b949e; line-height:1.3;">${sm.desc}</p>
+            `;
+            grid.appendChild(card);
+          });
+        }
+
+        // Populate Parts Table
+        if (payload.data && payload.data.parts_breakdown && payload.data.parts_breakdown.length > 0) {
+          const tbody = document.getElementById('parts-table-body');
+          tbody.innerHTML = '';
+          payload.data.parts_breakdown.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--card-border)';
+            tr.innerHTML = `
+              <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${p.zone}</td>
+              <td style="padding:0.6rem;"><span style="background:rgba(88,166,255,0.12); color:#58a6ff; padding:2px 6px; border-radius:4px; font-size:0.75rem; font-weight:600;">${p.function}</span></td>
+              <td style="padding:0.6rem; color:#c9d1d9;">${p.official_name}</td>
+              <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:var(--lego-yellow); font-weight:600;">${p.ref}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        // Populate Color Assignments Table
+        if (payload.data && payload.data.color_assignments && payload.data.color_assignments.length > 0) {
+          const tbody = document.getElementById('colors-table-body');
+          tbody.innerHTML = '';
+          payload.data.color_assignments.forEach(c => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--card-border)';
+            tr.innerHTML = `
+              <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${c.zone}</td>
+              <td style="padding:0.6rem; color:#c9d1d9;">${c.name}</td>
+              <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:#3fb950; font-weight:700;">${c.code}</td>
+              <td style="padding:0.6rem; font-size:0.8rem; color:#8b949e; line-height:1.3;">${c.use}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        // Populate Markdown Prompt
+        if (payload.data && payload.data.internal_prompt_md) {
+          document.getElementById('brief-view').textContent = payload.data.internal_prompt_md;
+        }
+      }
+      if (payload.phase.includes('Fase 4')) setPhaseActive(4);
+      if (payload.phase.includes('Fase 5')) setPhaseActive(5);
+      if (payload.phase.includes('Fase 6')) {
+        setPhaseActive(6);
+        if (payload.data && payload.data.renders && payload.data.renders.length > 0) {
+          const renView = document.getElementById('view-render');
+          renView.src = payload.data.renders[0] + '?t=' + Date.now();
+          renView.style.display = 'block';
+          document.getElementById('render-placeholder').style.display = 'none';
+        }
+      }
+      if (payload.phase.includes('Fase 7')) setPhaseActive(7);
+      if (payload.phase.includes('Fase 8') || payload.progress === 100) {
+        setPhaseActive(8);
+        statusBadge.textContent = "COMPLETADO";
+        statusBadge.style.background = "#238636";
+        statusBadge.style.color = "#fff";
+        submitBtn.disabled = false;
+        evtSource.close();
+        clearInterval(pollInterval);
+        if (activeEvtSource === evtSource) activeEvtSource = null;
+        if (activePollInterval === pollInterval) activePollInterval = null;
+        setCancelAvailable(false);
+        clearActiveJob();
+
+        // Populate Downloads
+        const dData = payload.data;
+        if (dData) {
+          const dlContainer = document.getElementById('download-container');
+          dlContainer.innerHTML = `
+            <div class="download-card">
+              <strong>Modelo Ensamblado (.mpd)</strong>
+              <p>Código fuente 3D LDraw completo con submodelos.</p>
+              <a href="${dData.mpd}" download class="download-link">⬇ Descargar MPD</a>
+            </div>
+            <div class="download-card">
+              <strong>Plan Generativo (.json)</strong>
+              <p>Especificación reproducible de geometrías y pasos.</p>
+              <a href="${dData.plan}" download class="download-link">⬇ Descargar Plan</a>
+            </div>
+            <div class="download-card">
+              <strong>Script Generador (generate.py)</strong>
+              <p>Código en Python que compila el modelo.</p>
+              <a href="${dData.generator}" download class="download-link">⬇ Descargar Python</a>
+            </div>
+            <div class="download-card">
+              <strong>Lista de Materiales (BOM)</strong>
+              <p>Inventario de piezas oficiales LeoCAD en CSV.</p>
+              <a href="${dData.bom}" download class="download-link">⬇ Descargar BOM CSV</a>
+            </div>
+          `;
         }
       }
     }
@@ -869,166 +1626,7 @@
         }
 
         const data = await res.json();
-        const jobId = data.job_id;
-        currentJobId = jobId;
-
-        // Connect SSE Stream
-        const evtSource = new EventSource(`/api/stream/${jobId}`);
-
-        evtSource.onmessage = (event) => {
-          if (!event.data || event.data.startsWith(':')) return;
-          const payload = JSON.parse(event.data);
-
-          logToConsole(payload.timestamp, payload.phase, payload.message, payload.level);
-          progressFill.style.width = `${payload.progress}%`;
-
-          // Match phase to stepper
-          if (payload.phase.includes('Fase 1')) {
-            setPhaseActive(1);
-            validationPanel.style.display = 'none';
-          }
-          if (payload.phase.includes('Fase 2')) {
-            setPhaseActive(2);
-            if (payload.data && payload.data.legolized_image) {
-              const legView = document.getElementById('view-legolized');
-              legView.src = payload.data.legolized_image + '?t=' + Date.now();
-              legView.style.display = 'block';
-              document.getElementById('lego-placeholder').style.display = 'none';
-              // Activar automáticamente la pestaña de comparación visual
-              switchTab('tab-compare');
-            }
-            if (payload.data && payload.data.waiting_validation) {
-              validationPanel.style.display = 'block';
-              statusBadge.textContent = "VALIDACIÓN REQUERIDA";
-              statusBadge.style.background = "#d29922";
-              statusBadge.style.color = "#000";
-            } else if (payload.phase.includes('Validación Aceptada')) {
-              validationPanel.style.display = 'none';
-            }
-          }
-          if (payload.phase.includes('Fase 3') || payload.phase.includes('Fase 4') || payload.progress >= 50) {
-            validationPanel.style.display = 'none';
-            if (payload.phase.includes('Fase 3')) setPhaseActive(3);
-
-            if (payload.data && payload.data.colors) {
-              const palBox = document.getElementById('palette-container');
-              palBox.innerHTML = '';
-              payload.data.colors.forEach(c => {
-                const span = document.createElement('span');
-                span.className = 'color-chip';
-                span.innerHTML = `<span class="chip-swatch" style="background:${c.hex}"></span>${c.name} (${c.code})`;
-                palBox.appendChild(span);
-              });
-            }
-
-            // Populate Submodel Zones Grid
-            if (payload.data && payload.data.submodels && payload.data.submodels.length > 0) {
-              const grid = document.getElementById('zones-grid');
-              grid.innerHTML = '';
-              payload.data.submodels.forEach((sm, i) => {
-                const card = document.createElement('div');
-                card.style.cssText = 'background:#161b22; border:1px solid var(--card-border); border-radius:6px; padding:0.75rem;';
-                card.innerHTML = `
-                  <div style="font-weight:700; color:var(--lego-yellow); font-size:0.85rem; margin-bottom:0.25rem;">Zona ${i+1}: <code>${sm.filename}</code></div>
-                  <p style="font-size:0.78rem; color:#8b949e; line-height:1.3;">${sm.desc}</p>
-                `;
-                grid.appendChild(card);
-              });
-            }
-
-            // Populate Parts Table
-            if (payload.data && payload.data.parts_breakdown && payload.data.parts_breakdown.length > 0) {
-              const tbody = document.getElementById('parts-table-body');
-              tbody.innerHTML = '';
-              payload.data.parts_breakdown.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid var(--card-border)';
-                tr.innerHTML = `
-                  <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${p.zone}</td>
-                  <td style="padding:0.6rem;"><span style="background:rgba(88,166,255,0.12); color:#58a6ff; padding:2px 6px; border-radius:4px; font-size:0.75rem; font-weight:600;">${p.function}</span></td>
-                  <td style="padding:0.6rem; color:#c9d1d9;">${p.official_name}</td>
-                  <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:var(--lego-yellow); font-weight:600;">${p.ref}</td>
-                `;
-                tbody.appendChild(tr);
-              });
-            }
-
-            // Populate Color Assignments Table
-            if (payload.data && payload.data.color_assignments && payload.data.color_assignments.length > 0) {
-              const tbody = document.getElementById('colors-table-body');
-              tbody.innerHTML = '';
-              payload.data.color_assignments.forEach(c => {
-                const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid var(--card-border)';
-                tr.innerHTML = `
-                  <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${c.zone}</td>
-                  <td style="padding:0.6rem; color:#c9d1d9;">${c.name}</td>
-                  <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:#3fb950; font-weight:700;">${c.code}</td>
-                  <td style="padding:0.6rem; font-size:0.8rem; color:#8b949e; line-height:1.3;">${c.use}</td>
-                `;
-                tbody.appendChild(tr);
-              });
-            }
-
-            // Populate Markdown Prompt
-            if (payload.data && payload.data.internal_prompt_md) {
-              document.getElementById('brief-view').textContent = payload.data.internal_prompt_md;
-            }
-          }
-          if (payload.phase.includes('Fase 4')) setPhaseActive(4);
-          if (payload.phase.includes('Fase 5')) setPhaseActive(5);
-          if (payload.phase.includes('Fase 6')) {
-            setPhaseActive(6);
-            if (payload.data && payload.data.renders && payload.data.renders.length > 0) {
-              const renView = document.getElementById('view-render');
-              renView.src = payload.data.renders[0] + '?t=' + Date.now();
-              renView.style.display = 'block';
-              document.getElementById('render-placeholder').style.display = 'none';
-            }
-          }
-          if (payload.phase.includes('Fase 7')) setPhaseActive(7);
-          if (payload.phase.includes('Fase 8') || payload.progress === 100) {
-            setPhaseActive(8);
-            statusBadge.textContent = "COMPLETADO";
-            statusBadge.style.background = "#238636";
-            statusBadge.style.color = "#fff";
-            submitBtn.disabled = false;
-            evtSource.close();
-
-            // Populate Downloads
-            const dData = payload.data;
-            if (dData) {
-              const dlContainer = document.getElementById('download-container');
-              dlContainer.innerHTML = `
-                <div class="download-card">
-                  <strong>Modelo Ensamblado (.mpd)</strong>
-                  <p>Código fuente 3D LDraw completo con submodelos.</p>
-                  <a href="${dData.mpd}" download class="download-link">⬇ Descargar MPD</a>
-                </div>
-                <div class="download-card">
-                  <strong>Plan Generativo (.json)</strong>
-                  <p>Especificación reproducible de geometrías y pasos.</p>
-                  <a href="${dData.plan}" download class="download-link">⬇ Descargar Plan</a>
-                </div>
-                <div class="download-card">
-                  <strong>Script Generador (generate.py)</strong>
-                  <p>Código en Python que compila el modelo.</p>
-                  <a href="${dData.generator}" download class="download-link">⬇ Descargar Python</a>
-                </div>
-                <div class="download-card">
-                  <strong>Lista de Materiales (BOM)</strong>
-                  <p>Inventario de piezas oficiales LeoCAD en CSV.</p>
-                  <a href="${dData.bom}" download class="download-link">⬇ Descargar BOM CSV</a>
-                </div>
-              `;
-            }
-          }
-        };
-
-        evtSource.onerror = () => {
-          evtSource.close();
-          submitBtn.disabled = false;
-        };
+        attachJobStream(data.job_id, data.slug);
 
       } catch (err) {
         logToConsole(new Date().toLocaleTimeString(), "Error", err.message, "error");
@@ -1038,6 +1636,140 @@
       }
     });
 
+    // Rehydrate an in-flight job if the user reloaded the page while the
+    // backend was paused in waiting_validation (or still running). Requires
+    // GET /api/status/{job_id} and the SSE endpoint to replay history, which
+    // webapp/app.py:166-170 does by yielding job["logs"] on connect.
+    window.addEventListener('DOMContentLoaded', async () => {
+      const stored = readActiveJob();
+      if (!stored || !stored.jobId) return;
+      try {
+        const res = await fetch(`/api/status/${stored.jobId}`);
+        if (res.status === 404) {
+          clearActiveJob();
+          return;
+        }
+        if (!res.ok) return;
+        const info = await res.json();
+        if (info.status === 'completed' || info.status === 'failed' || info.status === 'cancelled') {
+          clearActiveJob();
+          return;
+        }
+        // Job is still alive on the server: reattach. The SSE stream replays
+        // historical log entries, so setPhaseActive and the validation panel
+        // will be restored by the normal handler.
+        const slug = info.slug || stored.slug;
+        submitBtn.disabled = true;
+        logToConsole(
+          new Date().toLocaleTimeString(),
+          "Rehidratación",
+          `Reconectando al job ${stored.jobId} (status=${info.status}).`,
+          "success"
+        );
+        attachJobStream(stored.jobId, slug);
+      } catch (err) {
+        console.error('Rehydration failed:', err);
+      }
+    });
+
+    // ============ Load iterations loop when job is created ============
+    async function loadIterationsLoop(slug) {
+      const container = document.getElementById('loops-container');
+      if (!container || !slug) return;
+      
+      try {
+        const res = await fetch(`/api/iterations/${slug}`);
+        if (!res.ok) return;
+        
+        const data = await res.json();
+        const iterations = data.iterations || [];
+        
+        if (iterations.length === 0) {
+          container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);">No hay iteraciones disponibles aún.</div>';
+          return;
+        }
+        
+        container.innerHTML = '';
+        
+        iterations.forEach((iter, idx) => {
+          const card = document.createElement('div');
+          card.className = 'iteration-card';
+          
+          // Build iteration HTML
+          let html = `
+            <h5>🔄 Iteración ${idx + 1}</h5>
+            <div class="iteration-grid">
+          `;
+          
+          // GT images
+          ['cenital', 'frontal', 'lateral_izq', 'lateral_der'].forEach(view => {
+            const img_url = iter.gt_images?.[view] || '';
+            html += `
+              <div class="iteration-view">
+                ${img_url ? `<img src="${img_url}?t=${Date.now()}" alt="GT ${view}">` : '<div style="height:150px; background:#161b22; display:flex; align-items:center; justify-content:center; color:#6e7681;">No disponible</div>'}
+                <label>GT: ${view}</label>
+              </div>
+            `;
+          });
+          
+          html += '</div><div class="iteration-grid">';
+          
+          // Render images
+          ['home', 'front', 'right', 'top'].forEach(view => {
+            const img_url = iter.render_images?.[view] || '';
+            html += `
+              <div class="iteration-view">
+                ${img_url ? `<img src="${img_url}?t=${Date.now()}" alt="Render ${view}">` : '<div style="height:150px; background:#161b22; display:flex; align-items:center; justify-content:center; color:#6e7681;">No disponible</div>'}
+                <label>Render: ${view}</label>
+              </div>
+            `;
+          });
+          
+          html += '</div>';
+          
+          // Judge score
+          const score = iter.judge_score || 0;
+          const axes = iter.per_axis_scores || {};
+          html += `
+            <div class="judge-score">
+              <div>Score Global: <span class="score-value">${score.toFixed(1)}/100</span></div>
+              <div style="margin-top: 0.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; font-size: 0.75rem;">
+          `;
+          
+          for (const [axis, value] of Object.entries(axes)) {
+            html += `<div>${axis}: <strong>${value.toFixed(1)}</strong></div>`;
+          }
+          
+          html += '</div></div>';
+          
+          // Diffs
+          const diffs = iter.diffs || [];
+          html += '<div class="diff-list"><strong>Issues:</strong>';
+          if (diffs.length === 0) {
+            html += '<div style="margin-top: 0.5rem; color: #3fb950;">✓ Sin issues</div>';
+          } else {
+            diffs.forEach(diff => {
+              const severity_class = `diff-severity-${diff.severity || 'low'}`;
+              html += `
+                <div class="diff-item">
+                  <div class="${severity_class}">${diff.severity || 'info'}: ${diff.issue}</div>
+                  <div style="margin-top: 0.25rem; color: #8b949e; font-size: 0.75rem;">${diff.suggestion || ''}</div>
+                </div>
+              `;
+            });
+          }
+          html += '</div>';
+          
+          card.innerHTML = html;
+          container.appendChild(card);
+        });
+        
+      } catch (err) {
+        console.error('Error loading iterations:', err);
+      }
+    }
+
+
     const copyBtn = document.getElementById('btn-copy-prompt');
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
@@ -1046,6 +1778,84 @@
         copyBtn.textContent = '✅ ¡Copiado!';
         setTimeout(() => { copyBtn.textContent = '📋 Copiar Prompt'; }, 2000);
       });
+    }
+
+    // ============ Render KPIs ============
+    async function renderKpis(slug) {
+      const container = document.getElementById('kpis-container');
+      if (!container || !slug) return;
+      
+      try {
+        const res = await fetch(`/api/iterations/${slug}`);
+        if (!res.ok) return;
+        
+        const data = await res.json();
+        const kpis = data.kpis || {};
+        
+        // Build HTML
+        let html = '<div style="display: grid; gap: 1.5rem;">';
+        
+        // A. Resumen Ejecutivo
+        const summary = kpis.summary || {};
+        const score = summary.best_score || 0;
+        const threshold = summary.score_threshold || 85;
+        const scorePercent = (score / 100) * 100;
+        
+        html += `
+          <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem;">
+            <h4 style="color: var(--lego-yellow); margin: 0 0 1rem 0;">📈 Resumen Ejecutivo</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+              <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #8b949e;">Score Final</div>
+                <div style="font-size: 1.5rem; color: var(--lego-yellow); font-weight: bold;">${score.toFixed(1)}/100</div>
+                <div style="height: 4px; background: #30363d; border-radius: 2px; margin-top: 0.5rem; overflow: hidden;">
+                  <div style="height: 100%; background: ${score >= threshold ? '#3fb950' : '#f85149'}; width: ${Math.min(scorePercent, 100)}%;"></div>
+                </div>
+                <div style="font-size: 0.7rem; color: #6e7681; margin-top: 0.3rem;">Umbral: ${threshold}</div>
+              </div>
+              <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #8b949e;">Convergencia</div>
+                <div style="font-size: 1.2rem; font-weight: bold; color: ${summary.converged ? '#3fb950' : '#f85149'};">
+                  ${summary.converged ? '✅ SÍ' : '❌ NO'}
+                </div>
+                <div style="font-size: 0.75rem; color: #8b949e; margin-top: 0.3rem;">${summary.stop_reason || 'N/D'}</div>
+              </div>
+              <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #8b949e;">Iteraciones</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #58a6ff;">${summary.iterations_used || 0}/${summary.max_iterations || 4}</div>
+              </div>
+              <div style="background: #0d1117; padding: 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #8b949e;">Tiempo Total</div>
+                <div style="font-size: 1.2rem; font-weight: bold; color: #d29922;">${((summary.total_elapsed_sec || 0) / 60).toFixed(1)}m</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // B. Telemetría
+        const telemetry = kpis.telemetry || {};
+        if (telemetry.by_agent_model && telemetry.by_agent_model.length > 0) {
+          html += '<div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem;"><h4 style="color: #58a6ff; margin: 0 0 1rem 0;">💰 Coste &amp; Tokens</h4><div style="overflow-x: auto;"><table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;"><thead><tr style="border-bottom: 2px solid #30363d; color: #8b949e; background: #0d1117;"><th style="padding: 0.6rem; text-align: left;">Agente</th><th style="padding: 0.6rem;">Modelo</th><th style="padding: 0.6rem; text-align: right;">Llamadas</th><th style="padding: 0.6rem; text-align: right;">Tokens In</th><th style="padding: 0.6rem; text-align: right;">Tokens Out</th><th style="padding: 0.6rem; text-align: right;">Coste USD</th></tr></thead><tbody>';
+          telemetry.by_agent_model.forEach(m => {
+            const row = '<tr style="border-bottom: 1px solid #30363d;"><td style="padding: 0.6rem; font-weight: bold; color: var(--lego-yellow);">' + m.agent + '</td><td style="padding: 0.6rem; color: #8b949e; font-size: 0.75rem;">' + m.model + '</td><td style="padding: 0.6rem; text-align: right; color: #58a6ff;">' + m.num_calls + '</td><td style="padding: 0.6rem; text-align: right; color: #3fb950;">' + m.prompt_tokens.toLocaleString() + '</td><td style="padding: 0.6rem; text-align: right; color: #f85149;">' + m.completion_tokens.toLocaleString() + '</td><td style="padding: 0.6rem; text-align: right; font-weight: bold; color: #d29922;">$' + m.cost_usd.toFixed(4) + '</td></tr>';
+            html += row;
+          });
+          html += '</tbody></table></div><div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #30363d;"><div style="display: flex; justify-content: space-between; font-weight: bold;"><span>Coste Total Estimado:</span><span style="color: #d29922;">$' + (telemetry.cost_total_usd || 0).toFixed(4) + '</span></div><div style="font-size: 0.7rem; color: #6e7681; margin-top: 0.5rem;">' + (telemetry.pricing_note || '') + '</div></div></div>';
+        }
+        
+        // C. Diffs
+        const diffs = kpis.diffs || {};
+        if (diffs.high_count !== undefined) {
+          html += '<div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem;"><h4 style="color: #d29922; margin: 0 0 1rem 0;">⚠️ Calidad de Diffs</h4><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;"><div style="background: #0d1117; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #f85149;"><div style="font-size: 0.8rem; color: #8b949e;">Issues Altos</div><div style="font-size: 1.5rem; font-weight: bold; color: #f85149;">' + (diffs.high_count || 0) + '</div></div><div style="background: #0d1117; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #d29922;"><div style="font-size: 0.8rem; color: #8b949e;">Issues Medios</div><div style="font-size: 1.5rem; font-weight: bold; color: #d29922;">' + (diffs.medium_count || 0) + '</div></div><div style="background: #0d1117; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3fb950;"><div style="font-size: 0.8rem; color: #8b949e;">Issues Bajos</div><div style="font-size: 1.5rem; font-weight: bold; color: #3fb950;">' + (diffs.low_count || 0) + '</div></div></div></div>';
+        }
+        
+        // Info
+        html += '<div style="background: #0d2238; border: 1px solid #30363d; border-radius: 8px; padding: 1rem; border-left: 3px solid #58a6ff;"><div style="font-size: 0.85rem; color: #8b949e;"><strong>ℹ️ Nota:</strong> Datos reales capturados. Tarifas estimadas; pueden variar.</div></div></div>';
+        
+        container.innerHTML = html;
+      } catch (err) {
+        console.error('Error loading KPIs:', err);
+      }
     }
   </script>
 </body>
