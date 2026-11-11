@@ -1,0 +1,71 @@
+{
+  "profile": "brand_logo",
+  "version": "1.0.0",
+  "description": "Curated part catalog specifically approved for corporate brand logos, lettermarks, badges, and bas-relief plaques.",
+  "categories": {
+    "tiles_flat": [
+      {"id": "3070b.dat", "name": "Tile 1 x 1 with Groove", "dims": [1, 1, 0.333]},
+      {"id": "3069b.dat", "name": "Tile 1 x 2 with Groove", "dims": [1, 2, 0.333]},
+      {"id": "63864.dat", "name": "Tile 1 x 3", "dims": [1, 3, 0.333]},
+      {"id": "2431.dat", "name": "Tile 1 x 4 with Groove", "dims": [1, 4, 0.333]},
+      {"id": "6636.dat", "name": "Tile 1 x 6", "dims": [1, 6, 0.333]},
+      {"id": "4162.dat", "name": "Tile 1 x 8", "dims": [1, 8, 0.333]},
+      {"id": "3068b.dat", "name": "Tile 2 x 2 with Groove", "dims": [2, 2, 0.333]},
+      {"id": "87079.dat", "name": "Tile 2 x 4 with Groove", "dims": [2, 4, 0.333]},
+      {"id": "6934.dat", "name": "Tile 2 x 6", "dims": [2, 6, 0.333]},
+      {"id": "6881.dat", "name": "Tile 2 x 8", "dims": [2, 8, 0.333]}
+    ],
+    "tiles_curved_macaroni": [
+      {"id": "98138.dat", "name": "Tile 1 x 1 Round", "dims": [1, 1, 0.333], "role": "Dots, i-dots, circular endpoints"},
+      {"id": "25269.dat", "name": "Tile 1 x 1 Round 1/4 (Corner)", "dims": [1, 1, 0.333], "role": "Tight radius corners (R=1)"},
+      {"id": "27925.dat", "name": "Tile 2 x 2 Curved Macaroni", "dims": [2, 2, 0.333], "role": "Medium radius curved strokes (R=2)"},
+      {"id": "27507.dat", "name": "Tile 3 x 3 Curved Macaroni", "dims": [3, 3, 0.333], "role": "Large radius curved strokes (R=3)"},
+      {"id": "48092.dat", "name": "Tile 4 x 4 Curved Macaroni", "dims": [4, 4, 0.333], "role": "Broad concentric circular borders (R=4)"},
+      {"id": "14719.dat", "name": "Tile 2 x 2 Corner Round Edge", "dims": [2, 2, 0.333], "role": "Corner rounding"}
+    ],
+    "slopes_curved": [
+      {"id": "11477.dat", "name": "Slope Curved 2 x 1 No Studs", "dims": [2, 1, 0.666], "role": "Smooth organic taper"},
+      {"id": "15068.dat", "name": "Slope Curved 2 x 2 No Studs", "dims": [2, 2, 0.666], "role": "Smooth surface dome / arc"},
+      {"id": "50950.dat", "name": "Slope Curved 3 x 1 No Studs", "dims": [3, 1, 1.0], "role": "Long aerodynamic slope"},
+      {"id": "61678.dat", "name": "Slope Curved 4 x 1 No Studs", "dims": [4, 1, 1.0], "role": "Gentle elongated arc"},
+      {"id": "24201.dat", "name": "Slope Curved 2 x 1 Inverted", "dims": [2, 1, 0.666], "role": "Underside curve / bevel"},
+      {"id": "29119.dat", "name": "Slope Curved 2 x 1 Wedge Right", "dims": [2, 1, 0.666], "role": "Compound corner taper (chiral right)"},
+      {"id": "29120.dat", "name": "Slope Curved 2 x 1 Wedge Left", "dims": [2, 1, 0.666], "role": "Compound corner taper (chiral left)"}
+    ],
+    "wedge_plates": [
+      {"id": "43722.dat", "name": "Wedge Plate 3 x 2 Right", "dims": [3, 2, 0.333]},
+      {"id": "43723.dat", "name": "Wedge Plate 3 x 2 Left", "dims": [3, 2, 0.333]},
+      {"id": "41769.dat", "name": "Wedge Plate 4 x 2 Right", "dims": [4, 2, 0.333]},
+      {"id": "41770.dat", "name": "Wedge Plate 4 x 2 Left", "dims": [4, 2, 0.333]},
+      {"id": "24299.dat", "name": "Wedge Plate 4 x 4 Left", "dims": [4, 4, 0.333]},
+      {"id": "24307.dat", "name": "Wedge Plate 4 x 4 Right", "dims": [4, 4, 0.333]}
+    ],
+    "snot_adapters": [
+      {"id": "99781.dat", "name": "Bracket 1 x 2 - 1 x 2 Up", "dims": [1, 2, 1.0], "role": "Vertical flush face mounting"},
+      {"id": "99780.dat", "name": "Bracket 1 x 2 - 1 x 2 Down", "dims": [1, 2, 1.0], "role": "Vertical inverted face mounting"},
+      {"id": "44728.dat", "name": "Bracket 1 x 2 - 2 x 2", "dims": [1, 2, 1.333], "role": "Dual-height vertical mounting"},
+      {"id": "87087.dat", "name": "Brick 1 x 1 with Stud on 1 Side", "dims": [1, 1, 1.0], "role": "Point SNOT mount"},
+      {"id": "11211.dat", "name": "Brick 1 x 2 with 2 Studs on 1 Side", "dims": [1, 2, 1.0], "role": "Linear SNOT mount"},
+      {"id": "26599.dat", "name": "Brick 1 x 4 with 4 Studs on 1 Side", "dims": [1, 4, 1.0], "role": "Long SNOT anchor"},
+      {"id": "22885.dat", "name": "Brick 1 x 2 x 1 2/3 with 4 Studs on 1 Side", "dims": [1, 2, 1.666], "role": "High-density SNOT grid"}
+    ],
+    "base_plates_and_backing": [
+      {"id": "3024.dat", "name": "Plate 1 x 1", "dims": [1, 1, 0.333]},
+      {"id": "3023.dat", "name": "Plate 1 x 2", "dims": [1, 2, 0.333]},
+      {"id": "3623.dat", "name": "Plate 1 x 3", "dims": [1, 3, 0.333]},
+      {"id": "3710.dat", "name": "Plate 1 x 4", "dims": [1, 4, 0.333]},
+      {"id": "3666.dat", "name": "Plate 1 x 6", "dims": [1, 6, 0.333]},
+      {"id": "3460.dat", "name": "Plate 1 x 8", "dims": [1, 8, 0.333]},
+      {"id": "3022.dat", "name": "Plate 2 x 2", "dims": [2, 2, 0.333]},
+      {"id": "3020.dat", "name": "Plate 2 x 4", "dims": [2, 4, 0.333]},
+      {"id": "3795.dat", "name": "Plate 2 x 6", "dims": [2, 6, 0.333]},
+      {"id": "3034.dat", "name": "Plate 2 x 8", "dims": [2, 8, 0.333]},
+      {"id": "3031.dat", "name": "Plate 4 x 4", "dims": [4, 4, 0.333]},
+      {"id": "3032.dat", "name": "Plate 4 x 6", "dims": [4, 6, 0.333]},
+      {"id": "3035.dat", "name": "Plate 4 x 8", "dims": [4, 8, 0.333]},
+      {"id": "3028.dat", "name": "Plate 6 x 12", "dims": [6, 12, 0.333]},
+      {"id": "3036.dat", "name": "Plate 6 x 8", "dims": [6, 8, 0.333]},
+      {"id": "3958.dat", "name": "Plate 6 x 6", "dims": [6, 6, 0.333]}
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "author": "Antigravity",
+  "sections": [
+    {
+      "name": "slope_test.ldr",
+      "description": "Slope stack test",
+      "steps": [
+        [
+          {
+            "id": "base",
+            "ref": "3001.dat",
+            "colour": 71,
+            "at": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "slope_f",
+            "ref": "11477.dat",
+            "colour": 71,
+            "at": [
+              0,
+              0,
+              20
+            ]
+          },
+          {
+            "id": "slope_r",
+            "ref": "11477.dat",
+            "colour": 71,
+            "at": [
+              0,
+              0,
+              -20
+            ],
+            "yaw": 180
+          }
+        ]
+      ]
+    }
+  ]
+}

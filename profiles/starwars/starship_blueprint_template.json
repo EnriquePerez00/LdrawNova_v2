@@ -1,0 +1,37 @@
+{
+  "profile": "starwars",
+  "craft_name": "Canonical Starfighter Prototype",
+  "faction": "rebel_alliance",
+  "class": "starfighter",
+  "scale": "display_midi",
+  "proportions": {
+    "total_length_studs": 24,
+    "wingspan_studs": 22,
+    "height_ldu": 72,
+    "wingspan_to_length_ratio": 0.91
+  },
+  "wing_geometry": {
+    "planform": "swept_wedge",
+    "sweep_angle_degrees": 15.0,
+    "chiral_wedge_profile": "41769_41770",
+    "trailing_edge_trim": "tiles_and_grilles"
+  },
+  "propulsion": {
+    "engine_type": "twin_sublight_ion_thrusters",
+    "intake_part": "3941.dat",
+    "exhaust_nozzle_part": "4740.dat",
+    "exhaust_glow_color": 182
+  },
+  "cockpit": {
+    "canopy_part": "30372.dat",
+    "cockpit_base_studs": [4, 6]
+  },
+  "palette": {
+    "primary_hull": 71,
+    "secondary_frame": 0,
+    "shadow_recesses": 72,
+    "squadron_accent": 320,
+    "cockpit_trans": 47,
+    "laser_emitter": 36
+  }
+}

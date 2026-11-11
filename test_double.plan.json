@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "author": "Antigravity",
+  "sections": [
+    {
+      "name": "double_fence.ldr",
+      "description": "Double fence tier test",
+      "steps": [
+        [
+          {
+            "id": "base",
+            "ref": "3001.dat",
+            "colour": 71,
+            "at": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "plate1",
+            "ref": "3710.dat",
+            "colour": 71,
+            "at": [
+              0,
+              -8,
+              0
+            ]
+          },
+          {
+            "id": "plate2",
+            "ref": "3710.dat",
+            "colour": 71,
+            "at": [
+              0,
+              -16,
+              0
+            ]
+          },
+          {
+            "id": "fence_lower",
+            "ref": "19121.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -64,
+              0
+            ]
+          },
+          {
+            "id": "plate_mid",
+            "ref": "3710.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -72,
+              0
+            ]
+          },
+          {
+            "id": "fence_upper",
+            "ref": "19121.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -120,
+              0
+            ]
+          },
+          {
+            "id": "tile_top",
+            "ref": "2431.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -124,
+              0
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

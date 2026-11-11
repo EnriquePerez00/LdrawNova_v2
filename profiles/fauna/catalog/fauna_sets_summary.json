@@ -1,0 +1,1181 @@
+{
+  "total_sets": 147,
+  "sets": [
+    {
+      "set_num": "76968-1",
+      "name": "Dinosaur Fossils: Tyrannosaurus Rex",
+      "year": 2025,
+      "num_parts": 3145,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76968-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "71500-1",
+      "name": "Nightmare Shark Submarine",
+      "year": 2025,
+      "num_parts": 1413,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71500-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "71497-1",
+      "name": "Cooper's Tiger Mech & Zero's Hot Rod Car",
+      "year": 2025,
+      "num_parts": 1006,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71497-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "80066-1",
+      "name": "Mythical Creature Qilin",
+      "year": 2025,
+      "num_parts": 791,
+      "img_url": "https://cdn.rebrickable.com/media/sets/80066-1.jpg",
+      "theme_name": "Monkie Kid"
+    },
+    {
+      "set_num": "31217-1",
+      "name": "Tiger",
+      "year": 2025,
+      "num_parts": 744,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31217-1.jpg",
+      "theme_name": "LEGO Art"
+    },
+    {
+      "set_num": "31165-1",
+      "name": "Wild Animals: Panda Family",
+      "year": 2025,
+      "num_parts": 626,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31165-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "21282-1",
+      "name": "The Parrot Houses",
+      "year": 2025,
+      "num_parts": 535,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21282-1.jpg",
+      "theme_name": "Minecraft"
+    },
+    {
+      "set_num": "76969-1",
+      "name": "Dinosaur Fossils: Triceratops Skull",
+      "year": 2025,
+      "num_parts": 468,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76969-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "11041-1",
+      "name": "Creative Dinosaurs",
+      "year": 2025,
+      "num_parts": 450,
+      "img_url": "https://cdn.rebrickable.com/media/sets/11041-1.jpg",
+      "theme_name": "Classic"
+    },
+    {
+      "set_num": "40824-1",
+      "name": "Sweetheart Tweety Bird",
+      "year": 2025,
+      "num_parts": 412,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40824-1.jpg",
+      "theme_name": "Valentine"
+    },
+    {
+      "set_num": "76970-1",
+      "name": "Baby Dinosaur Dolores: Aquilops",
+      "year": 2025,
+      "num_parts": 339,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76970-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "31170-1",
+      "name": "Wild Animals: Pink Flamingo",
+      "year": 2025,
+      "num_parts": 288,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31170-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "42648-1",
+      "name": "Panda Sanctuary Animal Care",
+      "year": 2025,
+      "num_parts": 243,
+      "img_url": "https://cdn.rebrickable.com/media/sets/42648-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "31159-1",
+      "name": "Wild Animals: Surprising Spider",
+      "year": 2025,
+      "num_parts": 153,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31159-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "71488-1",
+      "name": "Bunchu's Creative Animal Adventures",
+      "year": 2025,
+      "num_parts": 143,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71488-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "11198-1",
+      "name": "Spin and Electro Dinosaur Vehicle Chase",
+      "year": 2025,
+      "num_parts": 124,
+      "img_url": "https://cdn.rebrickable.com/media/sets/11198-1.jpg",
+      "theme_name": "Spidey and His Amazing Friends"
+    },
+    {
+      "set_num": "10451-1",
+      "name": "3in1 Dinosaurs on Wheels",
+      "year": 2025,
+      "num_parts": 108,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10451-1.jpg",
+      "theme_name": "Duplo"
+    },
+    {
+      "set_num": "10446-1",
+      "name": "3in1 Wild Animal Families",
+      "year": 2025,
+      "num_parts": 92,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10446-1.jpg",
+      "theme_name": "Duplo"
+    },
+    {
+      "set_num": "31171-1",
+      "name": "Wild Animals: Majestic Rhino with Birds",
+      "year": 2025,
+      "num_parts": 0,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31171-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "21349-1",
+      "name": "Tuxedo Cat",
+      "year": 2024,
+      "num_parts": 1710,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21349-1.jpg",
+      "theme_name": "LEGO Ideas and CUUSOO"
+    },
+    {
+      "set_num": "4002024-1",
+      "name": "LEGO Factories National Animals",
+      "year": 2024,
+      "num_parts": 1601,
+      "img_url": "https://cdn.rebrickable.com/media/sets/4002024-1.jpg",
+      "theme_name": "LEGO Exclusive"
+    },
+    {
+      "set_num": "43247-1",
+      "name": "The Lion King",
+      "year": 2024,
+      "num_parts": 1445,
+      "img_url": "https://cdn.rebrickable.com/media/sets/43247-1.jpg",
+      "theme_name": "Disney"
+    },
+    {
+      "set_num": "71484-1",
+      "name": "Cooper's C-Rex Robot Dinosaur",
+      "year": 2024,
+      "num_parts": 917,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71484-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "10331-1",
+      "name": "Kingfisher Bird",
+      "year": 2024,
+      "num_parts": 834,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10331-1.jpg",
+      "theme_name": "Icons"
+    },
+    {
+      "set_num": "31150-1",
+      "name": "Wild Safari Animals",
+      "year": 2024,
+      "num_parts": 780,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31150-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "43249-1",
+      "name": "Stitch",
+      "year": 2024,
+      "num_parts": 730,
+      "img_url": "https://cdn.rebrickable.com/media/sets/43249-1.jpg",
+      "theme_name": "Disney"
+    },
+    {
+      "set_num": "31154-1",
+      "name": "Forest Animals: Red Fox",
+      "year": 2024,
+      "num_parts": 667,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31154-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31211-1",
+      "name": "Macaw Parrots",
+      "year": 2024,
+      "num_parts": 644,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31211-1.jpg",
+      "theme_name": "LEGO Art"
+    },
+    {
+      "set_num": "31151-1",
+      "name": "T. rex",
+      "year": 2024,
+      "num_parts": 626,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31151-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76966-1",
+      "name": "Dinosaur Missions: Allosaurus Transport Truck",
+      "year": 2024,
+      "num_parts": 588,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76966-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "76964-1",
+      "name": "Dinosaur Fossils: T. rex Skull",
+      "year": 2024,
+      "num_parts": 577,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76964-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "42617-1",
+      "name": "Farm Animal Sanctuary",
+      "year": 2024,
+      "num_parts": 489,
+      "img_url": "https://cdn.rebrickable.com/media/sets/42617-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "71483-1",
+      "name": "The Never Witch's Nightmare Creatures",
+      "year": 2024,
+      "num_parts": 464,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71483-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "31158-1",
+      "name": "Sea Animals",
+      "year": 2024,
+      "num_parts": 421,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31158-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76965-1",
+      "name": "Dinosaur Missions: Stegosaurus Discovery",
+      "year": 2024,
+      "num_parts": 420,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76965-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "31157-1",
+      "name": "Exotic Peacock",
+      "year": 2024,
+      "num_parts": 355,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31157-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "71481-1",
+      "name": "Izzie's Dream Animals",
+      "year": 2024,
+      "num_parts": 328,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71481-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "43251-1",
+      "name": "Antonio's Animal Sanctuary",
+      "year": 2024,
+      "num_parts": 310,
+      "img_url": "https://cdn.rebrickable.com/media/sets/43251-1.jpg",
+      "theme_name": "Disney"
+    },
+    {
+      "set_num": "76278-1",
+      "name": "Rocket's Warbird vs. Ronan",
+      "year": 2024,
+      "num_parts": 290,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76278-1.jpg",
+      "theme_name": "The Infinity Saga"
+    },
+    {
+      "set_num": "43243-1",
+      "name": "Simba the Lion King Cub",
+      "year": 2024,
+      "num_parts": 222,
+      "img_url": "https://cdn.rebrickable.com/media/sets/43243-1.jpg",
+      "theme_name": "Disney"
+    },
+    {
+      "set_num": "76432-1",
+      "name": "Forbidden Forest: Magical Creatures",
+      "year": 2024,
+      "num_parts": 172,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76432-1.jpg",
+      "theme_name": "Harry Potter"
+    },
+    {
+      "set_num": "40709-1",
+      "name": "Spring Animal Playground \u200b \u200b",
+      "year": 2024,
+      "num_parts": 172,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40709-1.jpg",
+      "theme_name": "Easter"
+    },
+    {
+      "set_num": "42632-1",
+      "name": "Farm Animal Vet Clinic",
+      "year": 2024,
+      "num_parts": 170,
+      "img_url": "https://cdn.rebrickable.com/media/sets/42632-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "76963-1",
+      "name": "Baby Dinosaur Rescue Center",
+      "year": 2024,
+      "num_parts": 139,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76963-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "6513792-1",
+      "name": "DOTS Creative Animals",
+      "year": 2024,
+      "num_parts": 137,
+      "img_url": "https://cdn.rebrickable.com/media/sets/6513792-1.jpg",
+      "theme_name": "DOTS"
+    },
+    {
+      "set_num": "EG00025-1",
+      "name": "Love Birds Greeting",
+      "year": 2024,
+      "num_parts": 111,
+      "img_url": "https://cdn.rebrickable.com/media/sets/eg00025-1.jpg",
+      "theme_name": "Other"
+    },
+    {
+      "set_num": "71469-1",
+      "name": "Nightmare Shark Ship",
+      "year": 2023,
+      "num_parts": 1389,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71469-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "21342-1",
+      "name": "The Insect Collection",
+      "year": 2023,
+      "num_parts": 1111,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21342-1.jpg",
+      "theme_name": "LEGO Ideas and CUUSOO"
+    },
+    {
+      "set_num": "71786-1",
+      "name": "Zane's Ice Dragon Creature",
+      "year": 2023,
+      "num_parts": 984,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71786-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "80048-1",
+      "name": "The Mighty Azure Lion",
+      "year": 2023,
+      "num_parts": 796,
+      "img_url": "https://cdn.rebrickable.com/media/sets/80048-1.jpg",
+      "theme_name": "Monkie Kid"
+    },
+    {
+      "set_num": "71459-1",
+      "name": "Stable Of Dream Creatures",
+      "year": 2023,
+      "num_parts": 681,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71459-1.jpg",
+      "theme_name": "Dreamzzz"
+    },
+    {
+      "set_num": "41805-1",
+      "name": "Creative Animal Drawer",
+      "year": 2023,
+      "num_parts": 643,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41805-1.jpg",
+      "theme_name": "DOTS"
+    },
+    {
+      "set_num": "31143-1",
+      "name": "Birdhouse",
+      "year": 2023,
+      "num_parts": 476,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31143-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31137-1",
+      "name": "Adorable Dogs",
+      "year": 2023,
+      "num_parts": 475,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31137-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76992-1",
+      "name": "Amy's Animal Rescue Island",
+      "year": 2023,
+      "num_parts": 388,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76992-1.jpg",
+      "theme_name": "Sonic The Hedgehog"
+    },
+    {
+      "set_num": "31133-1",
+      "name": "White Rabbit",
+      "year": 2023,
+      "num_parts": 258,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31133-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31136-1",
+      "name": "Exotic Parrot",
+      "year": 2023,
+      "num_parts": 253,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31136-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31144-1",
+      "name": "Exotic Pink Parrot",
+      "year": 2023,
+      "num_parts": 253,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31144-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "40639-1",
+      "name": "Bird's Nest",
+      "year": 2023,
+      "num_parts": 232,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40639-1.jpg",
+      "theme_name": "Easter"
+    },
+    {
+      "set_num": "21253-1",
+      "name": "The Animal Sanctuary",
+      "year": 2023,
+      "num_parts": 206,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21253-1.jpg",
+      "theme_name": "Minecraft"
+    },
+    {
+      "set_num": "30637-1",
+      "name": "Animal Tray and Bag Tag",
+      "year": 2023,
+      "num_parts": 94,
+      "img_url": "https://cdn.rebrickable.com/media/sets/30637-1.jpg",
+      "theme_name": "DOTS"
+    },
+    {
+      "set_num": "10305-1",
+      "name": "Lion Knights' Castle",
+      "year": 2022,
+      "num_parts": 4515,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10305-1.jpg",
+      "theme_name": "Icons"
+    },
+    {
+      "set_num": "31129-1",
+      "name": "Majestic Tiger",
+      "year": 2022,
+      "num_parts": 755,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31129-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76948-1",
+      "name": "T. rex & Atrociraptor Dinosaur Breakout",
+      "year": 2022,
+      "num_parts": 466,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76948-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "76211-1",
+      "name": "Shuri's Sunbird",
+      "year": 2022,
+      "num_parts": 355,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76211-1.jpg",
+      "theme_name": "Super Heroes Marvel"
+    },
+    {
+      "set_num": "40522-1",
+      "name": "Valentine Lovebirds",
+      "year": 2022,
+      "num_parts": 298,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40522-1.jpg",
+      "theme_name": "Valentine"
+    },
+    {
+      "set_num": "60353-1",
+      "name": "Wild Animal Rescue Missions",
+      "year": 2022,
+      "num_parts": 246,
+      "img_url": "https://cdn.rebrickable.com/media/sets/60353-1.jpg",
+      "theme_name": "City"
+    },
+    {
+      "set_num": "40540-1",
+      "name": "Lion Dance Guy",
+      "year": 2022,
+      "num_parts": 239,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40540-1.jpg",
+      "theme_name": "Brickheadz"
+    },
+    {
+      "set_num": "60346-1",
+      "name": "Barn & Farm Animals",
+      "year": 2022,
+      "num_parts": 230,
+      "img_url": "https://cdn.rebrickable.com/media/sets/60346-1.jpg",
+      "theme_name": "Farm"
+    },
+    {
+      "set_num": "40491-1",
+      "name": "Year of the Tiger",
+      "year": 2022,
+      "num_parts": 193,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40491-1.jpg",
+      "theme_name": "Chinese (Lunar) New Year"
+    },
+    {
+      "set_num": "41945-1",
+      "name": "Neon Tiger Bracelet & Bag Tag",
+      "year": 2022,
+      "num_parts": 188,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41945-1.jpg",
+      "theme_name": "DOTS"
+    },
+    {
+      "set_num": "31125-1",
+      "name": "Fantasy Forest Creatures",
+      "year": 2022,
+      "num_parts": 175,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31125-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76945-1",
+      "name": "Atrociraptor Dinosaur: Bike Chase",
+      "year": 2022,
+      "num_parts": 169,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76945-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "10975-1",
+      "name": "Wild Animals of the World",
+      "year": 2022,
+      "num_parts": 143,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10975-1.jpg",
+      "theme_name": "Town"
+    },
+    {
+      "set_num": "76944-1",
+      "name": "T. rex Dinosaur Breakout",
+      "year": 2022,
+      "num_parts": 140,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76944-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "31128-1",
+      "name": "Dolphin and Turtle",
+      "year": 2022,
+      "num_parts": 137,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31128-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "60342-1",
+      "name": "The Shark Attack Stunt Challenge",
+      "year": 2022,
+      "num_parts": 122,
+      "img_url": "https://cdn.rebrickable.com/media/sets/60342-1.jpg",
+      "theme_name": "Stuntz"
+    },
+    {
+      "set_num": "10974-1",
+      "name": "Wild Animals of Asia",
+      "year": 2022,
+      "num_parts": 118,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10974-1.jpg",
+      "theme_name": "Town"
+    },
+    {
+      "set_num": "5007587-1",
+      "name": "4in1 Build, Lion Dance",
+      "year": 2022,
+      "num_parts": 88,
+      "img_url": "https://cdn.rebrickable.com/media/sets/5007587-1.jpg",
+      "theme_name": "Chinese Traditional Festivals"
+    },
+    {
+      "set_num": "10979-1",
+      "name": "Wild Animals Of Europe",
+      "year": 2022,
+      "num_parts": 86,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10979-1.jpg",
+      "theme_name": "Town"
+    },
+    {
+      "set_num": "10289-1",
+      "name": "Bird of Paradise",
+      "year": 2021,
+      "num_parts": 1173,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10289-1.jpg",
+      "theme_name": "Botanicals"
+    },
+    {
+      "set_num": "80021-1",
+      "name": "Monkie Kid's Lion Guardian",
+      "year": 2021,
+      "num_parts": 775,
+      "img_url": "https://cdn.rebrickable.com/media/sets/80021-1.jpg",
+      "theme_name": "Monkie Kid"
+    },
+    {
+      "set_num": "76394-1",
+      "name": "Fawkes, Dumbledore's Phoenix",
+      "year": 2021,
+      "num_parts": 597,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76394-1.jpg",
+      "theme_name": "Harry Potter"
+    },
+    {
+      "set_num": "31121-1",
+      "name": "Crocodile",
+      "year": 2021,
+      "num_parts": 454,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31121-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31116-1",
+      "name": "Safari Wildlife Tree House",
+      "year": 2021,
+      "num_parts": 397,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31116-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76942-1",
+      "name": "Baryonyx Dinosaur Boat Escape",
+      "year": 2021,
+      "num_parts": 309,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76942-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "76941-1",
+      "name": "Carnotaurus Dinosaur Chase",
+      "year": 2021,
+      "num_parts": 240,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76941-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "31112-1",
+      "name": "Wild Lion",
+      "year": 2021,
+      "num_parts": 224,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31112-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76940-1",
+      "name": "T. rex Dinosaur Fossil Exhibition",
+      "year": 2021,
+      "num_parts": 198,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76940-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "77941-1",
+      "name": "Mighty Dinosaurs - Blue Version",
+      "year": 2021,
+      "num_parts": 174,
+      "img_url": "https://cdn.rebrickable.com/media/sets/77941-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "77940-1",
+      "name": "Mighty Dinosaurs - Brown Version",
+      "year": 2021,
+      "num_parts": 174,
+      "img_url": "https://cdn.rebrickable.com/media/sets/77940-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "76939-1",
+      "name": "Stygimoloch Dinosaur Escape",
+      "year": 2021,
+      "num_parts": 129,
+      "img_url": "https://cdn.rebrickable.com/media/sets/76939-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "10952-1",
+      "name": "Barn, Tractor & Farm Animal Care",
+      "year": 2021,
+      "num_parts": 97,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10952-1.jpg",
+      "theme_name": "Town"
+    },
+    {
+      "set_num": "11011-1",
+      "name": "Bricks and Animals",
+      "year": 2020,
+      "num_parts": 1500,
+      "img_url": "https://cdn.rebrickable.com/media/sets/11011-1.jpg",
+      "theme_name": "Classic"
+    },
+    {
+      "set_num": "80104-1",
+      "name": "Lion Dance",
+      "year": 2020,
+      "num_parts": 882,
+      "img_url": "https://cdn.rebrickable.com/media/sets/80104-1.jpg",
+      "theme_name": "Chinese Traditional Festivals"
+    },
+    {
+      "set_num": "75979-1",
+      "name": "Hedwig",
+      "year": 2020,
+      "num_parts": 630,
+      "img_url": "https://cdn.rebrickable.com/media/sets/75979-1.jpg",
+      "theme_name": "Harry Potter"
+    },
+    {
+      "set_num": "71719-1",
+      "name": "Zane's Mino Creature",
+      "year": 2020,
+      "num_parts": 617,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71719-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "41904-1",
+      "name": "Animal Picture Holders",
+      "year": 2020,
+      "num_parts": 425,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41904-1.jpg",
+      "theme_name": "DOTS"
+    },
+    {
+      "set_num": "41423-1",
+      "name": "Tiger Hot Air Balloon Jungle Rescue",
+      "year": 2020,
+      "num_parts": 302,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41423-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "10934-1",
+      "name": "Creative Animals",
+      "year": 2020,
+      "num_parts": 175,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10934-1.jpg",
+      "theme_name": "Basic Set"
+    },
+    {
+      "set_num": "60267-1",
+      "name": "Safari Off-roader",
+      "year": 2020,
+      "num_parts": 168,
+      "img_url": "https://cdn.rebrickable.com/media/sets/60267-1.jpg",
+      "theme_name": "Off-Road"
+    },
+    {
+      "set_num": "75939-1",
+      "name": "Dr. Wu's Lab: Baby Dinosaurs Breakout",
+      "year": 2020,
+      "num_parts": 164,
+      "img_url": "https://cdn.rebrickable.com/media/sets/75939-1.jpg",
+      "theme_name": "Jurassic World"
+    },
+    {
+      "set_num": "45029-1",
+      "name": "Animals",
+      "year": 2020,
+      "num_parts": 91,
+      "img_url": "https://cdn.rebrickable.com/media/sets/45029-1.jpg",
+      "theme_name": "Duplo and Explore"
+    },
+    {
+      "set_num": "21320-1",
+      "name": "Dinosaur Fossils",
+      "year": 2019,
+      "num_parts": 911,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21320-1.jpg",
+      "theme_name": "LEGO Ideas and CUUSOO"
+    },
+    {
+      "set_num": "40366-1",
+      "name": "LEGO House Dinosaurs",
+      "year": 2019,
+      "num_parts": 865,
+      "img_url": "https://cdn.rebrickable.com/media/sets/40366-1.jpg",
+      "theme_name": "LEGO Exclusive"
+    },
+    {
+      "set_num": "41378-1",
+      "name": "Dolphins Rescue Mission",
+      "year": 2019,
+      "num_parts": 374,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41378-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "31088-1",
+      "name": "Deep Sea Creatures",
+      "year": 2019,
+      "num_parts": 230,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31088-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "21148-1",
+      "name": "Minecraft Steve BigFig with Parrot",
+      "year": 2019,
+      "num_parts": 159,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21148-1.jpg",
+      "theme_name": "Minecraft"
+    },
+    {
+      "set_num": "10907-1",
+      "name": "World Animals",
+      "year": 2019,
+      "num_parts": 121,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10907-1.jpg",
+      "theme_name": "Town"
+    },
+    {
+      "set_num": "75952-1",
+      "name": "Newt's Case of Magical Creatures",
+      "year": 2018,
+      "num_parts": 694,
+      "img_url": "https://cdn.rebrickable.com/media/sets/75952-1.jpg",
+      "theme_name": "Fantastic Beasts"
+    },
+    {
+      "set_num": "41192-1",
+      "name": "Azari & the Fire Lion Capture",
+      "year": 2018,
+      "num_parts": 360,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41192-1.jpg",
+      "theme_name": "Elves"
+    },
+    {
+      "set_num": "6244853-1",
+      "name": "Lion Dance",
+      "year": 2018,
+      "num_parts": 264,
+      "img_url": "https://cdn.rebrickable.com/media/sets/6244853-1.jpg",
+      "theme_name": "Chinese Traditional Festivals"
+    },
+    {
+      "set_num": "31073-1",
+      "name": "Mythical Creatures",
+      "year": 2018,
+      "num_parts": 223,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31073-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "70624-1",
+      "name": "Vermillion Invader",
+      "year": 2017,
+      "num_parts": 313,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70624-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "31058-1",
+      "name": "Mighty Dinosaurs",
+      "year": 2017,
+      "num_parts": 174,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31058-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "10739-1",
+      "name": "Shark Attack",
+      "year": 2017,
+      "num_parts": 108,
+      "img_url": "https://cdn.rebrickable.com/media/sets/10739-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "70621-1",
+      "name": "The Vermillion Attack",
+      "year": 2017,
+      "num_parts": 83,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70621-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "45802-1",
+      "name": "Animal Allies Challenge Kit",
+      "year": 2016,
+      "num_parts": 2167,
+      "img_url": "https://cdn.rebrickable.com/media/sets/45802-1.jpg",
+      "theme_name": "FIRST LEGO League"
+    },
+    {
+      "set_num": "70604-1",
+      "name": "Tiger Widow Island",
+      "year": 2016,
+      "num_parts": 450,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70604-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "75823-1",
+      "name": "Bird Island Egg Heist",
+      "year": 2016,
+      "num_parts": 281,
+      "img_url": "https://cdn.rebrickable.com/media/sets/75823-1.jpg",
+      "theme_name": "Angry Birds"
+    },
+    {
+      "set_num": "70601-1",
+      "name": "Sky Shark",
+      "year": 2016,
+      "num_parts": 222,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70601-1.jpg",
+      "theme_name": "Ninjago"
+    },
+    {
+      "set_num": "31044-1",
+      "name": "Park Animals",
+      "year": 2016,
+      "num_parts": 202,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31044-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "71302-1",
+      "name": "Akida Creature of Water",
+      "year": 2016,
+      "num_parts": 120,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71302-1.jpg",
+      "theme_name": "Bionicle"
+    },
+    {
+      "set_num": "71300-1",
+      "name": "Uxar Creature of Jungle",
+      "year": 2016,
+      "num_parts": 89,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71300-1.jpg",
+      "theme_name": "Bionicle"
+    },
+    {
+      "set_num": "2000716-1",
+      "name": "Animal Allies Replacement Pack",
+      "year": 2016,
+      "num_parts": 87,
+      "img_url": "https://cdn.rebrickable.com/media/sets/2000716-1.jpg",
+      "theme_name": "FIRST LEGO League"
+    },
+    {
+      "set_num": "45803-1",
+      "name": "Creature Craze Inspire Set",
+      "year": 2016,
+      "num_parts": 81,
+      "img_url": "https://cdn.rebrickable.com/media/sets/45803-1.jpg",
+      "theme_name": "FIRST LEGO League"
+    },
+    {
+      "set_num": "71301-1",
+      "name": "Ketar Creature of Stone",
+      "year": 2016,
+      "num_parts": 80,
+      "img_url": "https://cdn.rebrickable.com/media/sets/71301-1.jpg",
+      "theme_name": "Bionicle"
+    },
+    {
+      "set_num": "70224-1",
+      "name": "Tiger's Mobile Command",
+      "year": 2015,
+      "num_parts": 712,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70224-1.jpg",
+      "theme_name": "Legends of Chima"
+    },
+    {
+      "set_num": "21301-1",
+      "name": "Birds",
+      "year": 2015,
+      "num_parts": 580,
+      "img_url": "https://cdn.rebrickable.com/media/sets/21301-1.jpg",
+      "theme_name": "LEGO Ideas and CUUSOO"
+    },
+    {
+      "set_num": "31032-1",
+      "name": "Red Creatures",
+      "year": 2015,
+      "num_parts": 221,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31032-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31031-1",
+      "name": "Rainforest Animals",
+      "year": 2015,
+      "num_parts": 215,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31031-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "45012-1",
+      "name": "Wild Animals Set",
+      "year": 2015,
+      "num_parts": 104,
+      "img_url": "https://cdn.rebrickable.com/media/sets/45012-1.jpg",
+      "theme_name": "Duplo and Explore"
+    },
+    {
+      "set_num": "4002014-1",
+      "name": "LEGO HUB Birds",
+      "year": 2014,
+      "num_parts": 490,
+      "img_url": "https://cdn.rebrickable.com/media/sets/4002014-1.jpg",
+      "theme_name": "LEGO Exclusive"
+    },
+    {
+      "set_num": "70144-1",
+      "name": "Laval's Fire Lion",
+      "year": 2014,
+      "num_parts": 450,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70144-1.jpg",
+      "theme_name": "Legends of Chima"
+    },
+    {
+      "set_num": "31021-1",
+      "name": "Furry Creatures",
+      "year": 2014,
+      "num_parts": 285,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31021-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "31019-1",
+      "name": "Forest Animals",
+      "year": 2014,
+      "num_parts": 272,
+      "img_url": "https://cdn.rebrickable.com/media/sets/31019-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    },
+    {
+      "set_num": "COMCON034-1",
+      "name": "Rocket Raccoon's Warbird",
+      "year": 2014,
+      "num_parts": 145,
+      "img_url": "https://cdn.rebrickable.com/media/sets/comcon034-1.jpg",
+      "theme_name": "Guardians of the Galaxy"
+    },
+    {
+      "set_num": "70123-1",
+      "name": "Lion Legend Beast",
+      "year": 2014,
+      "num_parts": 121,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70123-1.jpg",
+      "theme_name": "Legends of Chima"
+    },
+    {
+      "set_num": "70010-1",
+      "name": "The Lion CHI Temple",
+      "year": 2013,
+      "num_parts": 1259,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70010-1.jpg",
+      "theme_name": "Legends of Chima"
+    },
+    {
+      "set_num": "41015-1",
+      "name": "Dolphin Cruiser",
+      "year": 2013,
+      "num_parts": 631,
+      "img_url": "https://cdn.rebrickable.com/media/sets/41015-1.jpg",
+      "theme_name": "Friends"
+    },
+    {
+      "set_num": "70002-1",
+      "name": "Lennox' Lion Attack",
+      "year": 2013,
+      "num_parts": 230,
+      "img_url": "https://cdn.rebrickable.com/media/sets/70002-1.jpg",
+      "theme_name": "Legends of Chima"
+    },
+    {
+      "set_num": "20204-1",
+      "name": "Level Two - Kit 5, Creature Designer",
+      "year": 2012,
+      "num_parts": 232,
+      "img_url": "https://cdn.rebrickable.com/media/sets/20204-1.jpg",
+      "theme_name": "Master Builder Academy"
+    },
+    {
+      "set_num": "4637-1",
+      "name": "Safari Building Set",
+      "year": 2012,
+      "num_parts": 152,
+      "img_url": "https://cdn.rebrickable.com/media/sets/4637-1.jpg",
+      "theme_name": "Bricks & More"
+    },
+    {
+      "set_num": "9218-1",
+      "name": "Wild Animals Set",
+      "year": 2012,
+      "num_parts": 98,
+      "img_url": "https://cdn.rebrickable.com/media/sets/9218-1.jpg",
+      "theme_name": "Duplo and Explore"
+    },
+    {
+      "set_num": "e1a1402-1",
+      "name": "MUJI Animal / Vehicle Set",
+      "year": 2011,
+      "num_parts": 196,
+      "img_url": "https://cdn.rebrickable.com/media/sets/e1a1402-1.jpg",
+      "theme_name": "Other"
+    },
+    {
+      "set_num": "9334-1",
+      "name": "Animals",
+      "year": 2010,
+      "num_parts": 1093,
+      "img_url": "https://cdn.rebrickable.com/media/sets/9334-1.jpg",
+      "theme_name": "Educational and Dacta"
+    },
+    {
+      "set_num": "5868-1",
+      "name": "Ferocious Creatures",
+      "year": 2010,
+      "num_parts": 416,
+      "img_url": "https://cdn.rebrickable.com/media/sets/5868-1.jpg",
+      "theme_name": "Creator 3-in-1"
+    }
+  ]
+}

@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LdrawNova Studio — Generador de Modelos LEGO 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --card-border: #30363d;
+      --lego-yellow: #f9d71c;
+      --lego-red: #d32f2f;
+      --lego-blue: #1976d2;
+      --lego-green: #2e7d32;
+      --accent: #58a6ff;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --success: #3fb950;
+      --warning: #d29922;
+      --danger: #f85149;
+      --code-bg: #090d12;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #11161d;
+      border-bottom: 2px solid var(--lego-yellow);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+
+    .brick-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--lego-yellow);
+      border-radius: 4px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 3px;
+      gap: 2px;
+    }
+    .brick-icon span {
+      background: #bfa000;
+      border-radius: 50%;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 2rem;
+      flex: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed var(--card-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(255,255,255,0.02);
+      position: relative;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--lego-yellow);
+      background: rgba(249, 215, 28, 0.05);
+    }
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .dropzone-preview {
+      max-height: 180px;
+      max-width: 100%;
+      border-radius: 6px;
+      display: none;
+      margin: 0 auto 0.5rem;
+      object-fit: cover;
+    }
+
+    textarea, input[type="text"], input[type="password"] {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+    textarea:focus, input:focus {
+      outline: none;
+      border-color: var(--lego-yellow);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: var(--lego-yellow);
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover:not(:disabled) {
+      background: #ffe342;
+      transform: translateY(-1px);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Stepper UI */
+    .stepper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.6rem 0.85rem;
+      background: #11161d;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .step-item.active {
+      border-color: var(--lego-yellow);
+      background: rgba(249, 215, 28, 0.08);
+      font-weight: 600;
+    }
+    .step-item.completed {
+      border-color: var(--success);
+      color: var(--text);
+    }
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #484f58;
+    }
+    .step-item.active .step-dot {
+      background: var(--lego-yellow);
+      box-shadow: 0 0 8px var(--lego-yellow);
+    }
+    .step-item.completed .step-dot {
+      background: var(--success);
+    }
+
+    /* Tabs & Content */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Side-by-Side Gallery */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .compare-box {
+      background: #0d1117;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .compare-box h4 {
+      padding: 0.6rem 0.85rem;
+      font-size: 0.82rem;
+      background: #161b22;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .compare-img-wrap {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      position: relative;
+    }
+    .compare-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .compare-placeholder {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Palette Badges */
+    .palette-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .color-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: #0d1117;
+      border: 1px solid var(--card-border);
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .chip-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Terminal Console */
+    .console {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      height: 380px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .console-line {
+      display: flex;
+      gap: 0.6rem;
+      line-height: 1.4;
+    }
+    .log-time { color: #58a6ff; flex-shrink: 0; }
+    .log-phase { color: var(--warning); flex-shrink: 0; }
+    .log-msg { color: #c9d1d9; }
+    .log-success { color: var(--success); }
+    .log-error { color: var(--danger); }
+
+    /* Downloads & Actions */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .download-card {
+      background: #0d1117;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .download-card strong { font-size: 0.9rem; }
+    .download-card p { font-size: 0.78rem; color: var(--text-muted); }
+    .download-link {
+      display: inline-block;
+      margin-top: auto;
+      text-align: center;
+      background: #21262d;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      transition: background 0.2s;
+    }
+    .download-link:hover {
+      background: #30363d;
+      color: #fff;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      background: #21262d;
+      border-radius: 6px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .progress-bar {
+      background: var(--lego-yellow);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brick-icon">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <span>LdrawNova Studio</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-muted);">
+      Inferencia Multimodal &bull; Gemini Argon &bull; LeoCAD CAD Pipeline
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- PANEL IZQUIERDO: Entrada & Configuración -->
+    <div class="card">
+      <h2>1. Entrada y Parámetros</h2>
+
+      <form id="gen-form">
+        <div class="form-group">
+          <label>Fotografía de Referencia</label>
+          <div class="dropzone" id="dropzone">
+            <img id="img-preview" class="dropzone-preview" alt="Preview">
+            <div id="drop-text">
+              <p style="font-weight: 600; margin-bottom: 0.25rem;">Arrastra una imagen o haz clic aquí</p>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">PNG, JPG, WEBP hasta 20 MB</p>
+            </div>
+            <input type="file" id="file-input" name="image" accept="image/*" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Prompt Inicial del Usuario</label>
+          <textarea id="prompt-input" name="prompt" placeholder="Ej.: Casa de campo mediterránea con piscina hundida, porche, palmera alta y buganvilla fucsia..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Diseño / Slug (Opcional)</label>
+          <input type="text" id="slug-input" name="slug" placeholder="Ej.: villa-mediterranea">
+        </div>
+
+        <div class="form-group">
+          <label>Estrategia de Desglose LDraw</label>
+          <select id="strategy-select" name="strategy" style="width: 100%; background: #0d1117; border: 1px solid var(--card-border); border-radius: 8px; color: var(--text); padding: 0.75rem 1rem; font-family: inherit; font-size: 0.95rem;">
+            <option value="auto">🪄 Auto-detección inteligente (Recomendado)</option>
+            <option value="bust">👤 Busto / Escultura / Retrato (SNOT, Facciones, Piel/Barba)</option>
+            <option value="arch">🏛️ Arquitectura / Diorama (Baseplate, Muros, Jardín/Piscina)</option>
+            <option value="vehicle">🏎️ Vehículo / Transporte (Chasis, Habitáculo, Carrocería)</option>
+            <option value="space">🚀 Nave Espacial / Sci-Fi (Espina, Alas, Propulsión)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Proveedor de LLM</label>
+          <select id="provider-select" name="provider" style="width:100%; padding:0.6rem; background:#0d1117; color:var(--text); border:1px solid var(--card-border); border-radius:6px;">
+            <option value="gemini">Google AI Studio (API Gemini)</option>
+            <option value="llmproxy">LLMproxy local (LiteLLM de esta máquina)</option>
+          </select>
+          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
+            Selecciona el motor de inferencia: la API de Google AI Studio o tu proxy local LiteLLM (modelos Plan/Act).
+          </small>
+        </div>
+
+        <!-- Campos para Google AI Studio -->
+        <div class="form-group provider-fields" id="fields-gemini">
+          <label>Google AI Studio API Key (Gemini 3.8 Flash Tier)</label>
+          <input type="password" id="api-key-input" name="api_key" placeholder="AQ.Ab8... (Google AI Studio Key)">
+          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
+            Si los créditos del proyecto se agotan, conmuta automáticamente al motor LDraw local.
+          </small>
+        </div>
+
+        <!-- Campos para LLMproxy local (LiteLLM) -->
+        <div class="form-group provider-fields" id="fields-llmproxy" style="display:none;">
+          <label>Base URL del LLMproxy (LiteLLM)</label>
+          <input type="text" id="llm-base-url-input" name="llm_base_url" placeholder="http://127.0.0.1:4000">
+          <label style="margin-top:0.6rem;">Secret / Master Key (opcional)</label>
+          <input type="password" id="llm-secret-input" name="llm_secret" placeholder="sk-... (LiteLLM master key)">
+          <label style="margin-top:0.6rem;">Modelo PLAN (razonamiento / brief)</label>
+          <input type="text" id="plan-model-input" name="plan_model" placeholder="qwen3-coder:30b">
+          <label style="margin-top:0.6rem;">Modelo ACT (generación de salida)</label>
+          <input type="text" id="act-model-input" name="act_model" placeholder="qwen2.5-coder:7b">
+          <small style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
+            Las llamadas van a <code>{Base URL}/v1/chat/completions</code> (compatible OpenAI). La fase de imagen usa el filtro procedural local porque LiteLLM no genera imágenes.
+          </small>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn">
+          <span>🚀 Arrancar Pipeline Ldraw-Nova</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- PANEL DERECHO: Visualización, Progreso e Iteraciones -->
+    <div class="card" style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>2. Ciclo de Inferencia & Renderizado CAD</h2>
+        <span id="status-badge" style="font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 12px; background: #21262d; color: var(--text-muted);">
+          ESPERANDO ENTRADA
+        </span>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div id="progress-fill" class="progress-bar"></div>
+      </div>
+
+      <!-- Stepper Phases -->
+      <div class="stepper" id="stepper">
+        <div class="step-item" id="step-1"><span class="step-dot"></span><span>Fase 1: Recepción & Carga de Imagen y Prompt</span></div>
+        <div class="step-item" id="step-2"><span class="step-dot"></span><span>Fase 2: Generación Legolizada (Gemini Argon / Imagen)</span></div>
+        <div class="step-item" id="step-3"><span class="step-dot"></span><span>Fase 3: Inferencia de Paleta de Colores y Piezas LDraw (.dat)</span></div>
+        <div class="step-item" id="step-4"><span class="step-dot"></span><span>Fase 4: Creación de Carpeta en /output y Prompt Interno</span></div>
+        <div class="step-item" id="step-5"><span class="step-dot"></span><span>Fase 5: Generación del Código Procedural (generate.py -> plan.json)</span></div>
+        <div class="step-item" id="step-6"><span class="step-dot"></span><span>Fase 6: Compilación del Modelo MPD (./ldraw-agent build)</span></div>
+        <div class="step-item" id="step-7"><span class="step-dot"></span><span>Fase 7: Renderizado 3D Headless con LeoCAD y Lista BOM</span></div>
+        <div class="step-item" id="step-8"><span class="step-dot"></span><span>Fase 8: Finalización y Entrega del Modelo</span></div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-compare')">🖼️ Comparación Visual</button>
+        <button class="tab-btn" onclick="switchTab('tab-parts')">🧩 Zonas & Piezas LDraw (.dat)</button>
+        <button class="tab-btn" onclick="switchTab('tab-prompt')">📝 Prompt Interno</button>
+        <button class="tab-btn" onclick="switchTab('tab-logs')">💻 Registro de Iteración</button>
+        <button class="tab-btn" onclick="switchTab('tab-downloads')">📦 Ficheros Entregados</button>
+      </div>
+
+      <!-- Panel de Validación y Modificación de Imagen Legolizada -->
+      <div id="validation-panel" style="display: none; background: #1a222d; border: 2px solid var(--lego-yellow); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem; box-shadow: 0 4px 20px rgba(249, 215, 28, 0.15);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+          <h3 style="font-size: 1rem; color: var(--lego-yellow); font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+            <span>⚠️ Validación Requerida: Imagen Legolizada</span>
+          </h3>
+          <span style="font-size: 0.75rem; background: rgba(249, 215, 28, 0.2); color: var(--lego-yellow); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">Paso previo al prompt interno</span>
+        </div>
+        <p style="font-size: 0.85rem; color: #c9d1d9; margin-bottom: 0.85rem; line-height: 1.4;">
+          Revisa la imagen original y la imagen legolizada en la pestaña de comparación. Si estás conforme con el aspecto y proporciones, haz clic en <strong>Validar y Continuar</strong>. Si deseas ajustes en colores, piezas o detalles, añade tus comentarios abajo y pulsa <strong>Modificar y Regenerar</strong>.
+        </p>
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Prompt de modificación / comentarios para la nueva imagen legolizada:</label>
+          <input type="text" id="val-feedback-input" placeholder="Ej.: Más barba canosa en los laterales, jersey de color rojo, añadir gafas de sol..." style="width: 100%; background: #0d1117; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.6rem 0.85rem; color: #fff; font-size: 0.88rem;">
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
+          <button type="button" id="btn-modify-legolized" class="btn" style="width: auto; background: #21262d; color: var(--text); border: 1px solid var(--card-border); padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+            🔄 Modificar y Crear Nueva Imagen Legolizada
+          </button>
+          <button type="button" id="btn-approve-legolized" class="btn" style="width: auto; background: var(--success); color: #fff; padding: 0.6rem 1.4rem; font-size: 0.9rem;">
+            ✅ Validar y Lanzar Proceso Completo
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: Comparación Visual -->
+      <div id="tab-compare" class="tab-pane active">
+        <div class="compare-grid">
+          <div class="compare-box">
+            <h4><span>ORIGINAL</span></h4>
+            <div class="compare-img-wrap">
+              <img id="view-original" src="" alt="Original" style="display:none;">
+              <span id="orig-placeholder" class="compare-placeholder">Sube una foto</span>
+            </div>
+          </div>
+          <div class="compare-box">
+            <h4><span>LEGOLIZADA (GEMINI ARGON)</span></h4>
+            <div class="compare-img-wrap">
+              <img id="view-legolized" src="" alt="Legolizada" style="display:none;">
+              <span id="lego-placeholder" class="compare-placeholder">En espera...</span>
+            </div>
+          </div>
+          <div class="compare-box">
+            <h4><span>RENDER CAD 3D (LEOCAD)</span></h4>
+            <div class="compare-img-wrap">
+              <img id="view-render" src="" alt="Render LeoCAD" style="display:none;">
+              <span id="render-placeholder" class="compare-placeholder">En espera de compilación...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Zonas & Piezas LDraw (.dat) -->
+      <div id="tab-parts" class="tab-pane">
+        <div style="background: #0d1117; border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; max-height: 480px; overflow-y: auto;">
+          <h4 style="color: var(--lego-yellow); margin-bottom: 0.75rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>1. Zonas & Submodelos Delimitados (.ldr)</span>
+          </h4>
+          <div id="zones-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Esperando arranque del pipeline para inferir zonas...</p>
+          </div>
+
+          <h4 style="color: #58a6ff; margin-bottom: 0.75rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>2. Tabla de Piezas LDraw por Submodelo (.dat)</span>
+          </h4>
+          <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--card-border); color: var(--text-muted); background: #161b22;">
+                  <th style="padding: 0.6rem;">Submodelo / Zona</th>
+                  <th style="padding: 0.6rem;">Función Geometría</th>
+                  <th style="padding: 0.6rem;">Pieza Oficial LEGO / LDraw</th>
+                  <th style="padding: 0.6rem;">LDraw ID (.dat)</th>
+                </tr>
+              </thead>
+              <tbody id="parts-table-body">
+                <tr><td colspan="4" style="padding: 1rem; color: var(--text-muted); text-align: center;">Sin piezas delimitadas aún</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 style="color: var(--success); margin-bottom: 0.75rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>3. Paleta Oficial de Colores LDraw (LDConfig.ldr)</span>
+          </h4>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--card-border); color: var(--text-muted); background: #161b22;">
+                  <th style="padding: 0.6rem;">Zona del Modelo</th>
+                  <th style="padding: 0.6rem;">Nombre Oficial LDraw</th>
+                  <th style="padding: 0.6rem;">Código</th>
+                  <th style="padding: 0.6rem;">Uso específico en el script Python (generate.py)</th>
+                </tr>
+              </thead>
+              <tbody id="colors-table-body">
+                <tr><td colspan="4" style="padding: 1rem; color: var(--text-muted); text-align: center;">Sin colores inferidos aún</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Prompt Interno & Paleta -->
+      <div id="tab-prompt" class="tab-pane">
+        <div style="background: #0d1117; border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem; max-height: 480px; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4 style="color: #fff; font-size: 0.95rem;">Prompt Interno Generado (Markdown Estricto)</h4>
+            <button type="button" id="btn-copy-prompt" class="tab-btn" style="background: #21262d; border: 1px solid var(--card-border); font-size: 0.75rem; padding: 0.3rem 0.6rem; color: #fff;">
+              📋 Copiar Prompt
+            </button>
+          </div>
+          <div id="palette-container" class="palette-strip" style="margin-bottom: 1rem;">
+            <span style="color: var(--text-muted); font-size: 0.8rem;">Sin paleta inferida aún.</span>
+          </div>
+          <pre id="brief-view" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #8b949e; white-space: pre-wrap; word-break: break-all; background: #06090d; padding: 1rem; border-radius: 6px; border: 1px solid var(--card-border);">Esperando arranque del loop...</pre>
+        </div>
+      </div>
+
+      <!-- Tab 3: Registro en Vivo -->
+      <div id="tab-logs" class="tab-pane">
+        <div class="console" id="console-logs">
+          <div class="console-line">
+            <span class="log-time">[00:00:00]</span>
+            <span class="log-msg">Sistema LdrawNova iniciado. Esperando envío de solicitud...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Ficheros Entregados -->
+      <div id="tab-downloads" class="tab-pane">
+        <div class="download-grid" id="download-container">
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Los enlaces de descarga aparecerán al completarse el modelo.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Image preview
+    const fileInput = document.getElementById('file-input');
+    const imgPreview = document.getElementById('img-preview');
+    const dropText = document.getElementById('drop-text');
+    const dropzone = document.getElementById('dropzone');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imgPreview.src = e.target.result;
+          imgPreview.style.display = 'block';
+          dropText.style.display = 'none';
+          document.getElementById('view-original').src = e.target.result;
+          document.getElementById('view-original').style.display = 'block';
+          document.getElementById('orig-placeholder').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // --- LLM provider selection & persisted settings ---
+    const providerSelect = document.getElementById('provider-select');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const llmBaseUrlInput = document.getElementById('llm-base-url-input');
+    const llmSecretInput = document.getElementById('llm-secret-input');
+    const planModelInput = document.getElementById('plan-model-input');
+    const actModelInput = document.getElementById('act-model-input');
+
+    // Defaults mirror the models configured in Cline on this machine.
+    const LLM_DEFAULTS = {
+      base_url: 'http://127.0.0.1:4000',
+      plan_model: 'qwen3-coder:30b',
+      act_model: 'qwen2.5-coder:7b'
+    };
+
+    // Restore persisted values (no secrets are hardcoded in the page)
+    providerSelect.value = localStorage.getItem('llm_provider') || 'gemini';
+    apiKeyInput.value = localStorage.getItem('gemini_api_key') || '';
+    llmBaseUrlInput.value = localStorage.getItem('llm_base_url') || LLM_DEFAULTS.base_url;
+    llmSecretInput.value = localStorage.getItem('llm_secret') || '';
+    planModelInput.value = localStorage.getItem('llm_plan_model') || LLM_DEFAULTS.plan_model;
+    actModelInput.value = localStorage.getItem('llm_act_model') || LLM_DEFAULTS.act_model;
+
+    function updateProviderVisibility() {
+      const isProxy = providerSelect.value === 'llmproxy';
+      document.getElementById('fields-gemini').style.display = isProxy ? 'none' : 'block';
+      document.getElementById('fields-llmproxy').style.display = isProxy ? 'block' : 'none';
+      localStorage.setItem('llm_provider', providerSelect.value);
+    }
+    providerSelect.addEventListener('change', updateProviderVisibility);
+    updateProviderVisibility();
+
+    apiKeyInput.addEventListener('change', () => localStorage.setItem('gemini_api_key', apiKeyInput.value.trim()));
+    llmBaseUrlInput.addEventListener('change', () => localStorage.setItem('llm_base_url', llmBaseUrlInput.value.trim()));
+    llmSecretInput.addEventListener('change', () => localStorage.setItem('llm_secret', llmSecretInput.value.trim()));
+    planModelInput.addEventListener('change', () => localStorage.setItem('llm_plan_model', planModelInput.value.trim()));
+    actModelInput.addEventListener('change', () => localStorage.setItem('llm_act_model', actModelInput.value.trim()));
+
+    // Form submission & SSE Streaming
+    const form = document.getElementById('gen-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const consoleLogs = document.getElementById('console-logs');
+    const progressFill = document.getElementById('progress-fill');
+    const statusBadge = document.getElementById('status-badge');
+
+    const validationPanel = document.getElementById('validation-panel');
+    const valFeedbackInput = document.getElementById('val-feedback-input');
+    const btnApproveLegolized = document.getElementById('btn-approve-legolized');
+    const btnModifyLegolized = document.getElementById('btn-modify-legolized');
+
+    let currentJobId = null;
+
+    btnApproveLegolized.addEventListener('click', async () => {
+      if (!currentJobId) return;
+      btnApproveLegolized.disabled = true;
+      btnModifyLegolized.disabled = true;
+      try {
+        const formData = new FormData();
+        formData.append('action', 'approve');
+        const res = await fetch(`/api/validate/${currentJobId}`, {
+          method: 'POST',
+          body: formData
+        });
+        if (!res.ok) throw new Error('Error al validar imagen');
+        validationPanel.style.display = 'none';
+        statusBadge.textContent = "VALIDADO - CONTINUANDO...";
+        statusBadge.style.background = "#2ea043";
+        statusBadge.style.color = "#fff";
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btnApproveLegolized.disabled = false;
+        btnModifyLegolized.disabled = false;
+      }
+    });
+
+    valFeedbackInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        btnModifyLegolized.click();
+      }
+    });
+      if (!currentJobId) return;
+      const feedback = valFeedbackInput.value.trim();
+      if (!feedback) {
+        alert('Por favor introduce algún comentario o modificación antes de regenerar.');
+        return;
+      }
+      btnApproveLegolized.disabled = true;
+      btnModifyLegolized.disabled = true;
+      try {
+        const formData = new FormData();
+        formData.append('action', 'modify');
+        formData.append('feedback', feedback);
+        const res = await fetch(`/api/validate/${currentJobId}`, {
+          method: 'POST',
+          body: formData
+        });
+        if (!res.ok) throw new Error('Error al enviar modificaciones');
+        valFeedbackInput.value = '';
+        validationPanel.style.display = 'none';
+        statusBadge.textContent = "REGENERANDO LEGOLIZADA...";
+        statusBadge.style.background = "#d29922";
+        statusBadge.style.color = "#000";
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btnApproveLegolized.disabled = false;
+        btnModifyLegolized.disabled = false;
+      }
+    });
+
+    function logToConsole(time, phase, msg, level) {
+      const line = document.createElement('div');
+      line.className = 'console-line';
+      const cssClass = level === 'success' ? 'log-success' : (level === 'error' ? 'log-error' : 'log-msg');
+      line.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-phase">${phase}:</span> <span class="${cssClass}">${msg}</span>`;
+      consoleLogs.appendChild(line);
+      consoleLogs.scrollTop = consoleLogs.scrollHeight;
+    }
+
+    function setPhaseActive(phaseNum) {
+      for (let i = 1; i <= 8; i++) {
+        const item = document.getElementById(`step-${i}`);
+        if (i < phaseNum) {
+          item.className = 'step-item completed';
+        } else if (i === phaseNum) {
+          item.className = 'step-item active';
+        } else {
+          item.className = 'step-item';
+        }
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Por favor selecciona una imagen.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      statusBadge.textContent = "EJECUTANDO PIPELINE...";
+      statusBadge.style.background = "#d29922";
+      statusBadge.style.color = "#000";
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || 'Fallo al iniciar el pipeline');
+        }
+
+        const data = await res.json();
+        const jobId = data.job_id;
+        currentJobId = jobId;
+
+        // Connect SSE Stream
+        const evtSource = new EventSource(`/api/stream/${jobId}`);
+
+        evtSource.onmessage = (event) => {
+          if (!event.data || event.data.startsWith(':')) return;
+          const payload = JSON.parse(event.data);
+
+          logToConsole(payload.timestamp, payload.phase, payload.message, payload.level);
+          progressFill.style.width = `${payload.progress}%`;
+
+          // Match phase to stepper
+          if (payload.phase.includes('Fase 1')) {
+            setPhaseActive(1);
+            validationPanel.style.display = 'none';
+          }
+          if (payload.phase.includes('Fase 2')) {
+            setPhaseActive(2);
+            if (payload.data && payload.data.legolized_image) {
+              const legView = document.getElementById('view-legolized');
+              legView.src = payload.data.legolized_image + '?t=' + Date.now();
+              legView.style.display = 'block';
+              document.getElementById('lego-placeholder').style.display = 'none';
+              // Activar automáticamente la pestaña de comparación visual
+              switchTab('tab-compare');
+            }
+            if (payload.data && payload.data.waiting_validation) {
+              validationPanel.style.display = 'block';
+              statusBadge.textContent = "VALIDACIÓN REQUERIDA";
+              statusBadge.style.background = "#d29922";
+              statusBadge.style.color = "#000";
+            } else if (payload.phase.includes('Validación Aceptada')) {
+              validationPanel.style.display = 'none';
+            }
+          }
+          if (payload.phase.includes('Fase 3') || payload.phase.includes('Fase 4') || payload.progress >= 50) {
+            validationPanel.style.display = 'none';
+            if (payload.phase.includes('Fase 3')) setPhaseActive(3);
+
+            if (payload.data && payload.data.colors) {
+              const palBox = document.getElementById('palette-container');
+              palBox.innerHTML = '';
+              payload.data.colors.forEach(c => {
+                const span = document.createElement('span');
+                span.className = 'color-chip';
+                span.innerHTML = `<span class="chip-swatch" style="background:${c.hex}"></span>${c.name} (${c.code})`;
+                palBox.appendChild(span);
+              });
+            }
+
+            // Populate Submodel Zones Grid
+            if (payload.data && payload.data.submodels && payload.data.submodels.length > 0) {
+              const grid = document.getElementById('zones-grid');
+              grid.innerHTML = '';
+              payload.data.submodels.forEach((sm, i) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'background:#161b22; border:1px solid var(--card-border); border-radius:6px; padding:0.75rem;';
+                card.innerHTML = `
+                  <div style="font-weight:700; color:var(--lego-yellow); font-size:0.85rem; margin-bottom:0.25rem;">Zona ${i+1}: <code>${sm.filename}</code></div>
+                  <p style="font-size:0.78rem; color:#8b949e; line-height:1.3;">${sm.desc}</p>
+                `;
+                grid.appendChild(card);
+              });
+            }
+
+            // Populate Parts Table
+            if (payload.data && payload.data.parts_breakdown && payload.data.parts_breakdown.length > 0) {
+              const tbody = document.getElementById('parts-table-body');
+              tbody.innerHTML = '';
+              payload.data.parts_breakdown.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid var(--card-border)';
+                tr.innerHTML = `
+                  <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${p.zone}</td>
+                  <td style="padding:0.6rem;"><span style="background:rgba(88,166,255,0.12); color:#58a6ff; padding:2px 6px; border-radius:4px; font-size:0.75rem; font-weight:600;">${p.function}</span></td>
+                  <td style="padding:0.6rem; color:#c9d1d9;">${p.official_name}</td>
+                  <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:var(--lego-yellow); font-weight:600;">${p.ref}</td>
+                `;
+                tbody.appendChild(tr);
+              });
+            }
+
+            // Populate Color Assignments Table
+            if (payload.data && payload.data.color_assignments && payload.data.color_assignments.length > 0) {
+              const tbody = document.getElementById('colors-table-body');
+              tbody.innerHTML = '';
+              payload.data.color_assignments.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid var(--card-border)';
+                tr.innerHTML = `
+                  <td style="padding:0.6rem; font-weight:600; color:#e6edf3;">${c.zone}</td>
+                  <td style="padding:0.6rem; color:#c9d1d9;">${c.name}</td>
+                  <td style="padding:0.6rem; font-family:'JetBrains Mono',monospace; color:#3fb950; font-weight:700;">${c.code}</td>
+                  <td style="padding:0.6rem; font-size:0.8rem; color:#8b949e; line-height:1.3;">${c.use}</td>
+                `;
+                tbody.appendChild(tr);
+              });
+            }
+
+            // Populate Markdown Prompt
+            if (payload.data && payload.data.internal_prompt_md) {
+              document.getElementById('brief-view').textContent = payload.data.internal_prompt_md;
+            }
+          }
+          if (payload.phase.includes('Fase 4')) setPhaseActive(4);
+          if (payload.phase.includes('Fase 5')) setPhaseActive(5);
+          if (payload.phase.includes('Fase 6')) {
+            setPhaseActive(6);
+            if (payload.data && payload.data.renders && payload.data.renders.length > 0) {
+              const renView = document.getElementById('view-render');
+              renView.src = payload.data.renders[0] + '?t=' + Date.now();
+              renView.style.display = 'block';
+              document.getElementById('render-placeholder').style.display = 'none';
+            }
+          }
+          if (payload.phase.includes('Fase 7')) setPhaseActive(7);
+          if (payload.phase.includes('Fase 8') || payload.progress === 100) {
+            setPhaseActive(8);
+            statusBadge.textContent = "COMPLETADO";
+            statusBadge.style.background = "#238636";
+            statusBadge.style.color = "#fff";
+            submitBtn.disabled = false;
+            evtSource.close();
+
+            // Populate Downloads
+            const dData = payload.data;
+            if (dData) {
+              const dlContainer = document.getElementById('download-container');
+              dlContainer.innerHTML = `
+                <div class="download-card">
+                  <strong>Modelo Ensamblado (.mpd)</strong>
+                  <p>Código fuente 3D LDraw completo con submodelos.</p>
+                  <a href="${dData.mpd}" download class="download-link">⬇ Descargar MPD</a>
+                </div>
+                <div class="download-card">
+                  <strong>Plan Generativo (.json)</strong>
+                  <p>Especificación reproducible de geometrías y pasos.</p>
+                  <a href="${dData.plan}" download class="download-link">⬇ Descargar Plan</a>
+                </div>
+                <div class="download-card">
+                  <strong>Script Generador (generate.py)</strong>
+                  <p>Código en Python que compila el modelo.</p>
+                  <a href="${dData.generator}" download class="download-link">⬇ Descargar Python</a>
+                </div>
+                <div class="download-card">
+                  <strong>Lista de Materiales (BOM)</strong>
+                  <p>Inventario de piezas oficiales LeoCAD en CSV.</p>
+                  <a href="${dData.bom}" download class="download-link">⬇ Descargar BOM CSV</a>
+                </div>
+              `;
+            }
+          }
+        };
+
+        evtSource.onerror = () => {
+          evtSource.close();
+          submitBtn.disabled = false;
+        };
+
+      } catch (err) {
+        logToConsole(new Date().toLocaleTimeString(), "Error", err.message, "error");
+        statusBadge.textContent = "ERROR";
+        statusBadge.style.background = "#da3633";
+        submitBtn.disabled = false;
+      }
+    });
+
+    const copyBtn = document.getElementById('btn-copy-prompt');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const text = document.getElementById('brief-view').textContent;
+        navigator.clipboard.writeText(text);
+        copyBtn.textContent = '✅ ¡Copiado!';
+        setTimeout(() => { copyBtn.textContent = '📋 Copiar Prompt'; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

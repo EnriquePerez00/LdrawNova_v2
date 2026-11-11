@@ -1,0 +1,26 @@
+import json, subprocess
+
+plan = {
+  "version": 1,
+  "author": "Antigravity",
+  "sections": [
+    {
+      "name": "pillar.ldr",
+      "description": "Pillar test",
+      "steps": [
+        [
+          {"id": "b0", "ref": "3003.dat", "colour": 0, "at": [0, 0, 0]},
+          {"id": "p0", "ref": "3022.dat", "colour": 0, "at": [0, -24, 0]},
+          {"id": "b1", "ref": "3003.dat", "colour": 0, "at": [0, -32, 0]},
+          {"id": "p1", "ref": "3022.dat", "colour": 0, "at": [0, -56, 0]},
+          {"id": "b2", "ref": "3003.dat", "colour": 0, "at": [0, -64, 0]},
+          {"id": "p2", "ref": "3022.dat", "colour": 0, "at": [0, -88, 0]},
+          {"id": "f0", "ref": "3045.dat", "colour": 0, "at": [0, -96, 0]}
+        ]
+      ]
+    }
+  ]
+}
+with open("test_pillar.plan.json", "w") as f:
+    json.dump(plan, f, indent=2)
+

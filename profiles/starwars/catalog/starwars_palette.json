@@ -1,0 +1,761 @@
+{
+  "name": "starwars_official_color_palette",
+  "source_dataset": "Brickclinic Supabase DB (Star Wars Sets >= 2004)",
+  "total_colors_detected": 79,
+  "core_factions": {
+    "imperial_navy": {
+      "name": "Galactic Empire / First Order (TIE Fighters, Star Destroyers, Shuttles)",
+      "primary_hull": {
+        "code": 71,
+        "name": "Light Bluish Gray",
+        "hex": "#A0A5A9",
+        "ratio": 0.65
+      },
+      "solar_framework": {
+        "code": 0,
+        "name": "Black",
+        "hex": "#05131D",
+        "ratio": 0.2
+      },
+      "recessed_shadow_depth": {
+        "code": 72,
+        "name": "Dark Bluish Gray",
+        "hex": "#6C6E68",
+        "ratio": 0.1
+      },
+      "thruster_exhaust": {
+        "code": 36,
+        "name": "Trans-Red",
+        "hex": "#C91A09",
+        "ratio": 0.03
+      },
+      "ion_glow": {
+        "code": 41,
+        "name": "Trans-Light Blue",
+        "hex": "#AEEFEC",
+        "ratio": 0.02
+      }
+    },
+    "rebel_alliance": {
+      "name": "Rebel Alliance / New Republic (X-Wing, Y-Wing, A-Wing, Millennium Falcon)",
+      "primary_hull": {
+        "code": 71,
+        "name": "Light Bluish Gray",
+        "hex": "#A0A5A9",
+        "ratio": 0.55
+      },
+      "weathered_alt_hull": {
+        "code": 15,
+        "name": "White",
+        "hex": "#FFFFFF",
+        "ratio": 0.15
+      },
+      "exposed_machinery_trenches": {
+        "code": 72,
+        "name": "Dark Bluish Gray",
+        "hex": "#6C6E68",
+        "ratio": 0.15
+      },
+      "squadron_accents": [
+        {
+          "name": "Red Squadron",
+          "code": 320,
+          "color": "Dark Red",
+          "hex": "#720E0F"
+        },
+        {
+          "name": "Red Alternative",
+          "code": 4,
+          "color": "Red",
+          "hex": "#C91A09"
+        },
+        {
+          "name": "Gold Squadron",
+          "code": 14,
+          "color": "Yellow",
+          "hex": "#F2CD37"
+        },
+        {
+          "name": "Blue Squadron",
+          "code": 272,
+          "color": "Dark Blue",
+          "hex": "#0A3463"
+        },
+        {
+          "name": "Phoenix Squadron",
+          "code": 25,
+          "color": "Orange",
+          "hex": "#FE8A18"
+        }
+      ],
+      "thruster_glow": {
+        "code": 182,
+        "name": "Trans-Orange / Neon Orange",
+        "hex": "#F08F1C",
+        "ratio": 0.03
+      }
+    },
+    "scum_and_villainy": {
+      "name": "Bounty Hunters / Mandalorians / Hutt Cartels (Slave I, Razor Crest)",
+      "primary_hull": {
+        "code": 378,
+        "name": "Sand Green",
+        "hex": "#A0BCAC"
+      },
+      "secondary_skirt": {
+        "code": 320,
+        "name": "Dark Red",
+        "hex": "#720E0F"
+      },
+      "desert_accents": {
+        "code": 19,
+        "name": "Tan",
+        "hex": "#E4CD9E"
+      },
+      "sand_accents": {
+        "code": 28,
+        "name": "Dark Tan",
+        "hex": "#958A73"
+      },
+      "metallic_plates": {
+        "code": 179,
+        "name": "Flat Silver",
+        "hex": "#898788"
+      }
+    }
+  },
+  "all_colors_summary": [
+    {
+      "rebrickable_id": 71,
+      "color_name": "Light Bluish Gray",
+      "hex": "A0A5A9",
+      "is_trans": false,
+      "distinct_parts": 1090,
+      "total_quantity": 104239
+    },
+    {
+      "rebrickable_id": 72,
+      "color_name": "Dark Bluish Gray",
+      "hex": "6C6E68",
+      "is_trans": false,
+      "distinct_parts": 858,
+      "total_quantity": 72135
+    },
+    {
+      "rebrickable_id": 0,
+      "color_name": "Black",
+      "hex": "05131D",
+      "is_trans": false,
+      "distinct_parts": 1161,
+      "total_quantity": 66984
+    },
+    {
+      "rebrickable_id": 15,
+      "color_name": "White",
+      "hex": "FFFFFF",
+      "is_trans": false,
+      "distinct_parts": 870,
+      "total_quantity": 35000
+    },
+    {
+      "rebrickable_id": 19,
+      "color_name": "Tan",
+      "hex": "E4CD9E",
+      "is_trans": false,
+      "distinct_parts": 430,
+      "total_quantity": 15945
+    },
+    {
+      "rebrickable_id": 70,
+      "color_name": "Reddish Brown",
+      "hex": "582A12",
+      "is_trans": false,
+      "distinct_parts": 479,
+      "total_quantity": 14606
+    },
+    {
+      "rebrickable_id": 1,
+      "color_name": "Blue",
+      "hex": "0055BF",
+      "is_trans": false,
+      "distinct_parts": 262,
+      "total_quantity": 11711
+    },
+    {
+      "rebrickable_id": 4,
+      "color_name": "Red",
+      "hex": "C91A09",
+      "is_trans": false,
+      "distinct_parts": 406,
+      "total_quantity": 9431
+    },
+    {
+      "rebrickable_id": 28,
+      "color_name": "Dark Tan",
+      "hex": "958A73",
+      "is_trans": false,
+      "distinct_parts": 234,
+      "total_quantity": 8338
+    },
+    {
+      "rebrickable_id": 320,
+      "color_name": "Dark Red",
+      "hex": "720E0F",
+      "is_trans": false,
+      "distinct_parts": 290,
+      "total_quantity": 8055
+    },
+    {
+      "rebrickable_id": 14,
+      "color_name": "Yellow",
+      "hex": "F2CD37",
+      "is_trans": false,
+      "distinct_parts": 292,
+      "total_quantity": 5912
+    },
+    {
+      "rebrickable_id": 272,
+      "color_name": "Dark Blue",
+      "hex": "0A3463",
+      "is_trans": false,
+      "distinct_parts": 193,
+      "total_quantity": 3530
+    },
+    {
+      "rebrickable_id": 36,
+      "color_name": "Trans-Red",
+      "hex": "C91A09",
+      "is_trans": true,
+      "distinct_parts": 45,
+      "total_quantity": 3008
+    },
+    {
+      "rebrickable_id": 25,
+      "color_name": "Orange",
+      "hex": "FE8A18",
+      "is_trans": false,
+      "distinct_parts": 136,
+      "total_quantity": 2607
+    },
+    {
+      "rebrickable_id": 179,
+      "color_name": "Flat Silver",
+      "hex": "898788",
+      "is_trans": false,
+      "distinct_parts": 109,
+      "total_quantity": 2304
+    },
+    {
+      "rebrickable_id": 47,
+      "color_name": "Trans-Clear",
+      "hex": "FCFCFC",
+      "is_trans": true,
+      "distinct_parts": 137,
+      "total_quantity": 1844
+    },
+    {
+      "rebrickable_id": 41,
+      "color_name": "Trans-Light Blue",
+      "hex": "AEEFEC",
+      "is_trans": true,
+      "distinct_parts": 64,
+      "total_quantity": 1841
+    },
+    {
+      "rebrickable_id": 308,
+      "color_name": "Dark Brown",
+      "hex": "352100",
+      "is_trans": false,
+      "distinct_parts": 95,
+      "total_quantity": 1746
+    },
+    {
+      "rebrickable_id": 378,
+      "color_name": "Sand Green",
+      "hex": "A0BCAC",
+      "is_trans": false,
+      "distinct_parts": 131,
+      "total_quantity": 1631
+    },
+    {
+      "rebrickable_id": 2,
+      "color_name": "Green",
+      "hex": "237841",
+      "is_trans": false,
+      "distinct_parts": 120,
+      "total_quantity": 1495
+    },
+    {
+      "rebrickable_id": 484,
+      "color_name": "Dark Orange",
+      "hex": "A95500",
+      "is_trans": false,
+      "distinct_parts": 102,
+      "total_quantity": 1211
+    },
+    {
+      "rebrickable_id": 288,
+      "color_name": "Dark Green",
+      "hex": "184632",
+      "is_trans": false,
+      "distinct_parts": 118,
+      "total_quantity": 1201
+    },
+    {
+      "rebrickable_id": 40,
+      "color_name": "Trans-Brown",
+      "hex": "635F52",
+      "is_trans": true,
+      "distinct_parts": 101,
+      "total_quantity": 963
+    },
+    {
+      "rebrickable_id": 379,
+      "color_name": "Sand Blue",
+      "hex": "6074A1",
+      "is_trans": false,
+      "distinct_parts": 81,
+      "total_quantity": 950
+    },
+    {
+      "rebrickable_id": 182,
+      "color_name": "Trans-Orange",
+      "hex": "F08F1C",
+      "is_trans": true,
+      "distinct_parts": 29,
+      "total_quantity": 922
+    },
+    {
+      "rebrickable_id": 297,
+      "color_name": "Pearl Gold",
+      "hex": "AA7F2E",
+      "is_trans": false,
+      "distinct_parts": 104,
+      "total_quantity": 847
+    },
+    {
+      "rebrickable_id": 27,
+      "color_name": "Lime",
+      "hex": "BBE90B",
+      "is_trans": false,
+      "distinct_parts": 97,
+      "total_quantity": 763
+    },
+    {
+      "rebrickable_id": 33,
+      "color_name": "Trans-Dark Blue",
+      "hex": "0020A0",
+      "is_trans": true,
+      "distinct_parts": 17,
+      "total_quantity": 640
+    },
+    {
+      "rebrickable_id": 84,
+      "color_name": "Medium Nougat",
+      "hex": "AA7D55",
+      "is_trans": false,
+      "distinct_parts": 108,
+      "total_quantity": 625
+    },
+    {
+      "rebrickable_id": 46,
+      "color_name": "Trans-Yellow",
+      "hex": "F5CD2F",
+      "is_trans": true,
+      "distinct_parts": 17,
+      "total_quantity": 550
+    },
+    {
+      "rebrickable_id": 1103,
+      "color_name": "Pearl Titanium",
+      "hex": "3E3C39",
+      "is_trans": false,
+      "distinct_parts": 59,
+      "total_quantity": 549
+    },
+    {
+      "rebrickable_id": 80,
+      "color_name": "Metallic Silver",
+      "hex": "A5A9B4",
+      "is_trans": false,
+      "distinct_parts": 23,
+      "total_quantity": 545
+    },
+    {
+      "rebrickable_id": 7,
+      "color_name": "Light Gray",
+      "hex": "9BA19D",
+      "is_trans": false,
+      "distinct_parts": 89,
+      "total_quantity": 526
+    },
+    {
+      "rebrickable_id": 42,
+      "color_name": "Trans-Neon Green",
+      "hex": "F8F184",
+      "is_trans": true,
+      "distinct_parts": 19,
+      "total_quantity": 509
+    },
+    {
+      "rebrickable_id": 35,
+      "color_name": "Trans-Bright Green",
+      "hex": "D9E4A7",
+      "is_trans": true,
+      "distinct_parts": 13,
+      "total_quantity": 495
+    },
+    {
+      "rebrickable_id": 57,
+      "color_name": "Trans-Neon Orange",
+      "hex": "FF800D",
+      "is_trans": true,
+      "distinct_parts": 19,
+      "total_quantity": 457
+    },
+    {
+      "rebrickable_id": 8,
+      "color_name": "Dark Gray",
+      "hex": "6D6E5C",
+      "is_trans": false,
+      "distinct_parts": 73,
+      "total_quantity": 456
+    },
+    {
+      "rebrickable_id": 34,
+      "color_name": "Trans-Green",
+      "hex": "84B68D",
+      "is_trans": true,
+      "distinct_parts": 12,
+      "total_quantity": 423
+    },
+    {
+      "rebrickable_id": 191,
+      "color_name": "Bright Light Orange",
+      "hex": "F8BB3D",
+      "is_trans": false,
+      "distinct_parts": 61,
+      "total_quantity": 353
+    },
+    {
+      "rebrickable_id": 9999,
+      "color_name": "[No Color/Any Color]",
+      "hex": "05131D",
+      "is_trans": false,
+      "distinct_parts": 312,
+      "total_quantity": 347
+    },
+    {
+      "rebrickable_id": 92,
+      "color_name": "Nougat",
+      "hex": "D09168",
+      "is_trans": false,
+      "distinct_parts": 21,
+      "total_quantity": 343
+    },
+    {
+      "rebrickable_id": 322,
+      "color_name": "Medium Azure",
+      "hex": "36AEBF",
+      "is_trans": false,
+      "distinct_parts": 46,
+      "total_quantity": 286
+    },
+    {
+      "rebrickable_id": 326,
+      "color_name": "Olive Green",
+      "hex": "9B9A5A",
+      "is_trans": false,
+      "distinct_parts": 42,
+      "total_quantity": 285
+    },
+    {
+      "rebrickable_id": 3,
+      "color_name": "Dark Turquoise",
+      "hex": "008F9B",
+      "is_trans": false,
+      "distinct_parts": 20,
+      "total_quantity": 164
+    },
+    {
+      "rebrickable_id": 45,
+      "color_name": "Trans-Dark Pink",
+      "hex": "DF6695",
+      "is_trans": true,
+      "distinct_parts": 12,
+      "total_quantity": 143
+    },
+    {
+      "rebrickable_id": 321,
+      "color_name": "Dark Azure",
+      "hex": "078BC9",
+      "is_trans": false,
+      "distinct_parts": 27,
+      "total_quantity": 122
+    },
+    {
+      "rebrickable_id": 10,
+      "color_name": "Bright Green",
+      "hex": "4B9F4A",
+      "is_trans": false,
+      "distinct_parts": 26,
+      "total_quantity": 116
+    },
+    {
+      "rebrickable_id": 5,
+      "color_name": "Dark Pink",
+      "hex": "C870A0",
+      "is_trans": false,
+      "distinct_parts": 20,
+      "total_quantity": 113
+    },
+    {
+      "rebrickable_id": 6,
+      "color_name": "Brown",
+      "hex": "583927",
+      "is_trans": false,
+      "distinct_parts": 23,
+      "total_quantity": 93
+    },
+    {
+      "rebrickable_id": 29,
+      "color_name": "Bright Pink",
+      "hex": "E4ADC8",
+      "is_trans": false,
+      "distinct_parts": 16,
+      "total_quantity": 84
+    },
+    {
+      "rebrickable_id": 135,
+      "color_name": "Pearl Light Gray",
+      "hex": "9CA3A8",
+      "is_trans": false,
+      "distinct_parts": 14,
+      "total_quantity": 62
+    },
+    {
+      "rebrickable_id": 26,
+      "color_name": "Magenta",
+      "hex": "923978",
+      "is_trans": false,
+      "distinct_parts": 14,
+      "total_quantity": 61
+    },
+    {
+      "rebrickable_id": 73,
+      "color_name": "Medium Blue",
+      "hex": "5A93DB",
+      "is_trans": false,
+      "distinct_parts": 24,
+      "total_quantity": 55
+    },
+    {
+      "rebrickable_id": 226,
+      "color_name": "Bright Light Yellow",
+      "hex": "FFF03A",
+      "is_trans": false,
+      "distinct_parts": 11,
+      "total_quantity": 46
+    },
+    {
+      "rebrickable_id": 52,
+      "color_name": "Trans-Purple",
+      "hex": "A5A5CB",
+      "is_trans": true,
+      "distinct_parts": 6,
+      "total_quantity": 42
+    },
+    {
+      "rebrickable_id": 143,
+      "color_name": "Trans-Medium Blue",
+      "hex": "CFE2F7",
+      "is_trans": true,
+      "distinct_parts": 7,
+      "total_quantity": 37
+    },
+    {
+      "rebrickable_id": 383,
+      "color_name": "Chrome Silver",
+      "hex": "E0E0E0",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 36
+    },
+    {
+      "rebrickable_id": 78,
+      "color_name": "Light Nougat",
+      "hex": "F6D7B3",
+      "is_trans": false,
+      "distinct_parts": 15,
+      "total_quantity": 34
+    },
+    {
+      "rebrickable_id": 148,
+      "color_name": "Pearl Dark Gray",
+      "hex": "575857",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 34
+    },
+    {
+      "rebrickable_id": 85,
+      "color_name": "Dark Purple",
+      "hex": "3F3691",
+      "is_trans": false,
+      "distinct_parts": 12,
+      "total_quantity": 28
+    },
+    {
+      "rebrickable_id": 134,
+      "color_name": "Copper",
+      "hex": "AE7A59",
+      "is_trans": false,
+      "distinct_parts": 4,
+      "total_quantity": 27
+    },
+    {
+      "rebrickable_id": 1136,
+      "color_name": "Reddish Orange",
+      "hex": "CA4C0B",
+      "is_trans": false,
+      "distinct_parts": 4,
+      "total_quantity": 26
+    },
+    {
+      "rebrickable_id": 1095,
+      "color_name": "Trans-Black",
+      "hex": "635F52",
+      "is_trans": true,
+      "distinct_parts": 13,
+      "total_quantity": 24
+    },
+    {
+      "rebrickable_id": 335,
+      "color_name": "Sand Red",
+      "hex": "D67572",
+      "is_trans": false,
+      "distinct_parts": 5,
+      "total_quantity": 22
+    },
+    {
+      "rebrickable_id": 158,
+      "color_name": "Yellowish Green",
+      "hex": "DFEEA5",
+      "is_trans": false,
+      "distinct_parts": 1,
+      "total_quantity": 19
+    },
+    {
+      "rebrickable_id": 212,
+      "color_name": "Bright Light Blue",
+      "hex": "9FC3E9",
+      "is_trans": false,
+      "distinct_parts": 7,
+      "total_quantity": 18
+    },
+    {
+      "rebrickable_id": 82,
+      "color_name": "Metallic Gold",
+      "hex": "DBAC34",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 16
+    },
+    {
+      "rebrickable_id": 30,
+      "color_name": "Medium Lavender",
+      "hex": "AC78BA",
+      "is_trans": false,
+      "distinct_parts": 2,
+      "total_quantity": 7
+    },
+    {
+      "rebrickable_id": 1050,
+      "color_name": "Coral",
+      "hex": "FF698F",
+      "is_trans": false,
+      "distinct_parts": 2,
+      "total_quantity": 5
+    },
+    {
+      "rebrickable_id": 132,
+      "color_name": "Speckle Black-Silver",
+      "hex": "05131D",
+      "is_trans": false,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1061,
+      "color_name": "Opal Trans-Dark Blue",
+      "hex": "0020A0",
+      "is_trans": true,
+      "distinct_parts": 2,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1063,
+      "color_name": "Pearl Copper",
+      "hex": "B46A00",
+      "is_trans": false,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 232,
+      "color_name": "Sky Blue",
+      "hex": "7DBFDD",
+      "is_trans": false,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 323,
+      "color_name": "Light Aqua",
+      "hex": "ADC3C0",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1055,
+      "color_name": "Opal Trans-Clear",
+      "hex": "FCFCFC",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1000,
+      "color_name": "Glow in Dark White",
+      "hex": "D9D9D9",
+      "is_trans": false,
+      "distinct_parts": 2,
+      "total_quantity": 3
+    },
+    {
+      "rebrickable_id": 31,
+      "color_name": "Lavender",
+      "hex": "E1D5ED",
+      "is_trans": false,
+      "distinct_parts": 2,
+      "total_quantity": 2
+    },
+    {
+      "rebrickable_id": 1053,
+      "color_name": "Opal Trans-Light Blue",
+      "hex": "68BCC5",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 1
+    },
+    {
+      "rebrickable_id": 1054,
+      "color_name": "Opal Trans-Dark Pink",
+      "hex": "CE1D9B",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 1
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "author": "Antigravity",
+  "sections": [
+    {
+      "name": "motif_proto.ldr",
+      "description": "Prototype GT ironwork motif",
+      "steps": [
+        [
+          {
+            "id": "base_socket",
+            "ref": "85861.dat",
+            "colour": 0,
+            "at": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "bar_vert",
+            "ref": "30374.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -80,
+              0
+            ]
+          },
+          {
+            "id": "nodule",
+            "ref": "4733.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -40,
+              0
+            ]
+          },
+          {
+            "id": "horns",
+            "ref": "87695.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -40,
+              0
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

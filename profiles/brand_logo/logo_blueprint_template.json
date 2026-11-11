@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "profile": "brand_logo",
+  "brand_name": "ExampleBrand",
+  "archetype": "bas_relief_plaque",
+  "canvas": {
+    "width_studs": 32,
+    "height_studs": 32,
+    "total_thickness_plates": 4,
+    "bezel_frame": true,
+    "display_stand": "desk_kickstand"
+  },
+  "brand_palette": {
+    "primary": {
+      "name": "Corporate Primary",
+      "source_hex": "#0055BF",
+      "ldraw_id": 1,
+      "ldraw_name": "Bright Blue"
+    },
+    "secondary": {
+      "name": "Corporate Accent",
+      "source_hex": "#FFFFFF",
+      "ldraw_id": 15,
+      "ldraw_name": "White"
+    },
+    "background": {
+      "name": "Canvas Background",
+      "source_hex": "#05131D",
+      "ldraw_id": 0,
+      "ldraw_name": "Black"
+    },
+    "frame": {
+      "name": "Bezel Outer Border",
+      "source_hex": "#6C6E68",
+      "ldraw_id": 72,
+      "ldraw_name": "Dark Stone Grey"
+    }
+  },
+  "layers": [
+    {
+      "submodel": "01_structural_canvas.ldr",
+      "description": "Rigid backplane grid with cross-bonded plates and mounting slots",
+      "elevation_ldu": 0.0
+    },
+    {
+      "submodel": "02_background_substrate.ldr",
+      "description": "Smooth tiled background base layer",
+      "elevation_ldu": -8.0
+    },
+    {
+      "submodel": "03_isotype_core.ldr",
+      "description": "Graphic symbol / emblem sculpted with curved slopes and macaroni tiles",
+      "elevation_ldu": -16.0
+    },
+    {
+      "submodel": "04_typography_wordmark.ldr",
+      "description": "Corporate wordmark lettering with uniform stroke thickness",
+      "elevation_ldu": -24.0
+    },
+    {
+      "submodel": "05_bezel_frame.ldr",
+      "description": "Perimeter mitered architectural frame and rear easel support",
+      "elevation_ldu": -8.0
+    }
+  ]
+}

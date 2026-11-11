@@ -1,0 +1,772 @@
+{
+  "metrics": {
+    "total_colors": 77,
+    "dominant_organic_colors": [
+      {
+        "name": "Black",
+        "code": 0,
+        "role": "Eyes, claws, noses, striping, pupils"
+      },
+      {
+        "name": "White",
+        "code": 15,
+        "role": "Sclera, bellies, plumage, fur highlights"
+      },
+      {
+        "name": "Reddish Brown",
+        "code": 70,
+        "role": "Mammal fur, wood branches, raptor feathers"
+      },
+      {
+        "name": "Dark Brown",
+        "code": 308,
+        "role": "Deep fur shadows, hooves, raptor beaks"
+      },
+      {
+        "name": "Tan",
+        "code": 19,
+        "role": "Savanna animals, desert coats, skin, underbellies"
+      },
+      {
+        "name": "Dark Tan",
+        "code": 28,
+        "role": "Accents, lions, deer, antlers"
+      },
+      {
+        "name": "Orange",
+        "code": 25,
+        "role": "Tigers, beaks, foxes, clownfish"
+      },
+      {
+        "name": "Dark Orange",
+        "code": 484,
+        "role": "Tigers, foxes, plumage, butterflies"
+      },
+      {
+        "name": "Bright Light Orange",
+        "code": 191,
+        "role": "Lions, parrots, tropical fish"
+      },
+      {
+        "name": "Yellow",
+        "code": 14,
+        "role": "Beaks, eyes, tropical markings, insects"
+      },
+      {
+        "name": "Lime / Olive Green",
+        "code": 27,
+        "role": "Frogs, reptiles, praying mantis, foliage"
+      },
+      {
+        "name": "Dark Green",
+        "code": 288,
+        "role": "Reptile scales, deep forest leaves, bases"
+      },
+      {
+        "name": "Dark Blue / Medium Azure",
+        "code": 272,
+        "role": "Kingfisher, parrots, tropical sea creatures"
+      },
+      {
+        "name": "Trans-Clear / Trans-Light Blue",
+        "code": 47,
+        "role": "Water bases, insect wings, splash effects"
+      }
+    ]
+  },
+  "colors": [
+    {
+      "rebrickable_id": 0,
+      "ldraw_color_code": 0,
+      "name": "Black",
+      "hex": "05131D",
+      "is_trans": false,
+      "distinct_parts": 794,
+      "total_quantity": 10111
+    },
+    {
+      "rebrickable_id": 15,
+      "ldraw_color_code": 15,
+      "name": "White",
+      "hex": "FFFFFF",
+      "is_trans": false,
+      "distinct_parts": 642,
+      "total_quantity": 7812
+    },
+    {
+      "rebrickable_id": 71,
+      "ldraw_color_code": 71,
+      "name": "Light Bluish Gray",
+      "hex": "A0A5A9",
+      "is_trans": false,
+      "distinct_parts": 542,
+      "total_quantity": 7221
+    },
+    {
+      "rebrickable_id": 72,
+      "ldraw_color_code": 72,
+      "name": "Dark Bluish Gray",
+      "hex": "6C6E68",
+      "is_trans": false,
+      "distinct_parts": 470,
+      "total_quantity": 5332
+    },
+    {
+      "rebrickable_id": 19,
+      "ldraw_color_code": 19,
+      "name": "Tan",
+      "hex": "E4CD9E",
+      "is_trans": false,
+      "distinct_parts": 359,
+      "total_quantity": 5205
+    },
+    {
+      "rebrickable_id": 70,
+      "ldraw_color_code": 70,
+      "name": "Reddish Brown",
+      "hex": "582A12",
+      "is_trans": false,
+      "distinct_parts": 367,
+      "total_quantity": 3984
+    },
+    {
+      "rebrickable_id": 4,
+      "ldraw_color_code": 14,
+      "name": "Red",
+      "hex": "C91A09",
+      "is_trans": false,
+      "distinct_parts": 377,
+      "total_quantity": 3439
+    },
+    {
+      "rebrickable_id": 191,
+      "ldraw_color_code": 191,
+      "name": "Bright Light Orange",
+      "hex": "F8BB3D",
+      "is_trans": false,
+      "distinct_parts": 190,
+      "total_quantity": 2160
+    },
+    {
+      "rebrickable_id": 14,
+      "ldraw_color_code": 14,
+      "name": "Yellow",
+      "hex": "F2CD37",
+      "is_trans": false,
+      "distinct_parts": 278,
+      "total_quantity": 1921
+    },
+    {
+      "rebrickable_id": 28,
+      "ldraw_color_code": 28,
+      "name": "Dark Tan",
+      "hex": "958A73",
+      "is_trans": false,
+      "distinct_parts": 175,
+      "total_quantity": 1831
+    },
+    {
+      "rebrickable_id": 84,
+      "ldraw_color_code": 84,
+      "name": "Medium Nougat",
+      "hex": "AA7D55",
+      "is_trans": false,
+      "distinct_parts": 168,
+      "total_quantity": 1759
+    },
+    {
+      "rebrickable_id": 2,
+      "ldraw_color_code": 2,
+      "name": "Green",
+      "hex": "237841",
+      "is_trans": false,
+      "distinct_parts": 170,
+      "total_quantity": 1619
+    },
+    {
+      "rebrickable_id": 25,
+      "ldraw_color_code": 25,
+      "name": "Orange",
+      "hex": "FE8A18",
+      "is_trans": false,
+      "distinct_parts": 166,
+      "total_quantity": 1451
+    },
+    {
+      "rebrickable_id": 1,
+      "ldraw_color_code": 4,
+      "name": "Blue",
+      "hex": "0055BF",
+      "is_trans": false,
+      "distinct_parts": 141,
+      "total_quantity": 1283
+    },
+    {
+      "rebrickable_id": 27,
+      "ldraw_color_code": 27,
+      "name": "Lime",
+      "hex": "BBE90B",
+      "is_trans": false,
+      "distinct_parts": 175,
+      "total_quantity": 1157
+    },
+    {
+      "rebrickable_id": 484,
+      "ldraw_color_code": 484,
+      "name": "Dark Orange",
+      "hex": "A95500",
+      "is_trans": false,
+      "distinct_parts": 122,
+      "total_quantity": 1014
+    },
+    {
+      "rebrickable_id": 297,
+      "ldraw_color_code": 297,
+      "name": "Pearl Gold",
+      "hex": "AA7F2E",
+      "is_trans": false,
+      "distinct_parts": 145,
+      "total_quantity": 965
+    },
+    {
+      "rebrickable_id": 322,
+      "ldraw_color_code": 322,
+      "name": "Medium Azure",
+      "hex": "36AEBF",
+      "is_trans": false,
+      "distinct_parts": 148,
+      "total_quantity": 909
+    },
+    {
+      "rebrickable_id": 272,
+      "ldraw_color_code": 272,
+      "name": "Dark Blue",
+      "hex": "0A3463",
+      "is_trans": false,
+      "distinct_parts": 129,
+      "total_quantity": 872
+    },
+    {
+      "rebrickable_id": 288,
+      "ldraw_color_code": 288,
+      "name": "Dark Green",
+      "hex": "184632",
+      "is_trans": false,
+      "distinct_parts": 80,
+      "total_quantity": 837
+    },
+    {
+      "rebrickable_id": 3,
+      "ldraw_color_code": 3,
+      "name": "Dark Turquoise",
+      "hex": "008F9B",
+      "is_trans": false,
+      "distinct_parts": 104,
+      "total_quantity": 824
+    },
+    {
+      "rebrickable_id": 321,
+      "ldraw_color_code": 321,
+      "name": "Dark Azure",
+      "hex": "078BC9",
+      "is_trans": false,
+      "distinct_parts": 108,
+      "total_quantity": 689
+    },
+    {
+      "rebrickable_id": 10,
+      "ldraw_color_code": 10,
+      "name": "Bright Green",
+      "hex": "4B9F4A",
+      "is_trans": false,
+      "distinct_parts": 88,
+      "total_quantity": 661
+    },
+    {
+      "rebrickable_id": 29,
+      "ldraw_color_code": 29,
+      "name": "Bright Pink",
+      "hex": "E4ADC8",
+      "is_trans": false,
+      "distinct_parts": 81,
+      "total_quantity": 585
+    },
+    {
+      "rebrickable_id": 320,
+      "ldraw_color_code": 320,
+      "name": "Dark Red",
+      "hex": "720E0F",
+      "is_trans": false,
+      "distinct_parts": 108,
+      "total_quantity": 580
+    },
+    {
+      "rebrickable_id": 41,
+      "ldraw_color_code": 41,
+      "name": "Trans-Light Blue",
+      "hex": "AEEFEC",
+      "is_trans": true,
+      "distinct_parts": 64,
+      "total_quantity": 522
+    },
+    {
+      "rebrickable_id": 308,
+      "ldraw_color_code": 308,
+      "name": "Dark Brown",
+      "hex": "352100",
+      "is_trans": false,
+      "distinct_parts": 74,
+      "total_quantity": 513
+    },
+    {
+      "rebrickable_id": 26,
+      "ldraw_color_code": 26,
+      "name": "Magenta",
+      "hex": "923978",
+      "is_trans": false,
+      "distinct_parts": 77,
+      "total_quantity": 503
+    },
+    {
+      "rebrickable_id": 326,
+      "ldraw_color_code": 326,
+      "name": "Olive Green",
+      "hex": "9B9A5A",
+      "is_trans": false,
+      "distinct_parts": 60,
+      "total_quantity": 473
+    },
+    {
+      "rebrickable_id": 85,
+      "ldraw_color_code": 85,
+      "name": "Dark Purple",
+      "hex": "3F3691",
+      "is_trans": false,
+      "distinct_parts": 78,
+      "total_quantity": 429
+    },
+    {
+      "rebrickable_id": 323,
+      "ldraw_color_code": 323,
+      "name": "Light Aqua",
+      "hex": "ADC3C0",
+      "is_trans": false,
+      "distinct_parts": 59,
+      "total_quantity": 414
+    },
+    {
+      "rebrickable_id": 5,
+      "ldraw_color_code": 13,
+      "name": "Dark Pink",
+      "hex": "C870A0",
+      "is_trans": false,
+      "distinct_parts": 67,
+      "total_quantity": 380
+    },
+    {
+      "rebrickable_id": 179,
+      "ldraw_color_code": 179,
+      "name": "Flat Silver",
+      "hex": "898788",
+      "is_trans": false,
+      "distinct_parts": 75,
+      "total_quantity": 345
+    },
+    {
+      "rebrickable_id": 1050,
+      "ldraw_color_code": 1050,
+      "name": "Coral",
+      "hex": "FF698F",
+      "is_trans": false,
+      "distinct_parts": 47,
+      "total_quantity": 336
+    },
+    {
+      "rebrickable_id": 47,
+      "ldraw_color_code": 47,
+      "name": "Trans-Clear",
+      "hex": "FCFCFC",
+      "is_trans": true,
+      "distinct_parts": 57,
+      "total_quantity": 331
+    },
+    {
+      "rebrickable_id": 226,
+      "ldraw_color_code": 226,
+      "name": "Bright Light Yellow",
+      "hex": "FFF03A",
+      "is_trans": false,
+      "distinct_parts": 66,
+      "total_quantity": 327
+    },
+    {
+      "rebrickable_id": 378,
+      "ldraw_color_code": 378,
+      "name": "Sand Green",
+      "hex": "A0BCAC",
+      "is_trans": false,
+      "distinct_parts": 54,
+      "total_quantity": 280
+    },
+    {
+      "rebrickable_id": 182,
+      "ldraw_color_code": 182,
+      "name": "Trans-Orange",
+      "hex": "F08F1C",
+      "is_trans": true,
+      "distinct_parts": 30,
+      "total_quantity": 241
+    },
+    {
+      "rebrickable_id": 379,
+      "ldraw_color_code": 379,
+      "name": "Sand Blue",
+      "hex": "6074A1",
+      "is_trans": false,
+      "distinct_parts": 44,
+      "total_quantity": 199
+    },
+    {
+      "rebrickable_id": 30,
+      "ldraw_color_code": 30,
+      "name": "Medium Lavender",
+      "hex": "AC78BA",
+      "is_trans": false,
+      "distinct_parts": 35,
+      "total_quantity": 194
+    },
+    {
+      "rebrickable_id": 36,
+      "ldraw_color_code": 36,
+      "name": "Trans-Red",
+      "hex": "C91A09",
+      "is_trans": true,
+      "distinct_parts": 29,
+      "total_quantity": 191
+    },
+    {
+      "rebrickable_id": 45,
+      "ldraw_color_code": 45,
+      "name": "Trans-Dark Pink",
+      "hex": "DF6695",
+      "is_trans": true,
+      "distinct_parts": 22,
+      "total_quantity": 179
+    },
+    {
+      "rebrickable_id": 212,
+      "ldraw_color_code": 212,
+      "name": "Bright Light Blue",
+      "hex": "9FC3E9",
+      "is_trans": false,
+      "distinct_parts": 38,
+      "total_quantity": 161
+    },
+    {
+      "rebrickable_id": 1062,
+      "ldraw_color_code": 1062,
+      "name": "Vibrant Yellow",
+      "hex": "EBD800",
+      "is_trans": false,
+      "distinct_parts": 15,
+      "total_quantity": 158
+    },
+    {
+      "rebrickable_id": 33,
+      "ldraw_color_code": 33,
+      "name": "Trans-Dark Blue",
+      "hex": "0020A0",
+      "is_trans": true,
+      "distinct_parts": 9,
+      "total_quantity": 122
+    },
+    {
+      "rebrickable_id": 31,
+      "ldraw_color_code": 31,
+      "name": "Lavender",
+      "hex": "E1D5ED",
+      "is_trans": false,
+      "distinct_parts": 18,
+      "total_quantity": 115
+    },
+    {
+      "rebrickable_id": 1103,
+      "ldraw_color_code": 1103,
+      "name": "Pearl Titanium",
+      "hex": "3E3C39",
+      "is_trans": false,
+      "distinct_parts": 33,
+      "total_quantity": 112
+    },
+    {
+      "rebrickable_id": 46,
+      "ldraw_color_code": 46,
+      "name": "Trans-Yellow",
+      "hex": "F5CD2F",
+      "is_trans": true,
+      "distinct_parts": 15,
+      "total_quantity": 111
+    },
+    {
+      "rebrickable_id": 158,
+      "ldraw_color_code": 158,
+      "name": "Yellowish Green",
+      "hex": "DFEEA5",
+      "is_trans": false,
+      "distinct_parts": 21,
+      "total_quantity": 104
+    },
+    {
+      "rebrickable_id": 73,
+      "ldraw_color_code": 73,
+      "name": "Medium Blue",
+      "hex": "5A93DB",
+      "is_trans": false,
+      "distinct_parts": 23,
+      "total_quantity": 101
+    },
+    {
+      "rebrickable_id": 1053,
+      "ldraw_color_code": 1053,
+      "name": "Opal Trans-Light Blue",
+      "hex": "68BCC5",
+      "is_trans": true,
+      "distinct_parts": 7,
+      "total_quantity": 71
+    },
+    {
+      "rebrickable_id": 1136,
+      "ldraw_color_code": 1136,
+      "name": "Reddish Orange",
+      "hex": "CA4C0B",
+      "is_trans": false,
+      "distinct_parts": 16,
+      "total_quantity": 65
+    },
+    {
+      "rebrickable_id": 9999,
+      "ldraw_color_code": 9999,
+      "name": "[No Color/Any Color]",
+      "hex": "05131D",
+      "is_trans": false,
+      "distinct_parts": 64,
+      "total_quantity": 65
+    },
+    {
+      "rebrickable_id": 52,
+      "ldraw_color_code": 52,
+      "name": "Trans-Purple",
+      "hex": "A5A5CB",
+      "is_trans": true,
+      "distinct_parts": 10,
+      "total_quantity": 43
+    },
+    {
+      "rebrickable_id": 42,
+      "ldraw_color_code": 42,
+      "name": "Trans-Neon Green",
+      "hex": "F8F184",
+      "is_trans": true,
+      "distinct_parts": 12,
+      "total_quantity": 40
+    },
+    {
+      "rebrickable_id": 35,
+      "ldraw_color_code": 35,
+      "name": "Trans-Bright Green",
+      "hex": "D9E4A7",
+      "is_trans": true,
+      "distinct_parts": 15,
+      "total_quantity": 39
+    },
+    {
+      "rebrickable_id": 82,
+      "ldraw_color_code": 82,
+      "name": "Metallic Gold",
+      "hex": "DBAC34",
+      "is_trans": false,
+      "distinct_parts": 9,
+      "total_quantity": 36
+    },
+    {
+      "rebrickable_id": 34,
+      "ldraw_color_code": 34,
+      "name": "Trans-Green",
+      "hex": "84B68D",
+      "is_trans": true,
+      "distinct_parts": 10,
+      "total_quantity": 26
+    },
+    {
+      "rebrickable_id": 334,
+      "ldraw_color_code": 334,
+      "name": "Chrome Gold",
+      "hex": "BBA53D",
+      "is_trans": false,
+      "distinct_parts": 1,
+      "total_quantity": 25
+    },
+    {
+      "rebrickable_id": 92,
+      "ldraw_color_code": 92,
+      "name": "Nougat",
+      "hex": "D09168",
+      "is_trans": false,
+      "distinct_parts": 9,
+      "total_quantity": 17
+    },
+    {
+      "rebrickable_id": 143,
+      "ldraw_color_code": 143,
+      "name": "Trans-Medium Blue",
+      "hex": "CFE2F7",
+      "is_trans": true,
+      "distinct_parts": 2,
+      "total_quantity": 16
+    },
+    {
+      "rebrickable_id": 40,
+      "ldraw_color_code": 40,
+      "name": "Trans-Brown",
+      "hex": "635F52",
+      "is_trans": true,
+      "distinct_parts": 7,
+      "total_quantity": 15
+    },
+    {
+      "rebrickable_id": 78,
+      "ldraw_color_code": 78,
+      "name": "Light Nougat",
+      "hex": "F6D7B3",
+      "is_trans": false,
+      "distinct_parts": 5,
+      "total_quantity": 14
+    },
+    {
+      "rebrickable_id": 1054,
+      "ldraw_color_code": 1054,
+      "name": "Opal Trans-Dark Pink",
+      "hex": "CE1D9B",
+      "is_trans": true,
+      "distinct_parts": 2,
+      "total_quantity": 11
+    },
+    {
+      "rebrickable_id": 117,
+      "ldraw_color_code": 117,
+      "name": "Glitter Trans-Clear",
+      "hex": "FFFFFF",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 10
+    },
+    {
+      "rebrickable_id": 57,
+      "ldraw_color_code": 57,
+      "name": "Trans-Neon Orange",
+      "hex": "FF800D",
+      "is_trans": true,
+      "distinct_parts": 3,
+      "total_quantity": 9
+    },
+    {
+      "rebrickable_id": 1059,
+      "ldraw_color_code": 1059,
+      "name": "Opal Trans-Purple",
+      "hex": "8320B7",
+      "is_trans": true,
+      "distinct_parts": 2,
+      "total_quantity": 7
+    },
+    {
+      "rebrickable_id": 1063,
+      "ldraw_color_code": 1063,
+      "name": "Pearl Copper",
+      "hex": "B46A00",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 6
+    },
+    {
+      "rebrickable_id": 1000,
+      "ldraw_color_code": 1000,
+      "name": "Glow in Dark White",
+      "hex": "D9D9D9",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 6
+    },
+    {
+      "rebrickable_id": 80,
+      "ldraw_color_code": 80,
+      "name": "Metallic Silver",
+      "hex": "A5A9B4",
+      "is_trans": false,
+      "distinct_parts": 3,
+      "total_quantity": 5
+    },
+    {
+      "rebrickable_id": 1061,
+      "ldraw_color_code": 1061,
+      "name": "Opal Trans-Dark Blue",
+      "hex": "0020A0",
+      "is_trans": true,
+      "distinct_parts": 3,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1055,
+      "ldraw_color_code": 1055,
+      "name": "Opal Trans-Clear",
+      "hex": "FCFCFC",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1056,
+      "ldraw_color_code": 1056,
+      "name": "Opal Trans-Brown",
+      "hex": "583927",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 4
+    },
+    {
+      "rebrickable_id": 1095,
+      "ldraw_color_code": 1095,
+      "name": "Trans-Black",
+      "hex": "635F52",
+      "is_trans": true,
+      "distinct_parts": 2,
+      "total_quantity": 3
+    },
+    {
+      "rebrickable_id": 1002,
+      "ldraw_color_code": 1002,
+      "name": "Glitter Trans-Neon Green",
+      "hex": "C0F500",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 2
+    },
+    {
+      "rebrickable_id": 129,
+      "ldraw_color_code": 129,
+      "name": "Glitter Trans-Purple",
+      "hex": "A5A5CB",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 1
+    },
+    {
+      "rebrickable_id": 1003,
+      "ldraw_color_code": 1003,
+      "name": "Glitter Trans-Light Blue",
+      "hex": "68BCC5",
+      "is_trans": true,
+      "distinct_parts": 1,
+      "total_quantity": 1
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "author": "Antigravity",
+  "sections": [
+    {
+      "name": "fence_test.ldr",
+      "description": "Fence stack test",
+      "steps": [
+        [
+          {
+            "id": "base",
+            "ref": "3001.dat",
+            "colour": 71,
+            "at": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "plate1",
+            "ref": "3710.dat",
+            "colour": 71,
+            "at": [
+              0,
+              -8,
+              0
+            ]
+          },
+          {
+            "id": "plate2",
+            "ref": "3710.dat",
+            "colour": 71,
+            "at": [
+              0,
+              -16,
+              0
+            ]
+          },
+          {
+            "id": "fence",
+            "ref": "19121.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -64,
+              0
+            ]
+          },
+          {
+            "id": "tile",
+            "ref": "2431.dat",
+            "colour": 0,
+            "at": [
+              0,
+              -68,
+              0
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

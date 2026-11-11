@@ -1,0 +1,41 @@
+{
+  "subject_profile": {
+    "common_name": "Bengal Tiger",
+    "scientific_or_fantasy_name": "Panthera tigris tigris",
+    "archetype": "mammal_quadruped",
+    "scale_style": "creator_3in1 | display_sculpture | micro_organic",
+    "proportions": {
+      "spine_length_studs": 16,
+      "torso_width_studs": 6,
+      "torso_height_plates": 12,
+      "head_volume_studs": [6, 6, 6],
+      "limb_length_studs": 8,
+      "tail_length_studs": 10
+    },
+    "articulation_rig": {
+      "neck_articulation": "ball_joint_5.9mm",
+      "lumbar_spine_joints": 2,
+      "shoulder_hips": "towball_socket",
+      "knees_elbows": "click_hinge",
+      "paws_talons": "clips_bars",
+      "tail_segments": 4
+    },
+    "color_palette": {
+      "primary_coat": 25,
+      "secondary_accent": 0,
+      "underbelly_or_plumage": 15,
+      "eyes": {
+        "iris": 14,
+        "pupil": 0,
+        "sclera": 15
+      },
+      "teeth_claws": 15,
+      "mouth_interior": 320
+    },
+    "habitat_pedestal": {
+      "required": true,
+      "style": "rocky_outcrop | jungle_branch | oceanic_coral | museum_plinth",
+      "base_dimensions_studs": [12, 12]
+    }
+  }
+}

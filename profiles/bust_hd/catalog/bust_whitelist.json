@@ -1,0 +1,257 @@
+{
+  "name": "bust_hd_whitelist",
+  "version": "1.0.0",
+  "description": "Curated LDraw catalog whitelist and anthropometric palette for High Definition Human Busts",
+  "provenance": "LdrawNova HD Bust Domain Profile (profiles/bust_hd)",
+  "ldu_metrics": {
+    "ldu_per_stud": 20.0,
+    "ldu_plate_height": 8.0,
+    "ldu_brick_height": 24.0,
+    "plates_per_brick": 3
+  },
+  "palette": {
+    "skin_tones": [
+      {
+        "code": 78,
+        "name": "Light Nougat",
+        "hex": "#F6D7B3",
+        "role": "Primary fair skin, highlight areas (forehead, cheek apples, bridge of nose)"
+      },
+      {
+        "code": 84,
+        "name": "Medium Nougat",
+        "hex": "#AA7D55",
+        "role": "Warm medium skin tone, Mediterranean/Latino base tone, transition shading (LDraw code 84, BrickLink 312)"
+      },
+      {
+        "code": 28,
+        "name": "Dark Tan",
+        "hex": "#958A73",
+        "role": "Soft shadow contours, eye sockets, philtrum, submandibular shadow line"
+      },
+      {
+        "code": 84,
+        "name": "Medium Dark Flesh",
+        "hex": "#9F5B3C",
+        "role": "Warm tan, deep shadows on medium skin, base for South Asian / Latin complexions"
+      },
+      {
+        "code": 70,
+        "name": "Reddish Brown",
+        "hex": "#582A12",
+        "role": "Deep Afro/dark skin tones, deep recessed creases, deep ocular recesses"
+      }
+    ],
+    "hair_facial_hair": [
+      {
+        "code": 0,
+        "name": "Black",
+        "hex": "#05131D",
+        "role": "Jet black hair, deep shadow under beard, root density"
+      },
+      {
+        "code": 72,
+        "name": "Dark Bluish Gray",
+        "hex": "#6C6E68",
+        "role": "Salt-and-pepper beard midtones, dark graying temples, coarse beard texture"
+      },
+      {
+        "code": 71,
+        "name": "Light Bluish Gray",
+        "hex": "#A0A5A9",
+        "role": "Silver/gray hair highlights, white hair tips, mature beard stippling"
+      },
+      {
+        "code": 308,
+        "name": "Dark Brown",
+        "hex": "#352100",
+        "role": "Dark brunette hair, warm beard roots, rich shadows"
+      },
+      {
+        "code": 70,
+        "name": "Reddish Brown",
+        "hex": "#582A12",
+        "role": "Auburn/chestnut hair, warm beard highlights, brown mustache"
+      }
+    ],
+    "eyes_and_expression": [
+      {
+        "code": 15,
+        "name": "White",
+        "hex": "#FFFFFF",
+        "role": "Sclera (eyeball white), corneal specular glint"
+      },
+      {
+        "code": 0,
+        "name": "Black",
+        "hex": "#05131D",
+        "role": "Pupil, eyelashes, deep brow line crease"
+      },
+      {
+        "code": 308,
+        "name": "Dark Brown",
+        "hex": "#352100",
+        "role": "Brown iris"
+      },
+      {
+        "code": 70,
+        "name": "Reddish Brown",
+        "hex": "#582A12",
+        "role": "Hazel/amber iris"
+      },
+      {
+        "code": 288,
+        "name": "Dark Green",
+        "hex": "#184632",
+        "role": "Green iris"
+      },
+      {
+        "code": 1,
+        "name": "Blue",
+        "hex": "#0055BF",
+        "role": "Blue iris"
+      },
+      {
+        "code": 272,
+        "name": "Dark Blue",
+        "hex": "#0A3463",
+        "role": "Deep navy iris rim / limbal ring"
+      }
+    ],
+    "clothing_and_pedestal": [
+      {
+        "code": 0,
+        "name": "Black",
+        "hex": "#05131D",
+        "role": "Museum pedestal plinth, formal suit/tuxedo, black crew neck"
+      },
+      {
+        "code": 272,
+        "name": "Dark Blue",
+        "hex": "#0A3463",
+        "role": "Navy polo shirt, dark denim jacket, tailored blazer"
+      },
+      {
+        "code": 72,
+        "name": "Dark Bluish Gray",
+        "hex": "#6C6E68",
+        "role": "Charcoal pedestal, wool sweater, collar trim"
+      },
+      {
+        "code": 71,
+        "name": "Light Bluish Gray",
+        "hex": "#A0A5A9",
+        "role": "Pedestal accent borders, heather gray shirt"
+      },
+      {
+        "code": 15,
+        "name": "White",
+        "hex": "#FFFFFF",
+        "role": "Dress shirt collar, crew neck tee accent"
+      },
+      {
+        "code": 320,
+        "name": "Dark Red",
+        "hex": "#720E0F",
+        "role": "Crimson sweater, velvet pedestal cloth accent"
+      }
+    ]
+  },
+  "sculpting_parts": {
+    "plates": [
+      {"code": "3024.dat", "name": "Plate 1 x 1", "studs_x": 1, "studs_z": 1, "height_ldu": 8.0, "width_ldu": 20.0, "depth_ldu": 20.0},
+      {"code": "3023b.dat", "name": "Plate 1 x 2", "studs_x": 2, "studs_z": 1, "height_ldu": 8.0, "width_ldu": 40.0, "depth_ldu": 20.0},
+      {"code": "3623.dat", "name": "Plate 1 x 3", "studs_x": 3, "studs_z": 1, "height_ldu": 8.0, "width_ldu": 60.0, "depth_ldu": 20.0},
+      {"code": "3710.dat", "name": "Plate 1 x 4", "studs_x": 4, "studs_z": 1, "height_ldu": 8.0, "width_ldu": 80.0, "depth_ldu": 20.0},
+      {"code": "3022.dat", "name": "Plate 2 x 2", "studs_x": 2, "studs_z": 2, "height_ldu": 8.0, "width_ldu": 40.0, "depth_ldu": 40.0},
+      {"code": "3021.dat", "name": "Plate 2 x 3", "studs_x": 3, "studs_z": 2, "height_ldu": 8.0, "width_ldu": 60.0, "depth_ldu": 40.0},
+      {"code": "3020.dat", "name": "Plate 2 x 4", "studs_x": 4, "studs_z": 2, "height_ldu": 8.0, "width_ldu": 80.0, "depth_ldu": 40.0},
+      {"code": "2420.dat", "name": "Plate 2 x 2 Corner", "studs_x": 2, "studs_z": 2, "height_ldu": 8.0, "width_ldu": 40.0, "depth_ldu": 40.0}
+    ],
+    "curved_slopes": [
+      {"code": "11477.dat", "name": "Slope Curved 2 x 1", "studs_x": 2, "studs_z": 1, "height_ldu": 13.33, "role": "Smooth epidermal contour, cheek curvature, chin slope"},
+      {"code": "24201.dat", "name": "Slope Curved 2 x 1 Inverted", "studs_x": 2, "studs_z": 1, "height_ldu": 13.33, "role": "Submandibular undercut, chin cleft, nostrils bottom slope"},
+      {"code": "15068.dat", "name": "Slope Curved 2 x 2", "studs_x": 2, "studs_z": 2, "height_ldu": 13.33, "role": "Cranial dome, temple blend, shoulder deltoid curve"},
+      {"code": "93273.dat", "name": "Slope Curved 4 x 1", "studs_x": 4, "studs_z": 1, "height_ldu": 13.33, "role": "Trapezius muscle slope, clavicle transition"},
+      {"code": "50950.dat", "name": "Slope Curved 3 x 1", "studs_x": 3, "studs_z": 1, "height_ldu": 13.33, "role": "Zygomatic arch, shoulder slope, jawline contour"}
+    ],
+    "cheese_and_micro_relief": [
+      {"code": "54200.dat", "name": "Slope 30 1 x 1 x 2/3 (Cheese Slope)", "studs_x": 1, "studs_z": 1, "height_ldu": 13.33, "role": "Micro-faceting, nose tip, beard texture, eyebrow peak"},
+      {"code": "85984.dat", "name": "Slope 30 1 x 2 x 2/3", "studs_x": 2, "studs_z": 1, "height_ldu": 13.33, "role": "Lip slope, eyelid transition, beard strand"},
+      {"code": "98138.dat", "name": "Tile 1 x 1 Round", "studs_x": 1, "studs_z": 1, "height_ldu": 8.0, "role": "Organic hair curl, mole, beard stipple, eye pupil studless"},
+      {"code": "25269.dat", "name": "Tile 1 x 1 Quarter Round", "studs_x": 1, "studs_z": 1, "height_ldu": 8.0, "role": "Iris contour, nostril curvature, corner of mouth"},
+      {"code": "24246.dat", "name": "Tile 1 x 1 Half Circle Extended", "studs_x": 1, "studs_z": 1, "height_ldu": 8.0, "role": "Lip vermilion border, ear helix curve"},
+      {"code": "3070b.dat", "name": "Tile 1 x 1 with Groove", "studs_x": 1, "studs_z": 1, "height_ldu": 8.0, "role": "Smooth stud elimination, skin facet"},
+      {"code": "3069b.dat", "name": "Tile 1 x 2 with Groove", "studs_x": 2, "studs_z": 1, "height_ldu": 8.0, "role": "Nasal bridge flat, collar lapel trim"},
+      {"code": "3068b.dat", "name": "Tile 2 x 2 with Groove", "studs_x": 2, "studs_z": 2, "height_ldu": 8.0, "role": "Pedestal smooth cap, forehead quiet zone"},
+      {"code": "2431.dat", "name": "Tile 1 x 4 with Groove", "studs_x": 4, "studs_z": 1, "height_ldu": 8.0, "role": "Pedestal edge finish, collar trim"}
+    ],
+    "snot_and_brackets": [
+      {"code": "87087.dat", "name": "Brick 1 x 1 with Stud on 1 Side", "studs_x": 1, "studs_z": 1, "height_ldu": 24.0, "snot_stud_offset_y": 10.0, "snot_stud_offset_z": -10.0, "role": "Primary frontal and lateral facial feature anchor"},
+      {"code": "11211.dat", "name": "Brick 1 x 2 with 2 Studs on 1 Side", "studs_x": 2, "studs_z": 1, "height_ldu": 24.0, "snot_stud_offset_y": 10.0, "snot_stud_offset_z": -10.0, "role": "High-stiffness dual anchor for eye and brow assemblies"},
+      {"code": "4733.dat", "name": "Brick 1 x 1 with Studs on 4 Sides", "studs_x": 1, "studs_z": 1, "height_ldu": 24.0, "role": "Multi-directional anchor for nose tip and chin vertex"},
+      {"code": "99207.dat", "name": "Bracket 1 x 2 - 2 x 2 Inverted", "studs_x": 2, "studs_z": 2, "height_ldu": 12.0, "vertical_offset_ldu": 4.0, "role": "Downwards SNOT attachment for cheekbones and mouth"},
+      {"code": "99780.dat", "name": "Bracket 1 x 2 - 1 x 2 Inverted", "studs_x": 2, "studs_z": 1, "height_ldu": 12.0, "vertical_offset_ldu": 4.0, "role": "Downwards SNOT attachment for mustache and upper lip"},
+      {"code": "99781.dat", "name": "Bracket 1 x 2 - 1 x 2 Up", "studs_x": 2, "studs_z": 1, "height_ldu": 12.0, "vertical_offset_ldu": 4.0, "role": "Upwards SNOT anchor for lower eyelid and orbital rim"},
+      {"code": "44728.dat", "name": "Bracket 1 x 2 - 2 x 2 Up", "studs_x": 2, "studs_z": 2, "height_ldu": 12.0, "vertical_offset_ldu": 4.0, "role": "Upwards SNOT anchor for forehead skin skinning"},
+      {"code": "36840.dat", "name": "Bracket 1 x 1 - 1 x 1 Inverted", "studs_x": 1, "studs_z": 1, "height_ldu": 12.0, "role": "Compact single-stud anchor for ear tragi and nostrils"},
+      {"code": "36841.dat", "name": "Bracket 1 x 1 - 1 x 1 Up", "studs_x": 1, "studs_z": 1, "height_ldu": 12.0, "role": "Compact single-stud anchor for inner eye canthus"}
+    ],
+    "chiral_wedges": [
+      {
+        "left_id": "43722.dat",
+        "right_id": "43723.dat",
+        "name": "Plate Wedge 3 x 2",
+        "studs_x": 3,
+        "studs_z": 2,
+        "height_ldu": 8.0,
+        "role": "Jawline angular taper and temple sweep"
+      },
+      {
+        "left_id": "43710.dat",
+        "right_id": "43711.dat",
+        "name": "Plate Wedge 4 x 2",
+        "studs_x": 4,
+        "studs_z": 2,
+        "height_ldu": 8.0,
+        "role": "Shoulder slope transition and collar lapels"
+      },
+      {
+        "left_id": "41769.dat",
+        "right_id": "41770.dat",
+        "name": "Plate Wedge 4 x 2 Inverted",
+        "studs_x": 4,
+        "studs_z": 2,
+        "height_ldu": 8.0,
+        "role": "Submandibular jawline undercut"
+      },
+      {
+        "left_id": "24299.dat",
+        "right_id": "24307.dat",
+        "name": "Plate Wedge 2 x 2",
+        "studs_x": 2,
+        "studs_z": 2,
+        "height_ldu": 8.0,
+        "role": "Eyebrow outer arch and cheek flare"
+      },
+      {
+        "left_id": "65429.dat",
+        "right_id": "65426.dat",
+        "name": "Plate Wedge 4 x 4",
+        "studs_x": 4,
+        "studs_z": 4,
+        "height_ldu": 8.0,
+        "role": "Broad chest / clavicle wedge base"
+      },
+      {
+        "left_id": "29120.dat",
+        "right_id": "29119.dat",
+        "name": "Slope Curved 2 x 1 with Stud Notch",
+        "studs_x": 2,
+        "studs_z": 1,
+        "height_ldu": 13.33,
+        "role": "Ear auricle helix and cheek contour"
+      }
+    ]
+  }
+}

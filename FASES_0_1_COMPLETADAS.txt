@@ -1,0 +1,129 @@
+================================================================================
+          LNOVA-DRAW: LOOP ITERATIVO DE MEJORA ITERATIVA
+                  Fases 0-1 Completadas (Act Mode)
+================================================================================
+
+Fecha: 2026-11-11
+Estado: BASE GENÉRICA LISTA | Fases 2-7 Documentadas para Continuación
+
+================================================================================
+ENTREGABLES (Act Mode)
+================================================================================
+
+✅ FASE 0: ESQUEMAS JSON (4 archivos, ~11.5 KB)
+   └── docs/schemas/
+       ├── spec.schema.json              (1.5 KB)  Descripción verbalizada
+       ├── segment.schema.json           (2.3 KB)  Subsegmentos con volumen 3D
+       ├── diff_report.schema.json       (4.2 KB)  Diffs anclados + priorizados
+       └── loop_state.schema.json        (3.5 KB)  Memoria del bucle
+
+✅ FASE 1: MOTOR CORE (1 archivo, ~2.5 KB Python)
+   └── ldraw_tools/
+       └── improvement_loop.py
+           - IterationResult dataclass
+           - ImprovementLoop.run() orchestrator
+           - Anti-regresión + persistencia
+
+✅ DOCUMENTACIÓN (4 archivos)
+   └── docs/
+       ├── RESUMEN_EJECUTIVO_FINAL.md             ← Empieza aquí (5 min)
+       ├── INDEX_LOOP_ITERATIVO.md                ← Índice navegable
+       ├── LOOP_ITERATIVO_RESUMEN_FASES_0_1.md   ← Arquitectura CORE (10 min)
+       ├── IMPLEMENTATION_PLAN_PHASES_2_7.md      ← Plan Fases 2-7 (15 min)
+       └── ARTEFACTOS_GENERADOS_FASES_0_1.md      ← Listado técnico
+
+================================================================================
+ARQUITECTURA (Genérica, válida para 4 perfiles)
+================================================================================
+
+┌─ [A1] Descriptor GT (una vez) → spec.json
+│
+└─ [LOOP 0..N-1]
+    ├─ [A2] Designer 3D (spec + feedback) → plan.json → .mpd
+    ├─ [VALIDATORS] Determinísticos (geometry, contacts, BOM, ΔE)
+    ├─ [A3] Descriptor Inverso (a ciegas de GT) → render_spec.json
+    ├─ [A4] Judge/Differ (GT vs render + visual) → diff_report.json
+    └─ [ORQUESTADOR] Score + Converge? + Anti-regr + Feedback
+
+[PROFILE ADAPTERS] (especializados por dominio)
+    ├─ brand_logo (próxima FASE 2)
+    ├─ fauna (próxima FASE 2)
+    ├─ bust_hd (próxima FASE 2)
+    └─ starwars (próxima FASE 2)
+
+================================================================================
+DECISIONES CLAVE
+================================================================================
+
+1. COMPARACIÓN EN DOBLE CANAL
+   - Simbólico: spec (GT) ↔ render_spec
+   - Visual: imágenes GT + renders directas a A4 Judge
+
+2. ROLES SEPARADOS (Anti-sesgo)
+   - A4 (Juez) ≠ A2 (Diseñador)
+   - A3 describe renders A CIEGAS de la GT
+
+3. SEGMENTACIÓN + VOLUMEN 3D (Tu Palanca)
+   - Cada segment lleva inferred_volume
+   - Shape matcher: volumen → candidatos cuantitativamente
+
+4. MODELOS CLAUDE OPTIMIZADOS
+   - A1: Sonnet 4.8 (fuente de verdad, cacheado)
+   - A2: Sonnet 4.x (acotado + guiado)
+   - A3: Haiku 4.x (repetitivo) ← AHORRO MÁXIMO
+   - A4: Sonnet 4.8 → Opus 4.x (escalado si estanca)
+   Resultado: ~60-70% menor coste vs. Opus para todo
+
+5. SALVAGUARDAS ROBUSTAS
+   - Criterio de parada (3 condiciones OR)
+   - Anti-regresión (hill-climbing con memoria)
+   - Foco top-N diffs (evita oscilación)
+   - loop_state.json (memoria persistente)
+
+6. ARQUITECTURA GENÉRICA
+   - 1 CORE loop + N ProfileAdapters
+   - ProfileAdapter: scoring_weights, evaluation_rubric, volume_to_part_matcher
+   - Sin duplicación de lógica
+
+================================================================================
+VALIDACIÓN
+================================================================================
+
+✅ Motor CORE compila sin errores
+✅ Esquemas JSON válidos (4 archivos)
+✅ Documentación coherente
+✅ Plan documentado para Fases 2-7
+
+================================================================================
+PRÓXIMOS PASOS (Act Mode Continuo)
+================================================================================
+
+Orden Estricto:
+  1. ✅ FASE 0: Esquemas JSON
+  2. ✅ FASE 1: Motor CORE
+  3. → FASE 2: ProfileAdapter (1-2h)
+  4. → FASE 3: ShapeMatcher (1-2h)
+  5. → FASE 4: Integración webapp/CLI (2-3h)
+  6. → FASE 6: ModelRouter (1h)
+  7. → FASE 5: Documentación (2-3h)
+  8. → FASE 7: Tests + validación (1-2h)
+
+Tiempo Total Estimado: 10-15 horas para cierre completo
+
+================================================================================
+REFERENCIAS RÁPIDAS
+================================================================================
+
+Empieza por:
+  1. docs/RESUMEN_EJECUTIVO_FINAL.md        (5 min read)
+  2. docs/INDEX_LOOP_ITERATIVO.md            (navigation)
+  3. docs/IMPLEMENTATION_PLAN_PHASES_2_7.md (para FASE 2)
+
+Detalles técnicos:
+  - Arquitectura: docs/LOOP_ITERATIVO_RESUMEN_FASES_0_1.md
+  - Esquemas: docs/schemas/*.schema.json
+  - Código: ldraw_tools/improvement_loop.py
+
+================================================================================
+SIGUIENTE: FASE 2 (ProfileAdapter) en Act Mode
+================================================================================

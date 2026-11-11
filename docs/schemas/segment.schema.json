@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Segment Schema (part of spec.json)",
+  "type": "object",
+  "required": ["id", "role", "bbox_norm"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^seg_[a-z0-9_]+$", "description": "Unique segment identifier." },
+    "role": { "type": "string", "description": "Functional description (e.g., 'vertical pillar', 'rounded corner', 'curved swoosh')." },
+    "description": { "type": "string", "description": "Detailed prose of this segment's appearance and relationships." },
+    "shape_2d": { "type": "string", "description": "2D geometric description (e.g., 'rectangle vertical', 'circle', 'chevron in V')." },
+    "color_hex": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "ldraw_id": { "type": "integer", "description": "Matched LDraw color ID." },
+    "ldraw_name": { "type": "string", "description": "Matched LDraw color name." },
+    "bbox_norm": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "type": "number" },
+      "description": "[x0, y0, x1, y1] normalized (0..1) bounding box in overall image."
+    },
+    "adjacency": { "type": "array", "items": { "type": "string" }, "description": "Adjacent segment IDs." },
+    "inferred_volume": {
+      "type": "object",
+      "description": "3D volume inference for part selection.",
+      "properties": {
+        "primitive": { "type": "string", "enum": ["flat_tile", "slab", "curved_arc", "slope", "rounded_corner", "compound_curved"] },
+        "depth_plates": { "type": "number", "description": "Thickness in plates (1 plate = 8 LDU)." },
+        "curvature_radius_studs": { "type": "number", "description": "If curved, radius in studs (for macaroni: 1, 2, 3, or 4)." },
+        "slope_angle_degrees": { "type": "number", "description": "If slope, estimated angle." },
+        "top_finish": { "type": "string", "enum": ["flat_tile", "smooth_brick", "exposed_studs", "corner_rounded"] }
+      },
+      "required": ["primitive"]
+    },
+    "candidate_parts": {
+      "type": "array",
+      "items": { "type": "object", "properties": { "part_id": { "type": "string" }, "fit_score": { "type": "number" }, "reason": { "type": "string" } } },
+      "description": "LEGO parts ranked by fit (from shape_matcher)."
+    }
+  }
+}

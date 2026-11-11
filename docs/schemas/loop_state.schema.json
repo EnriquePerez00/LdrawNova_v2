@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Improvement Loop State (loop_state.json)",
+  "description": "Persistent state of the improvement loop across iterations. Tracks history, best design, anti-regresion, and convergence. Located at output/<slug>/loop_state.json.",
+  "type": "object",
+  "required": ["version", "profile", "slug", "iterations", "best_iteration", "best_score", "current_iteration"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "profile": { "type": "string", "enum": ["brand_logo", "fauna", "bust_hd", "starwars"] },
+    "slug": { "type": "string", "description": "Design slug (output folder name)." },
+    "current_iteration": { "type": "integer", "description": "Current iteration number (0-indexed)." },
+    "best_iteration": { "type": "integer", "description": "Iteration with best global_score (for anti-regression)." },
+    "best_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "converged": { "type": "boolean" },
+    "stop_reason": { "type": "string", "enum": ["score_threshold_met", "no_high_severity_diffs", "max_iterations_reached", "running", "not_converged"] },
+    "iterations": {
+      "type": "array",
+      "description": "History of all iteration states.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "iteration_number": { "type": "integer" },
+          "global_score": { "type": "number" },
+          "per_axis_scores": { "type": "object" },
+          "num_diffs": { "type": "integer" },
+          "max_severity": { "type": "integer" },
+          "model_a2": { "type": "string", "description": "Model used for A2 (Designer) this iteration." },
+          "model_a4": { "type": "string", "description": "Model used for A4 (Judge) this iteration." },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "top_diffs": {
+            "type": "array",
+            "maxItems": 3,
+            "items": { "type": "object", "properties": { "segment_id": { "type": "string" }, "type": { "type": "string" }, "severity": { "type": "integer" }, "suggested_fix": { "type": "string" } } }
+          },
+          "feedback_json_path": { "type": "string", "description": "Path to feedback.json sent to next A2 (if not converged)." },
+          "status": { "type": "string", "enum": ["pending", "generating", "rendering", "judging", "success", "failed"] }
+        }
+      }
+    },
+    "anti_regression": {
+      "type": "object",
+      "description": "Anti-regression tracking to prevent oscillation.",
+      "properties": {
+        "reverted_at_iterations": { "type": "array", "items": { "type": "integer" }, "description": "Iterations where we reverted to best (because score degraded)." },
+        "recent_fixes": { "type": "array", "maxItems": 10, "items": { "type": "object", "properties": { "iteration": { "type": "integer" }, "diff_type": { "type": "string" }, "segment_id": { "type": "string" } } } }
+      }
+    },
+    "config": {
+      "type": "object",
+      "description": "Loop configuration snapshot (for reproducibility).",
+      "properties": {
+        "max_iterations": { "type": "integer" },
+        "score_threshold": { "type": "number" },
+        "severity_stop_threshold": { "type": "integer" },
+        "top_n_diffs_per_iteration": { "type": "integer" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "last_updated_at": { "type": "string", "format": "date-time" },
+        "elapsed_seconds": { "type": "number" }
+      }
+    }
+  }
+}
