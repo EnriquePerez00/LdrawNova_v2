@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Assembly Graph (Ground-Truth or Generated)",
+  "description": "Structural representation of a LEGO assembly for learning-loop validation. Contains nodes (parts), edges (connectivity), and BOM (bill of materials). Used by structural_diff.py to compare GT vs generated designs.",
+  "type": "object",
+  "required": ["version", "sample_id", "nodes", "bom"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema version"
+    },
+    "sample_id": {
+      "type": "string",
+      "description": "E.g., 'OMR-30103-1', 'RB-MOC-77601'"
+    },
+    "parts_count": {
+      "type": "integer",
+      "description": "Total number of parts (including submodel references)"
+    },
+    "step_count": {
+      "type": "integer",
+      "description": "Number of assembly steps (or 1 if single-step)"
+    },
+    "nodes": {
+      "type": "array",
+      "description": "List of parts/nodes in the assembly",
+      "items": {
+        "type": "object",
+        "required": ["idx", "part_id", "color", "pos", "step_idx"],
+        "properties": {
+          "idx": {
+            "type": "integer",
+            "description": "0-indexed position in nodes array"
+          },
+          "part_id": {
+            "type": "string",
+            "description": "LDraw part name (e.g., '3001.dat', 'Vehicle.ldr')"
+          },
+          "color": {
+            "type": "integer",
+            "description": "LDraw color code (0=black, 16=main, 24=brown, etc.)"
+          },
+          "pos": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number" },
+            "description": "[x, y, z] position in LDU (LDraw units)"
+          },
+          "step_idx": {
+            "type": "integer",
+            "description": "Assembly step this part appears in (0-indexed)"
+          }
+        }
+      }
+    },
+    "edges_part": {
+      "type": "array",
+      "description": "Level 1: part-to-part connectivity (pieza-a-pieza). Each edge [a, b] means part[a] touches part[b].",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": { "type": "integer" },
+        "description": "[node_idx_a, node_idx_b] indices into nodes array"
+      }
+    },
+    "edges_stud": {
+      "type": "array",
+      "description": "Level 2: stud-exact connectivity (feature-level contact points). May be empty if connectivity module unavailable.",
+      "items": {
+        "type": "object",
+        "required": ["occurrence_a", "occurrence_b", "feature_a", "feature_b", "status"],
+        "properties": {
+          "occurrence_a": { "type": "integer" },
+          "occurrence_b": { "type": "integer" },
+          "feature_a": { "type": "string", "description": "Feature ID on first part" },
+          "feature_b": { "type": "string", "description": "Feature ID on second part" },
+          "status": { "type": "string", "description": "Contact status (e.g., 'CONTACT', 'ADJACENT')" }
+        }
+      }
+    },
+    "bom": {
+      "type": "object",
+      "description": "Bill of Materials: part_id -> quantity",
+      "additionalProperties": { "type": "integer" }
+    },
+    "connectivity_status": {
+      "type": "string",
+      "description": "Status of connectivity extraction ('extracted', 'connectivity module unavailable', 'extraction failed', etc.)"
+    },
+    "io_path": {
+      "type": "string",
+      "description": "(Metadata) Original .io file path"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "(Metadata) When this graph was generated"
+    }
+  }
+}
