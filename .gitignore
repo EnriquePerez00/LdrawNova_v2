@@ -1,0 +1,32 @@
+# Compilación
+*.pyc
+__pycache__/
+*.egg-info/
+.Python
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Datos grandes
+data/manuals/*.pdf
+outputs/*
+scratch/*
+
+# Logs
+*.log
+logs/
+
+# Caché
+.kilo/
+.cache/
+
+# Reportes de sesión (generados)
+*.txt
+*.md
+!README.md
+!IMPLEMENTATION_SUMMARY.md
