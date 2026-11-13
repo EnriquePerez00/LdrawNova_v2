@@ -603,6 +603,26 @@ def run(args):
         bounds = None
         if model and not any(d["severity"] == "error" for d in diagnostics):
             model, render_parts = physical_context(model, parts)
+            
+            # AUDIT FIX (Phase C): Run physical gate before rendering
+            from ldraw_tools.physical_gate import run_physical_gate
+            gate_result = run_physical_gate(Path(args.file), parts=render_parts)
+            if not gate_result.ok and not args.force:
+                # Gate failed; report errors and abort render
+                error_diffs = [d for d in gate_result.synthetic_diffs if d.get("severity") == 5]
+                return {
+                    "source": str(args.file),
+                    "written": False,
+                    "render_aborted": True,
+                    "reason": f"Physical gate failed: {len(error_diffs)} critical issues",
+                    "gate_result": gate_result.to_dict(),
+                    "diagnostics": error_diffs
+                }, 1
+            elif not gate_result.ok and args.force:
+                # Gate failed but --force used; warn and continue
+                print(f"[WARN] Physical gate failed; rendering anyway (--force used)", file=__import__("sys").stderr)
+                diagnostics.extend(gate_result.synthetic_diffs)
+            
             raw_geometry = any(isinstance(obj, (Line, OptionalLine, Triangle, Quadrilateral))
                                for m in [model, *model.submodels.values()] for obj in m.objects)
             if not raw_geometry:
@@ -729,8 +749,8 @@ def run(args):
             diagnostics += report["geometry"]["diagnostics"]
         report["checks_passed"] = not any(d["severity"] == "error" for d in diagnostics)
     if args.command == "improve":
-        from .improvement_loop import ImprovementLoop
-        from .profile_adapter import ProfileAdapter
+        from .improvement_loop_v2 import ImprovementLoopV2
+        from .profile_adapter import ProfileAdapter, BrandLogoAdapter
         from .agent_roles import design_3d, describe_render_blind, judge_differ
         import json
         
@@ -741,29 +761,40 @@ def run(args):
         spec = json.loads(spec_path.read_text())
         output_dir = Path(args.output_dir or spec_path.parent)
         
-        # Load profile adapter (TODO: load specific adapter per profile)
-        adapter = ProfileAdapter(args.profile, Path("placeholder"), Path("placeholder"))
+        # Profile adapter: specialized when available, base otherwise
+        if args.profile == "brand_logo":
+            adapter = BrandLogoAdapter()
+        else:
+            pdir = Path(__file__).resolve().parent.parent / "profiles" / args.profile
+            adapter = ProfileAdapter(args.profile, pdir / f"{args.profile}_whitelist.json", pdir / f"{args.profile}_palette.json")
         
-        # Create loop
-        loop = ImprovementLoop(
-            spec_json=spec,
-            profile_adapter=adapter,
-            output_slug=str(output_dir),
-            max_iterations=args.max_iter,
-            score_threshold=args.threshold,
+        loop = ImprovementLoopV2(
+            spec=spec,
+            adapter=adapter,
+            output_dir=output_dir,
+            max_iter=args.max_iter,
+            threshold=args.threshold,
         )
         
-        # Create agent_roles module (bundle functions)
+        # Bundle agent functions (A2, A3, A4)
         class AgentRoles:
             design_3d = staticmethod(design_3d)
             describe_render_blind = staticmethod(describe_render_blind)
             judge_differ = staticmethod(judge_differ)
         
-        result = loop.run(AgentRoles())
+        import os
+        llm_config = {
+            "base_url": os.getenv("LLM_BASE_URL"),
+            "secret": os.getenv("LLM_SECRET", ""),
+            "fallback_model": os.getenv("LLM_VLM_FALLBACK_MODEL", "llama3.2-vision:11b"),
+            "fallback_base_url": os.getenv("LLM_VLM_FALLBACK_BASE_URL", "http://127.0.0.1:11434"),
+        }
+        result = loop.run(AgentRoles(), llm_config=llm_config)
         report["improvement_loop"] = {
             "iterations": len(loop.iterations),
-            "best_score": loop.best_iteration.global_score if loop.best_iteration else 0,
-            "converged": loop.best_iteration.converged if loop.best_iteration else False,
+            "best_score": loop.best.score if loop.best else 0,
+            "converged": bool(result.get("converged")),
+            "reason": result.get("reason"),
         }
         return report, 0
     
