@@ -1,0 +1,148 @@
+# Registro curado de la arquitectura agéntica de LdrawNova.
+# Fuente de verdad para misión/condicionantes; los parámetros técnicos se contrastan
+# con el código en scripts/generate_agent_report.py (drift detection).
+version: 1
+
+paradigms:
+  - id: loop
+    name: Loop de mejora iterativa (LiteLLM)
+    description: >-
+      Pipeline determinista en Python (ImprovementLoopV2) que invoca 4 agentes LLM (A1-A4)
+      a través de un proxy LiteLLM compatible OpenAI. Se lanza con `ldraw-agent improve`.
+  - id: governance
+    name: Gobernanza Antigravity (Gemini-only)
+    description: >-
+      Antigravity actúa como arquitecto/compilador interactivo: detecta perfil, aplica el
+      6-Question Gate, escribe generate.py y valida con ./ldraw-agent. No usa A1-A4.
+  - id: relation
+    name: Relación entre paradigmas
+    description: >-
+      Son complementarios. Governance produce el modelo (generate.py → .mpd) y es el modo
+      por defecto; el loop se usa como evaluador/refinador automático frente a un Ground Truth
+      (A1 describe GT, A3/A4 juzgan renders). Ambos comparten ldraw-agent, profiles/* y las
+      validaciones (geometry, contacts, BOM). Un diseño de governance puede entrar al loop
+      como candidato inicial (futuro: A2 opcional).
+
+agents:
+  A1:
+    name: Descriptor GT
+    kind: VLM
+    module: ldraw_tools/agent_roles.py
+    function: describe_gt
+    env_model: LLM_A1_MODEL
+    default_model: gemini-2.5-flash
+    mission: Convertir imágenes Ground Truth en un spec.json estructurado.
+    objectives: Segmentos (tipo, color LEGO, tamaño en studs, posición, rol) ignorando el fondo blanco.
+    tasks: Una vez por diseño; análisis multi-imagen; responde solo JSON.
+    constraints: JSON estricto; spec vacío si falla; depende de la rúbrica del ProfileAdapter.
+    inputs: Imágenes GT + ProfileAdapter
+    outputs: spec.json
+    upstream: Usuario / gt_image_preprocessor
+    downstream: A2 (spec), A4 (referencia)
+    tools: [vlm_chat, parse_json_block, ProfileAdapter]
+    params: {timeout_s: 120, temperature: default-proxy, images: multi}
+  A2:
+    name: Designer 3D
+    kind: Code LLM
+    module: ldraw_tools/design_generator.py
+    function: design_3d_with_llm
+    env_model: LLM_A2_MODEL
+    default_model: claude-haiku-5
+    mission: Generar plan.json + design.mpd a partir de spec + feedback.
+    objectives: Producir un diseño que respete whitelist, conectividad y reglas Tier 1-3.
+    tasks: Cada iteración; recibe los top-3 diffs de la iteración previa (o del mejor diseño tras un revert).
+    constraints: Solo texto, sin imágenes; recibe el spec completo (todos los segmentos) y los top-5 diffs; max_tokens=A2_MAX_TOKENS (default 4096); modo partial_rewrite reescribe solo los submodelos afectados cuando feedback incluye mpd_line_range; fallback a MPD placeholder si el LLM falla.
+    inputs: spec.json + top_diffs (con mpd_line_range) + prev_mpd_path + ProfileAdapter
+    outputs: design.mpd (submodelos segment_<id>.ldr), design.plan.json (con a2_mode, submodel_coverage, expected_segment_ids)
+    upstream: A1, A4 (feedback)
+    downstream: PhysicalGate, Validadores, LeoCAD
+    tools: [design_3d_with_llm, mpd_segments, ProfileAdapter]
+    params: {timeout_s: 120, temperature: 0.2, max_tokens: 4096}
+  A3:
+    name: Descriptor Blind
+    kind: VLM
+    module: ldraw_tools/agent_roles.py
+    function: describe_render_blind
+    env_model: LLM_A3_MODEL
+    default_model: gemini-2.5-flash
+    mission: Describir los renders sin ver el GT (evita sesgo de confirmación).
+    objectives: render_spec.json comparable con spec.json.
+    tasks: Cada iteración sobre 4 vistas (home/front/right/top).
+    constraints: Ciego al GT por diseño; requiere renders existentes; spec vacío si no hay renders.
+    inputs: renders/{home,front,right,top}.png
+    outputs: render_spec.json
+    upstream: LeoCAD render
+    downstream: A4
+    tools: [vlm_chat, parse_json_block, ProfileAdapter]
+    params: {timeout_s: 120, images: 4}
+  A4:
+    name: Judge/Differ
+    kind: VLM
+    module: ldraw_tools/agent_roles.py
+    function: judge_differ
+    env_model: LLM_A4_MODEL
+    default_model: gemini-2.5-flash
+    mission: Puntuar fidelidad (0-100) y emitir diffs accionables.
+    objectives: global_score, per_axis_scores, diffs con severidad y sugerencia.
+    tasks: Cada iteración; compara spec GT vs render; ModelRouter escala a gemini-2.5-pro si hay estancamiento.
+    constraints: Recibe el spec_gt JSON completo (sin truncar); coste Med-Alto; si falla, no cuenta como "juzgado" (no converge por severidad). El orquestador enriquece sus diffs con segment_id y mpd_line_range cuando aplican.
+    inputs: spec GT, render_spec, renders
+    outputs: diff_report.json (diffs con severity/segment_id/suggestion)
+    upstream: A1, A3, renders
+    downstream: Orquestador → A2 (anclaje espacial)
+    tools: [vlm_chat, parse_json_block, mpd_segments, ProfileAdapter]
+    params: {timeout_s: 120, images: 4}
+
+actors:
+  - name: Orquestador del loop (ImprovementLoopV2)
+    kind: Determinista (Python)
+    role: Secuencia A2→PhysicalGate→(si OK) validadores→render→A3→A4, puntúa, decide convergencia (loop_policy), hill-climbing, persiste estado y telemetría. En caso de gate fallido corta en seco (score=10.0, synthetic_diffs) sin invocar renderer/A3/A4.
+    tools: [LoopStateManager, PhysicalGate, mpd_segments, LeoCADRenderer, GeometryValidator, BOMValidator, ColorValidator, OverlapDetector, ModelRouter, TokenTracker]
+  - name: Antigravity (orquestador Gemini)
+    kind: LLM interactivo
+    role: Arquitecto/compilador; Step 0 de perfil, 6-Question Gate, generate.py, ldraw-agent build/validate/inspect/render/bom/catalog.
+    tools: [run_command, edición de ficheros, ldraw-agent, skills]
+
+tools:
+  vlm_chat: Llamada VLM multimodal vía proxy LiteLLM (OpenAI-compatible) con fallback Ollama y telemetría de tokens.
+  parse_json_block: Extrae/parsea JSON de la respuesta LLM con valor por defecto seguro.
+  design_3d_with_llm: Llamada de generación de código LDraw (MPD) al proxy LiteLLM; escribe design.mpd/plan.json; soporta partial_rewrite por submodelos segment_<id>.ldr.
+  mpd_segments: Parse y reescritura in-place de submodelos semánticos (segment_<id>.ldr) para anclaje espacial y partial rewrites.
+  PhysicalGate: Gate determinista pre-render; usa collision.collision_pairs + connectivity.inspect_connections; emite synthetic_diffs severidad=5 con mpd_line_range.
+  ProfileAdapter: Aporta whitelist, paleta, rúbrica de evaluación, pesos de score y restricciones BOM por perfil.
+  ModelRouter: Resuelve el modelo por agente (env/config) y escala A4 a pro tras 2 iteraciones estancadas.
+  LoopStateManager: Persiste loop_state.json (mejor iteración, historial, telemetría incl. gate_failed/penetration_count/floating_island_count).
+  LeoCADRenderer: Renderiza 4 vistas con LeoCAD.
+  GeometryValidator: Valida el MPD contra whitelist/geometría (determinista).
+  BOMValidator: Extrae y valida el BOM contra restricciones del perfil.
+  ColorValidator: Valida colores dominantes del render (tolerancia).
+  OverlapDetector: Detecta solapes potenciales 2D en el render; desactivado por defecto cuando el PhysicalGate 3D está activo (flag LOOP_LEGACY_2D_OVERLAP).
+  TokenTracker: Telemetría de tokens, latencia y fallbacks por agente.
+  ldraw-agent: CLI del repo (build, validate, inspect, render, bom, catalog, part, improve).
+
+env:
+  LLM_PROVIDER: {default: llmproxy, desc: Proveedor (proxy LiteLLM)}
+  LLM_BASE_URL: {default: "http://localhost:6655/litellm", desc: Endpoint OpenAI-compatible}
+  LLM_SECRET: {default: "", desc: "Bearer token del proxy. NO versionar; definir en .env local"}
+  LLM_A1_MODEL: {default: gemini-2.5-flash, desc: Modelo de A1}
+  LLM_A2_MODEL: {default: claude-haiku-5, desc: Modelo de A2}
+  LLM_A3_MODEL: {default: gemini-2.5-flash, desc: Modelo de A3}
+  LLM_A4_MODEL: {default: gemini-2.5-flash, desc: Modelo de A4}
+  LLM_A4_STAGNATION_ESCALATION: {default: "true", desc: Escalar A4 a gemini-2.5-pro si hay estancamiento}
+  LLM_VLM_FALLBACK_MODEL: {default: "llama3.2-vision:11b", desc: VLM local de respaldo}
+  LLM_VLM_FALLBACK_BASE_URL: {default: "http://127.0.0.1:11434", desc: Ollama}
+  LDRAW_DIR: {default: "$HOME/LDraw", desc: Librería LDraw oficial}
+  LOOP_PHYSICAL_GATE: {default: "true", desc: Activa el pre-render gate físico 3D (short-circuit si falla)}
+  LOOP_PHYSICAL_GATE_SCORE: {default: "10.0", desc: Score penalizador cuando el gate falla}
+  LOOP_LEGACY_2D_OVERLAP: {default: "false", desc: Mantiene el OverlapDetector Sobel 2D cuando el gate 3D está activo (debug)}
+  A2_PARTIAL_REWRITE: {default: "true", desc: A2 reescribe solo los submodelos con diff anclado}
+  A2_MAX_TOKENS: {default: "4096", desc: Límite de salida de A2}
+
+limitations:
+  - El loop depende de un proxy LiteLLM local; sin él, A1/A3/A4 degradan a Ollama y A2 a MPD placeholder.
+  - Solo BrandLogoAdapter tiene rúbrica y restricciones BOM propias; el resto de perfiles usa la rúbrica por defecto.
+  - A2 emite MPD con submodelos semánticos (segment_<id>.ldr); max_tokens=4096 (A2_MAX_TOKENS), suficiente para modelos multi-segmento.
+  - El PhysicalGate solo evalúa colisión de cuerpo rectangular y aislamiento conectivo; no sustituye al juicio de A4 sobre estilo/color/proporción.
+  - Las piezas cuyo profile de cuerpo no existe (collision.regular) se omiten del gate y se reportan en gate_result.unknown_parts.
+  - Los pesos de score (profile_adapter.scoring_weights) se documentan, pero el global_score lo calcula A4 (VLM), no el orquestador.
+  - tests/test_improvement_loop.py cubre el loop legacy (improvement_loop.py), no V2.
